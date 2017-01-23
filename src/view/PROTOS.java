@@ -1,199 +1,221 @@
 package view;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import modelo.ConexionBD;
 
 public class PROTOS extends javax.swing.JFrame {
 
-    BoxLayout box;
+    ConexionBD conex = new ConexionBD();
     
     public PROTOS() {
         initComponents();
     }
     
+    void HallarTensionSerie(){
+        String tensionserie = "", nba = "";
+        if (cjvp.getInt() <= 1200) {
+            tensionserie = "1.2/1.2";
+            cjnba.setText("30");
+        }
+        if (7000 <= cjvp.getInt() && cjvp.getInt() <= 15000) {
+            tensionserie = "14";
+            cjnba.setText("95");
+        } else if (16000 <= cjvp.getInt() && cjvp.getInt() <= 25000) {
+            tensionserie = "25";
+            cjnba.setText("125");
+        } else if (26000 <= cjvp.getInt() && cjvp.getInt() <= 38000) {
+            tensionserie = "38";
+            cjnba.setText("200");
+        } else if (39000 <= cjvp.getInt() && cjvp.getInt() <= 52000) {
+            tensionserie = "52";
+            cjnba.setText("250");
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldPopup2 = new CompuChiqui.JTextFieldPopup();
+        cjserie = new CompuChiqui.JTextFieldPopup();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldPopup3 = new CompuChiqui.JTextFieldPopup();
+        cjempresa = new CompuChiqui.JTextFieldPopup();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldPopup4 = new CompuChiqui.JTextFieldPopup();
+        cjmarca = new CompuChiqui.JTextFieldPopup();
         jLabel6 = new javax.swing.JLabel();
-        jTextFieldPopup5 = new CompuChiqui.JTextFieldPopup();
+        cjkva = new CompuChiqui.JTextFieldPopup();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboFase = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jTextFieldPopup7 = new CompuChiqui.JTextFieldPopup();
+        cjano = new CompuChiqui.JTextFieldPopup();
         jLabel9 = new javax.swing.JLabel();
-        jTextFieldPopup8 = new CompuChiqui.JTextFieldPopup();
+        cjvp = new CompuChiqui.JTextFieldPopup();
         jLabel10 = new javax.swing.JLabel();
-        jTextFieldPopup9 = new CompuChiqui.JTextFieldPopup();
+        cjvs = new CompuChiqui.JTextFieldPopup();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        comboServicio = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        comboFrecuencia = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        comboRefrigeracion = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
-        jTextFieldPopup1 = new CompuChiqui.JTextFieldPopup();
+        cjtensionSerie = new CompuChiqui.JTextFieldPopup();
         jLabel13 = new javax.swing.JLabel();
-        jTextFieldPopup6 = new CompuChiqui.JTextFieldPopup();
+        cjnba = new CompuChiqui.JTextFieldPopup();
         jLabel14 = new javax.swing.JLabel();
-        jTextFieldPopup10 = new CompuChiqui.JTextFieldPopup();
+        cjcalentamientodevanado = new CompuChiqui.JTextFieldPopup();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        comboClaseAislamiento = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
-        jTextFieldPopup11 = new CompuChiqui.JTextFieldPopup();
+        cjaltdiseno = new CompuChiqui.JTextFieldPopup();
         jLabel17 = new javax.swing.JLabel();
-        jTextFieldPopup12 = new CompuChiqui.JTextFieldPopup();
+        cji1 = new CompuChiqui.JTextFieldPopup();
         jLabel18 = new javax.swing.JLabel();
-        jTextFieldPopup13 = new CompuChiqui.JTextFieldPopup();
+        cji2 = new CompuChiqui.JTextFieldPopup();
         jLabel19 = new javax.swing.JLabel();
         jComboBox6 = new javax.swing.JComboBox<>();
         jLabel29 = new javax.swing.JLabel();
-        jTextFieldPopup23 = new CompuChiqui.JTextFieldPopup();
+        cjtemperatura = new CompuChiqui.JTextFieldPopup();
         jLabel30 = new javax.swing.JLabel();
-        jComboBox10 = new javax.swing.JComboBox<>();
+        comboConmutador = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        comboAceite = new javax.swing.JComboBox<>();
         jLabel21 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
+        comboReferenciaAceite = new javax.swing.JComboBox<>();
         jLabel22 = new javax.swing.JLabel();
-        jTextFieldPopup16 = new CompuChiqui.JTextFieldPopup();
+        cjRuptura = new CompuChiqui.JTextFieldPopup();
         jLabel23 = new javax.swing.JLabel();
-        jTextFieldPopup17 = new CompuChiqui.JTextFieldPopup();
+        cjMetodo = new CompuChiqui.JTextFieldPopup();
         jPanel4 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
-        jTextFieldPopup18 = new CompuChiqui.JTextFieldPopup();
+        cjtiemporalt = new CompuChiqui.JTextFieldPopup();
         jLabel25 = new javax.swing.JLabel();
-        jComboBox9 = new javax.swing.JComboBox<>();
+        comboTensionPrueba = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        jTextFieldPopup20 = new CompuChiqui.JTextFieldPopup();
+        cjATcontraBT = new CompuChiqui.JTextFieldPopup();
         jLabel27 = new javax.swing.JLabel();
-        jTextFieldPopup21 = new CompuChiqui.JTextFieldPopup();
+        cjATcontraTierra = new CompuChiqui.JTextFieldPopup();
         jLabel28 = new javax.swing.JLabel();
-        jTextFieldPopup22 = new CompuChiqui.JTextFieldPopup();
+        cjBTcontraTierra = new CompuChiqui.JTextFieldPopup();
         jPanel5 = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
-        jComboBox11 = new javax.swing.JComboBox<>();
+        comboGrupoConexion = new javax.swing.JComboBox<>();
         jLabel32 = new javax.swing.JLabel();
-        jComboBox12 = new javax.swing.JComboBox<>();
-        jLabel33 = new javax.swing.JLabel();
-        jTextFieldPopup19 = new CompuChiqui.JTextFieldPopup();
-        jLabel34 = new javax.swing.JLabel();
-        jTextFieldPopup24 = new CompuChiqui.JTextFieldPopup();
+        comboPolaridad = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jLabel35 = new javax.swing.JLabel();
-        jTextFieldPopup25 = new CompuChiqui.JTextFieldPopup();
+        cjuv = new CompuChiqui.JTextFieldPopup();
         jLabel36 = new javax.swing.JLabel();
-        jTextFieldPopup33 = new CompuChiqui.JTextFieldPopup();
+        cjxy = new CompuChiqui.JTextFieldPopup();
         jLabel37 = new javax.swing.JLabel();
-        jTextFieldPopup26 = new CompuChiqui.JTextFieldPopup();
+        cjwu = new CompuChiqui.JTextFieldPopup();
         jLabel38 = new javax.swing.JLabel();
-        jTextFieldPopup27 = new CompuChiqui.JTextFieldPopup();
+        cjyz = new CompuChiqui.JTextFieldPopup();
         jLabel39 = new javax.swing.JLabel();
-        jTextFieldPopup28 = new CompuChiqui.JTextFieldPopup();
+        cjvw = new CompuChiqui.JTextFieldPopup();
         jLabel40 = new javax.swing.JLabel();
-        jTextFieldPopup29 = new CompuChiqui.JTextFieldPopup();
+        cjzx = new CompuChiqui.JTextFieldPopup();
         jLabel41 = new javax.swing.JLabel();
-        jTextFieldPopup34 = new CompuChiqui.JTextFieldPopup();
+        cjproresalta = new CompuChiqui.JTextFieldPopup();
         jLabel42 = new javax.swing.JLabel();
-        jTextFieldPopup30 = new CompuChiqui.JTextFieldPopup();
+        cjproresbaja = new CompuChiqui.JTextFieldPopup();
         jLabel43 = new javax.swing.JLabel();
-        jComboBox18 = new javax.swing.JComboBox<>();
+        comboMaterialAlta = new javax.swing.JComboBox<>();
         jLabel44 = new javax.swing.JLabel();
-        jComboBox17 = new javax.swing.JComboBox<>();
+        comboMaterialBaja = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         jLabel45 = new javax.swing.JLabel();
-        jTextFieldPopup31 = new CompuChiqui.JTextFieldPopup();
+        cjBTcontraATyTierra = new CompuChiqui.JTextFieldPopup();
         jLabel46 = new javax.swing.JLabel();
-        jTextFieldPopup35 = new CompuChiqui.JTextFieldPopup();
+        cjATcontraBTyTierra = new CompuChiqui.JTextFieldPopup();
         jLabel47 = new javax.swing.JLabel();
-        jTextFieldPopup32 = new CompuChiqui.JTextFieldPopup();
+        cjtiempoaplicado = new CompuChiqui.JTextFieldPopup();
         jLabel48 = new javax.swing.JLabel();
-        jTextFieldPopup36 = new CompuChiqui.JTextFieldPopup();
+        cjtensionBT = new CompuChiqui.JTextFieldPopup();
         jLabel49 = new javax.swing.JLabel();
-        jTextFieldPopup37 = new CompuChiqui.JTextFieldPopup();
+        cjFrecuenciaInducida = new CompuChiqui.JTextFieldPopup();
         jLabel50 = new javax.swing.JLabel();
-        jTextFieldPopup38 = new CompuChiqui.JTextFieldPopup();
+        cjtiempoInducido = new CompuChiqui.JTextFieldPopup();
         jPanel8 = new javax.swing.JPanel();
         jLabel51 = new javax.swing.JLabel();
-        jTextFieldPopup39 = new CompuChiqui.JTextFieldPopup();
+        cjTensionBT2 = new CompuChiqui.JTextFieldPopup();
         jLabel52 = new javax.swing.JLabel();
-        jTextFieldPopup40 = new CompuChiqui.JTextFieldPopup();
+        cjiu = new CompuChiqui.JTextFieldPopup();
         jLabel53 = new javax.swing.JLabel();
-        jTextFieldPopup41 = new CompuChiqui.JTextFieldPopup();
+        cjiv = new CompuChiqui.JTextFieldPopup();
         jLabel54 = new javax.swing.JLabel();
-        jTextFieldPopup42 = new CompuChiqui.JTextFieldPopup();
+        cjiw = new CompuChiqui.JTextFieldPopup();
         jLabel55 = new javax.swing.JLabel();
-        jTextFieldPopup43 = new CompuChiqui.JTextFieldPopup();
+        cjpromedioi = new CompuChiqui.JTextFieldPopup();
         jLabel56 = new javax.swing.JLabel();
-        jTextFieldPopup44 = new CompuChiqui.JTextFieldPopup();
+        cjiogarantizado = new CompuChiqui.JTextFieldPopup();
         jLabel57 = new javax.swing.JLabel();
-        jTextFieldPopup45 = new CompuChiqui.JTextFieldPopup();
+        cjpomedido = new CompuChiqui.JTextFieldPopup();
         jLabel58 = new javax.swing.JLabel();
-        jTextFieldPopup46 = new CompuChiqui.JTextFieldPopup();
+        cjpogarantizado = new CompuChiqui.JTextFieldPopup();
         jPanel9 = new javax.swing.JPanel();
         jLabel59 = new javax.swing.JLabel();
-        jTextFieldPopup47 = new CompuChiqui.JTextFieldPopup();
+        cjvcc = new CompuChiqui.JTextFieldPopup();
         jLabel60 = new javax.swing.JLabel();
-        jTextFieldPopup48 = new CompuChiqui.JTextFieldPopup();
+        cjpcumedido = new CompuChiqui.JTextFieldPopup();
         jLabel61 = new javax.swing.JLabel();
-        jTextFieldPopup49 = new CompuChiqui.JTextFieldPopup();
+        cjpcua85 = new CompuChiqui.JTextFieldPopup();
         jLabel62 = new javax.swing.JLabel();
-        jTextFieldPopup50 = new CompuChiqui.JTextFieldPopup();
+        cjpcugarantizado = new CompuChiqui.JTextFieldPopup();
         jLabel63 = new javax.swing.JLabel();
-        jTextFieldPopup51 = new CompuChiqui.JTextFieldPopup();
+        cji2r = new CompuChiqui.JTextFieldPopup();
         jLabel64 = new javax.swing.JLabel();
-        jTextFieldPopup52 = new CompuChiqui.JTextFieldPopup();
+        cji2ra85 = new CompuChiqui.JTextFieldPopup();
         jLabel65 = new javax.swing.JLabel();
-        jTextFieldPopup53 = new CompuChiqui.JTextFieldPopup();
+        cjimpedancia = new CompuChiqui.JTextFieldPopup();
         jLabel66 = new javax.swing.JLabel();
-        jTextFieldPopup54 = new CompuChiqui.JTextFieldPopup();
+        cjimpedancia85 = new CompuChiqui.JTextFieldPopup();
         jLabel67 = new javax.swing.JLabel();
-        jTextFieldPopup55 = new CompuChiqui.JTextFieldPopup();
+        cjimpedanciagarantizado = new CompuChiqui.JTextFieldPopup();
         jPanel10 = new javax.swing.JPanel();
         jLabel78 = new javax.swing.JLabel();
-        jTextFieldPopup56 = new CompuChiqui.JTextFieldPopup();
+        cjreg = new CompuChiqui.JTextFieldPopup();
         jLabel79 = new javax.swing.JLabel();
-        jTextFieldPopup57 = new CompuChiqui.JTextFieldPopup();
+        cjef = new CompuChiqui.JTextFieldPopup();
         jPanel12 = new javax.swing.JPanel();
         jLabel68 = new javax.swing.JLabel();
-        jTextFieldPopup58 = new CompuChiqui.JTextFieldPopup();
+        cjmasa = new CompuChiqui.JTextFieldPopup();
         jLabel69 = new javax.swing.JLabel();
-        jTextFieldPopup59 = new CompuChiqui.JTextFieldPopup();
+        cjaceite = new CompuChiqui.JTextFieldPopup();
         jLabel70 = new javax.swing.JLabel();
-        jTextFieldPopup60 = new CompuChiqui.JTextFieldPopup();
+        cjlargo = new CompuChiqui.JTextFieldPopup();
         jLabel71 = new javax.swing.JLabel();
-        jTextFieldPopup61 = new CompuChiqui.JTextFieldPopup();
+        cjancho = new CompuChiqui.JTextFieldPopup();
         jLabel72 = new javax.swing.JLabel();
-        jTextFieldPopup62 = new CompuChiqui.JTextFieldPopup();
+        cjalto = new CompuChiqui.JTextFieldPopup();
         jLabel73 = new javax.swing.JLabel();
-        jTextFieldPopup63 = new CompuChiqui.JTextFieldPopup();
+        cjcolor = new CompuChiqui.JTextFieldPopup();
         jLabel74 = new javax.swing.JLabel();
-        jTextFieldPopup64 = new CompuChiqui.JTextFieldPopup();
+        cjespesor = new CompuChiqui.JTextFieldPopup();
         jLabel75 = new javax.swing.JLabel();
-        jTextFieldPopup65 = new CompuChiqui.JTextFieldPopup();
+        cjelementos = new CompuChiqui.JTextFieldPopup();
         jLabel76 = new javax.swing.JLabel();
-        jTextFieldPopup66 = new CompuChiqui.JTextFieldPopup();
+        cjlargoelemento = new CompuChiqui.JTextFieldPopup();
         jLabel77 = new javax.swing.JLabel();
-        jTextFieldPopup67 = new CompuChiqui.JTextFieldPopup();
+        cjanchoelemento = new CompuChiqui.JTextFieldPopup();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaUno = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaDos = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jCTextArea1 = new CompuChiqui.JCTextArea();
+        cjobservaciones = new CompuChiqui.JCTextArea();
         jPanel13 = new javax.swing.JPanel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        cjfechasalida = new com.toedter.calendar.JDateChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -207,134 +229,141 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel3.setText("Serie N°:");
         jPanel2.add(jLabel3);
 
-        jTextFieldPopup2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup2.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup2);
+        cjserie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjserie.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjserie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cjserieKeyPressed(evt);
+            }
+        });
+        jPanel2.add(cjserie);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("N° Empresa:");
         jPanel2.add(jLabel4);
 
-        jTextFieldPopup3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup3.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup3);
+        cjempresa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjempresa.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjempresa);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Marca:");
         jPanel2.add(jLabel5);
 
-        jTextFieldPopup4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup4.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup4);
+        cjmarca.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjmarca.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjmarca);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("KVA:");
         jPanel2.add(jLabel6);
 
-        jTextFieldPopup5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup5.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup5);
+        cjkva.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjkva.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjkva);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Fases:");
         jPanel2.add(jLabel8);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "3" }));
-        jPanel2.add(jComboBox1);
+        comboFase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "3" }));
+        jPanel2.add(comboFase);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Año:");
         jPanel2.add(jLabel7);
 
-        jTextFieldPopup7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup7.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup7);
+        cjano.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjano.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjano);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Volt. Primario:");
         jPanel2.add(jLabel9);
 
-        jTextFieldPopup8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup8.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup8);
+        cjvp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvp.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjvp);
 
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText("Volt. Secund.:");
         jPanel2.add(jLabel10);
 
-        jTextFieldPopup9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup9.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup9);
+        cjvs.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvs.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjvs);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Servicio:");
         jPanel2.add(jLabel1);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NUEVO", "RECONSTRUIDO", "REPARACION", "MANTENIMIENTO" }));
-        jPanel2.add(jComboBox2);
+        comboServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NUEVO", "RECONSTRUIDO", "REPARACION", "MANTENIMIENTO" }));
+        comboServicio.setSelectedIndex(1);
+        jPanel2.add(comboServicio);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Frecuencia:");
         jPanel2.add(jLabel2);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "60", "50" }));
-        jPanel2.add(jComboBox3);
+        comboFrecuencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "60", "50" }));
+        jPanel2.add(comboFrecuencia);
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Refrigeracion:");
         jPanel2.add(jLabel11);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ONAN", "ONAF", "AN" }));
-        jPanel2.add(jComboBox4);
+        comboRefrigeracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ONAN", "ONAF", "AN" }));
+        jPanel2.add(comboRefrigeracion);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Tension Serie:");
         jPanel2.add(jLabel12);
 
-        jTextFieldPopup1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel2.add(jTextFieldPopup1);
+        cjtensionSerie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel2.add(cjtensionSerie);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("NBA AT/BT:");
         jPanel2.add(jLabel13);
 
-        jTextFieldPopup6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel2.add(jTextFieldPopup6);
+        cjnba.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel2.add(cjnba);
 
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("Calent. Devn:");
         jPanel2.add(jLabel14);
 
-        jTextFieldPopup10.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel2.add(jTextFieldPopup10);
+        cjcalentamientodevanado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjcalentamientodevanado.setText("65");
+        jPanel2.add(cjcalentamientodevanado);
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Clase Aislam.:");
         jPanel2.add(jLabel15);
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ao", "A:(75°C)", "A:(85°C)", "A:(100°C)", "A:(120°C)", "A:(145°C)" }));
-        jPanel2.add(jComboBox5);
+        comboClaseAislamiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ao", "A:(75°C)", "A:(85°C)", "A:(100°C)", "A:(120°C)", "A:(145°C)" }));
+        jPanel2.add(comboClaseAislamiento);
 
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("Alt Diseño:");
         jPanel2.add(jLabel16);
 
-        jTextFieldPopup11.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel2.add(jTextFieldPopup11);
+        cjaltdiseno.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel2.add(cjaltdiseno);
 
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("I1:");
         jPanel2.add(jLabel17);
 
-        jTextFieldPopup12.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel2.add(jTextFieldPopup12);
+        cji1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel2.add(cji1);
 
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel18.setText("I2:");
         jPanel2.add(jLabel18);
 
-        jTextFieldPopup13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel2.add(jTextFieldPopup13);
+        cji2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel2.add(cji2);
 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Deriv. Prim:");
@@ -347,17 +376,17 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel29.setText("Temperatura:");
         jPanel2.add(jLabel29);
 
-        jTextFieldPopup23.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup23.setText("30");
-        jTextFieldPopup23.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel2.add(jTextFieldPopup23);
+        cjtemperatura.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtemperatura.setText("30");
+        cjtemperatura.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjtemperatura);
 
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel30.setText("Conmutador:");
         jPanel2.add(jLabel30);
 
-        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
-        jPanel2.add(jComboBox10);
+        comboConmutador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+        jPanel2.add(comboConmutador);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "1) Liquido Aislante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel3.setToolTipText("Liquido Aislante");
@@ -367,33 +396,33 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel20.setText("Aceite:");
         jPanel3.add(jLabel20);
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MINERAL", "VEGETAL\t" }));
-        jPanel3.add(jComboBox7);
+        comboAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MINERAL", "VEGETAL\t" }));
+        jPanel3.add(comboAceite);
 
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel21.setText("Referencia:");
         jPanel3.add(jLabel21);
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HYVOLT", "LUB TROIL TIPO II", "FR3" }));
-        jPanel3.add(jComboBox8);
+        comboReferenciaAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HYVOLT", "LUB TROIL TIPO II", "FR3" }));
+        jPanel3.add(comboReferenciaAceite);
 
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel22.setText("Ruptura(kv):");
         jPanel3.add(jLabel22);
 
-        jTextFieldPopup16.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup16.setText("40");
-        jTextFieldPopup16.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel3.add(jTextFieldPopup16);
+        cjRuptura.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjRuptura.setText("40");
+        cjRuptura.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel3.add(cjRuptura);
 
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel23.setText("Metodo:");
         jPanel3.add(jLabel23);
 
-        jTextFieldPopup17.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup17.setText("ASTM 877");
-        jTextFieldPopup17.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel3.add(jTextFieldPopup17);
+        cjMetodo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjMetodo.setText("ASTM 877");
+        cjMetodo.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel3.add(cjMetodo);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "2) Resist. Aislamiento:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel4.setToolTipText("Resistencia de Aislamiento");
@@ -403,77 +432,59 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel24.setText("Tiempo:");
         jPanel4.add(jLabel24);
 
-        jTextFieldPopup18.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup18.setText("60");
-        jTextFieldPopup18.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel4.add(jTextFieldPopup18);
+        cjtiemporalt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtiemporalt.setText("60");
+        cjtiemporalt.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel4.add(cjtiemporalt);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Tens. Prueba:");
         jPanel4.add(jLabel25);
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5000/500", "5000/5000", "500/500" }));
-        jPanel4.add(jComboBox9);
+        comboTensionPrueba.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5000/500", "5000/5000", "500/500" }));
+        jPanel4.add(comboTensionPrueba);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("AT contra BT:");
         jPanel4.add(jLabel26);
 
-        jTextFieldPopup20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup20.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel4.add(jTextFieldPopup20);
+        cjATcontraBT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraBT.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel4.add(cjATcontraBT);
 
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("AT contra Tierra:");
         jPanel4.add(jLabel27);
 
-        jTextFieldPopup21.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup21.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel4.add(jTextFieldPopup21);
+        cjATcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraTierra.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel4.add(cjATcontraTierra);
 
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("BT contra Tierra:");
         jPanel4.add(jLabel28);
 
-        jTextFieldPopup22.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup22.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel4.add(jTextFieldPopup22);
+        cjBTcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjBTcontraTierra.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel4.add(cjBTcontraTierra);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "3) Relacion de Transformacion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel5.setToolTipText("Relacion de Transformacion");
-        jPanel5.setLayout(new java.awt.GridLayout(4, 2, 0, 2));
+        jPanel5.setLayout(new java.awt.GridLayout(2, 2, 0, 2));
 
         jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel31.setText("Grupo de Conexion:");
         jPanel5.add(jLabel31);
 
-        jComboBox11.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ii6", "Ii0", "DYn5", "DYn11", "Yy0", "Yy6" }));
-        jPanel5.add(jComboBox11);
+        comboGrupoConexion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ii6", "Ii0", "DYn5", "DYn11", "Yy0", "Yy6" }));
+        jPanel5.add(comboGrupoConexion);
 
         jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel32.setText("Polaridad:");
         jPanel5.add(jLabel32);
 
-        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUSTRACTIVA", "ADITIVA", "NO APLICA" }));
-        jPanel5.add(jComboBox12);
-
-        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel33.setText("Ruptura(kv):");
-        jPanel5.add(jLabel33);
-
-        jTextFieldPopup19.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup19.setText("40");
-        jTextFieldPopup19.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel5.add(jTextFieldPopup19);
-
-        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel34.setText("Metodo:");
-        jPanel5.add(jLabel34);
-
-        jTextFieldPopup24.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup24.setText("ASTM 877");
-        jTextFieldPopup24.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel5.add(jTextFieldPopup24);
+        comboPolaridad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUSTRACTIVA", "ADITIVA", "NO APLICA" }));
+        jPanel5.add(comboPolaridad);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "4) Resistencia Entre Terminales", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel6.setToolTipText("Resistencia Entre Terminales");
@@ -483,79 +494,79 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel35.setText("U-V OHM:");
         jPanel6.add(jLabel35);
 
-        jTextFieldPopup25.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup25.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup25);
+        cjuv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjuv.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjuv);
 
         jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel36.setText("X-Y:");
         jPanel6.add(jLabel36);
 
-        jTextFieldPopup33.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup33.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup33);
+        cjxy.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjxy.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjxy);
 
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel37.setText("W-U OHM:");
         jPanel6.add(jLabel37);
 
-        jTextFieldPopup26.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup26.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup26);
+        cjwu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjwu.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjwu);
 
         jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel38.setText("Y-Z:");
         jPanel6.add(jLabel38);
 
-        jTextFieldPopup27.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup27.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup27);
+        cjyz.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjyz.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjyz);
 
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel39.setText("V-W OHM:");
         jPanel6.add(jLabel39);
 
-        jTextFieldPopup28.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup28.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup28);
+        cjvw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvw.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjvw);
 
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel40.setText("Z-X:");
         jPanel6.add(jLabel40);
 
-        jTextFieldPopup29.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup29.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup29);
+        cjzx.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjzx.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjzx);
 
         jLabel41.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel41.setText("Promedio:");
         jPanel6.add(jLabel41);
 
-        jTextFieldPopup34.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup34.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup34);
+        cjproresalta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjproresalta.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjproresalta);
 
         jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel42.setText("Promedio:");
         jPanel6.add(jLabel42);
 
-        jTextFieldPopup30.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup30.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel6.add(jTextFieldPopup30);
+        cjproresbaja.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjproresbaja.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel6.add(cjproresbaja);
 
         jLabel43.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel43.setText("Material:");
         jPanel6.add(jLabel43);
 
-        jComboBox18.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "COBRE", "ALUMINIO" }));
-        jPanel6.add(jComboBox18);
+        comboMaterialAlta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "COBRE", "ALUMINIO" }));
+        jPanel6.add(comboMaterialAlta);
 
         jLabel44.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel44.setText("Material:");
         jPanel6.add(jLabel44);
 
-        jComboBox17.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "COBRE", "ALUMINIO" }));
-        jPanel6.add(jComboBox17);
+        comboMaterialBaja.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "COBRE", "ALUMINIO" }));
+        jPanel6.add(comboMaterialBaja);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "5) Ensayo de Aislamiento", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel7.setToolTipText("Resistencia Entre Terminales");
@@ -565,49 +576,49 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel45.setText("BT contra AT y Tierra:");
         jPanel7.add(jLabel45);
 
-        jTextFieldPopup31.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup31.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jTextFieldPopup31);
+        cjBTcontraATyTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjBTcontraATyTierra.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(cjBTcontraATyTierra);
 
         jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel46.setText("AT contra BT y Tierra:");
         jPanel7.add(jLabel46);
 
-        jTextFieldPopup35.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup35.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jTextFieldPopup35);
+        cjATcontraBTyTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraBTyTierra.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(cjATcontraBTyTierra);
 
         jLabel47.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel47.setText("Tiempo de Prueba:");
         jPanel7.add(jLabel47);
 
-        jTextFieldPopup32.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup32.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jTextFieldPopup32);
+        cjtiempoaplicado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtiempoaplicado.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(cjtiempoaplicado);
 
         jLabel48.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel48.setText("Tension BT:");
         jPanel7.add(jLabel48);
 
-        jTextFieldPopup36.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup36.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jTextFieldPopup36);
+        cjtensionBT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtensionBT.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(cjtensionBT);
 
         jLabel49.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel49.setText("Frecuencia (Hz):");
         jPanel7.add(jLabel49);
 
-        jTextFieldPopup37.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup37.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jTextFieldPopup37);
+        cjFrecuenciaInducida.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjFrecuenciaInducida.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(cjFrecuenciaInducida);
 
         jLabel50.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel50.setText("Timpo de Prueba:");
         jPanel7.add(jLabel50);
 
-        jTextFieldPopup38.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup38.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel7.add(jTextFieldPopup38);
+        cjtiempoInducido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtiempoInducido.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel7.add(cjtiempoInducido);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "6) Ensayo Sin Carga", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel8.setToolTipText("Resistencia Entre Terminales");
@@ -617,65 +628,65 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel51.setText("Tension BT:");
         jPanel8.add(jLabel51);
 
-        jTextFieldPopup39.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup39.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup39);
+        cjTensionBT2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjTensionBT2.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjTensionBT2);
 
         jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel52.setText("Iu:");
         jPanel8.add(jLabel52);
 
-        jTextFieldPopup40.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup40.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup40);
+        cjiu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiu.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjiu);
 
         jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel53.setText("Iv:");
         jPanel8.add(jLabel53);
 
-        jTextFieldPopup41.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup41.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup41);
+        cjiv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiv.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjiv);
 
         jLabel54.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel54.setText("Iw:");
         jPanel8.add(jLabel54);
 
-        jTextFieldPopup42.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup42.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup42);
+        cjiw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiw.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjiw);
 
         jLabel55.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel55.setText("Promedio I(%):");
         jPanel8.add(jLabel55);
 
-        jTextFieldPopup43.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup43.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup43);
+        cjpromedioi.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpromedioi.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjpromedioi);
 
         jLabel56.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel56.setText("Io Garantizado:");
         jPanel8.add(jLabel56);
 
-        jTextFieldPopup44.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup44.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup44);
+        cjiogarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiogarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjiogarantizado);
 
         jLabel57.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel57.setText("Po Medido:");
         jPanel8.add(jLabel57);
 
-        jTextFieldPopup45.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup45.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup45);
+        cjpomedido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpomedido.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjpomedido);
 
         jLabel58.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel58.setText("Po Garantizado:");
         jPanel8.add(jLabel58);
 
-        jTextFieldPopup46.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup46.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel8.add(jTextFieldPopup46);
+        cjpogarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpogarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel8.add(cjpogarantizado);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "7) Ensayo De Corto Circuito", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel9.setToolTipText("Resistencia Entre Terminales");
@@ -685,73 +696,73 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel59.setText("Vcc:");
         jPanel9.add(jLabel59);
 
-        jTextFieldPopup47.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup47.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup47);
+        cjvcc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvcc.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjvcc);
 
         jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel60.setText("Pcu Medido:");
         jPanel9.add(jLabel60);
 
-        jTextFieldPopup48.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup48.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup48);
+        cjpcumedido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpcumedido.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjpcumedido);
 
         jLabel61.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel61.setText("Pcu a 85°:");
         jPanel9.add(jLabel61);
 
-        jTextFieldPopup49.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup49.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup49);
+        cjpcua85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpcua85.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjpcua85);
 
         jLabel62.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel62.setText("Pcu Garantizado:");
         jPanel9.add(jLabel62);
 
-        jTextFieldPopup50.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup50.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup50);
+        cjpcugarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpcugarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjpcugarantizado);
 
         jLabel63.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel63.setText("I2r:");
         jPanel9.add(jLabel63);
 
-        jTextFieldPopup51.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup51.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup51);
+        cji2r.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cji2r.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cji2r);
 
         jLabel64.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel64.setText("I2r a 85°:");
         jPanel9.add(jLabel64);
 
-        jTextFieldPopup52.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup52.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup52);
+        cji2ra85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cji2ra85.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cji2ra85);
 
         jLabel65.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel65.setText("Impedancia Z (%):");
         jPanel9.add(jLabel65);
 
-        jTextFieldPopup53.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup53.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup53);
+        cjimpedancia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjimpedancia.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjimpedancia);
 
         jLabel66.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel66.setText("Impedancia 85° Z (%):");
         jPanel9.add(jLabel66);
 
-        jTextFieldPopup54.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup54.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup54);
+        cjimpedancia85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjimpedancia85.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjimpedancia85);
 
         jLabel67.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel67.setText("Impendancia Garantizado:");
         jPanel9.add(jLabel67);
 
-        jTextFieldPopup55.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup55.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel9.add(jTextFieldPopup55);
+        cjimpedanciagarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjimpedanciagarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel9.add(cjimpedanciagarantizado);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel10.setToolTipText("Resistencia Entre Terminales");
@@ -761,17 +772,17 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel78.setText("8) Regulacion:");
         jPanel10.add(jLabel78);
 
-        jTextFieldPopup56.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup56.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel10.add(jTextFieldPopup56);
+        cjreg.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjreg.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel10.add(cjreg);
 
         jLabel79.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel79.setText("9) Eficiencia:");
         jPanel10.add(jLabel79);
 
-        jTextFieldPopup57.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup57.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel10.add(jTextFieldPopup57);
+        cjef.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjef.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel10.add(cjef);
 
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "10) Caracteristicas Mecanicas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel12.setToolTipText("Resistencia Entre Terminales");
@@ -781,83 +792,83 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel68.setText("Masa(Kg):");
         jPanel12.add(jLabel68);
 
-        jTextFieldPopup58.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup58.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup58);
+        cjmasa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjmasa.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjmasa);
 
         jLabel69.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel69.setText("Aceite(L):");
         jPanel12.add(jLabel69);
 
-        jTextFieldPopup59.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup59.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup59);
+        cjaceite.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjaceite.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjaceite);
 
         jLabel70.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel70.setText("Largo:");
         jPanel12.add(jLabel70);
 
-        jTextFieldPopup60.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup60.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup60);
+        cjlargo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjlargo.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjlargo);
 
         jLabel71.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel71.setText("Ancho:");
         jPanel12.add(jLabel71);
 
-        jTextFieldPopup61.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup61.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup61);
+        cjancho.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjancho.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjancho);
 
         jLabel72.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel72.setText("Alto:");
         jPanel12.add(jLabel72);
 
-        jTextFieldPopup62.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup62.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup62);
+        cjalto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjalto.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjalto);
 
         jLabel73.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel73.setText("Color:");
         jPanel12.add(jLabel73);
 
-        jTextFieldPopup63.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup63.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup63);
+        cjcolor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjcolor.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjcolor);
 
         jLabel74.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel74.setText("Espesor:");
         jPanel12.add(jLabel74);
 
-        jTextFieldPopup64.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup64.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup64);
+        cjespesor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjespesor.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjespesor);
 
         jLabel75.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel75.setText("N° Elementos:");
         jPanel12.add(jLabel75);
 
-        jTextFieldPopup65.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup65.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup65);
+        cjelementos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjelementos.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjelementos);
 
         jLabel76.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel76.setText("Largo Elemento:");
         jPanel12.add(jLabel76);
 
-        jTextFieldPopup66.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup66.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup66);
+        cjlargoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjlargoelemento.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjlargoelemento);
 
         jLabel77.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel77.setText("Ancho Elemento:");
         jPanel12.add(jLabel77);
 
-        jTextFieldPopup67.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextFieldPopup67.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(jTextFieldPopup67);
+        cjanchoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjanchoelemento.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjanchoelemento);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaUno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -877,11 +888,11 @@ public class PROTOS extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jTable1.setGridColor(new java.awt.Color(227, 227, 227));
-        jTable1.setRowHeight(20);
-        jScrollPane1.setViewportView(jTable1);
+        tablaUno.setGridColor(new java.awt.Color(227, 227, 227));
+        tablaUno.setRowHeight(20);
+        jScrollPane1.setViewportView(tablaUno);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -908,16 +919,16 @@ public class PROTOS extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setGridColor(new java.awt.Color(227, 227, 227));
-        jTable2.setRowHeight(20);
-        jScrollPane2.setViewportView(jTable2);
+        tablaDos.setGridColor(new java.awt.Color(227, 227, 227));
+        tablaDos.setRowHeight(20);
+        jScrollPane2.setViewportView(tablaDos);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Observaciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel11.setToolTipText("Resistencia Entre Terminales");
 
-        jCTextArea1.setColumns(20);
-        jCTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jCTextArea1);
+        cjobservaciones.setColumns(20);
+        cjobservaciones.setRows(5);
+        jScrollPane3.setViewportView(cjobservaciones);
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -945,14 +956,14 @@ public class PROTOS extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                .addComponent(cjfechasalida, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cjfechasalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -961,10 +972,18 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -976,24 +995,15 @@ public class PROTOS extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1004,34 +1014,31 @@ public class PROTOS extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 201, Short.MAX_VALUE))
+                                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1058,6 +1065,28 @@ public class PROTOS extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cjserieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjserieKeyPressed
+        if(evt.getKeyCode()==10){
+            conex.conectar();
+            ResultSet rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) WHERE t.numeroserie='"+cjserie.getText()+"'");
+            try {
+                if(rs.next()){
+                    cjempresa.setText(rs.getString("numeroempresa"));
+                    cjmarca.setText(rs.getString("marca"));
+                    cjkva.setText(rs.getString("kvasalida"));
+                    comboFase.setSelectedItem(rs.getString("fase"));
+                    cjano.setText(rs.getString("ano"));
+                    cjvp.setText(rs.getString("tps"));
+                    cjvs.setText(rs.getString("tss"));
+                    comboServicio.setSelectedItem(rs.getString("serviciosalida"));
+                }
+            } catch (SQLException ex) {
+                modelo.Metodos.M("ERROR AL BUSCAR EL NUMERO DE SERIE\n"+ex, "error.png");
+                Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_cjserieKeyPressed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1088,22 +1117,85 @@ public class PROTOS extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private CompuChiqui.JCTextArea jCTextArea1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox11;
-    private javax.swing.JComboBox<String> jComboBox12;
-    private javax.swing.JComboBox<String> jComboBox17;
-    private javax.swing.JComboBox<String> jComboBox18;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
+    private CompuChiqui.JTextFieldPopup cjATcontraBT;
+    private CompuChiqui.JTextFieldPopup cjATcontraBTyTierra;
+    private CompuChiqui.JTextFieldPopup cjATcontraTierra;
+    private CompuChiqui.JTextFieldPopup cjBTcontraATyTierra;
+    private CompuChiqui.JTextFieldPopup cjBTcontraTierra;
+    private CompuChiqui.JTextFieldPopup cjFrecuenciaInducida;
+    private CompuChiqui.JTextFieldPopup cjMetodo;
+    private CompuChiqui.JTextFieldPopup cjRuptura;
+    private CompuChiqui.JTextFieldPopup cjTensionBT2;
+    private CompuChiqui.JTextFieldPopup cjaceite;
+    private CompuChiqui.JTextFieldPopup cjaltdiseno;
+    private CompuChiqui.JTextFieldPopup cjalto;
+    private CompuChiqui.JTextFieldPopup cjancho;
+    private CompuChiqui.JTextFieldPopup cjanchoelemento;
+    private CompuChiqui.JTextFieldPopup cjano;
+    private CompuChiqui.JTextFieldPopup cjcalentamientodevanado;
+    private CompuChiqui.JTextFieldPopup cjcolor;
+    private CompuChiqui.JTextFieldPopup cjef;
+    private CompuChiqui.JTextFieldPopup cjelementos;
+    private CompuChiqui.JTextFieldPopup cjempresa;
+    private CompuChiqui.JTextFieldPopup cjespesor;
+    private com.toedter.calendar.JDateChooser cjfechasalida;
+    private CompuChiqui.JTextFieldPopup cji1;
+    private CompuChiqui.JTextFieldPopup cji2;
+    private CompuChiqui.JTextFieldPopup cji2r;
+    private CompuChiqui.JTextFieldPopup cji2ra85;
+    private CompuChiqui.JTextFieldPopup cjimpedancia;
+    private CompuChiqui.JTextFieldPopup cjimpedancia85;
+    private CompuChiqui.JTextFieldPopup cjimpedanciagarantizado;
+    private CompuChiqui.JTextFieldPopup cjiogarantizado;
+    private CompuChiqui.JTextFieldPopup cjiu;
+    private CompuChiqui.JTextFieldPopup cjiv;
+    private CompuChiqui.JTextFieldPopup cjiw;
+    private CompuChiqui.JTextFieldPopup cjkva;
+    private CompuChiqui.JTextFieldPopup cjlargo;
+    private CompuChiqui.JTextFieldPopup cjlargoelemento;
+    private CompuChiqui.JTextFieldPopup cjmarca;
+    private CompuChiqui.JTextFieldPopup cjmasa;
+    private CompuChiqui.JTextFieldPopup cjnba;
+    private CompuChiqui.JCTextArea cjobservaciones;
+    private CompuChiqui.JTextFieldPopup cjpcua85;
+    private CompuChiqui.JTextFieldPopup cjpcugarantizado;
+    private CompuChiqui.JTextFieldPopup cjpcumedido;
+    private CompuChiqui.JTextFieldPopup cjpogarantizado;
+    private CompuChiqui.JTextFieldPopup cjpomedido;
+    private CompuChiqui.JTextFieldPopup cjpromedioi;
+    private CompuChiqui.JTextFieldPopup cjproresalta;
+    private CompuChiqui.JTextFieldPopup cjproresbaja;
+    private CompuChiqui.JTextFieldPopup cjreg;
+    private CompuChiqui.JTextFieldPopup cjserie;
+    private CompuChiqui.JTextFieldPopup cjtemperatura;
+    private CompuChiqui.JTextFieldPopup cjtensionBT;
+    private CompuChiqui.JTextFieldPopup cjtensionSerie;
+    private CompuChiqui.JTextFieldPopup cjtiempoInducido;
+    private CompuChiqui.JTextFieldPopup cjtiempoaplicado;
+    private CompuChiqui.JTextFieldPopup cjtiemporalt;
+    private CompuChiqui.JTextFieldPopup cjuv;
+    private CompuChiqui.JTextFieldPopup cjvcc;
+    private CompuChiqui.JTextFieldPopup cjvp;
+    private CompuChiqui.JTextFieldPopup cjvs;
+    private CompuChiqui.JTextFieldPopup cjvw;
+    private CompuChiqui.JTextFieldPopup cjwu;
+    private CompuChiqui.JTextFieldPopup cjxy;
+    private CompuChiqui.JTextFieldPopup cjyz;
+    private CompuChiqui.JTextFieldPopup cjzx;
+    private javax.swing.JComboBox<String> comboAceite;
+    private javax.swing.JComboBox<String> comboClaseAislamiento;
+    private javax.swing.JComboBox<String> comboConmutador;
+    private javax.swing.JComboBox<String> comboFase;
+    private javax.swing.JComboBox<String> comboFrecuencia;
+    private javax.swing.JComboBox<String> comboGrupoConexion;
+    private javax.swing.JComboBox<String> comboMaterialAlta;
+    private javax.swing.JComboBox<String> comboMaterialBaja;
+    private javax.swing.JComboBox<String> comboPolaridad;
+    private javax.swing.JComboBox<String> comboReferenciaAceite;
+    private javax.swing.JComboBox<String> comboRefrigeracion;
+    private javax.swing.JComboBox<String> comboServicio;
+    private javax.swing.JComboBox<String> comboTensionPrueba;
     private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1130,8 +1222,6 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
@@ -1203,72 +1293,7 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup1;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup10;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup11;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup12;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup13;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup16;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup17;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup18;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup19;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup2;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup20;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup21;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup22;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup23;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup24;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup25;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup26;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup27;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup28;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup29;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup3;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup30;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup31;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup32;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup33;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup34;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup35;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup36;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup37;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup38;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup39;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup4;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup40;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup41;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup42;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup43;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup44;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup45;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup46;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup47;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup48;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup49;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup5;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup50;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup51;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup52;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup53;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup54;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup55;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup56;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup57;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup58;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup59;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup6;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup60;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup61;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup62;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup63;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup64;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup65;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup66;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup67;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup7;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup8;
-    private CompuChiqui.JTextFieldPopup jTextFieldPopup9;
+    private javax.swing.JTable tablaDos;
+    private javax.swing.JTable tablaUno;
     // End of variables declaration//GEN-END:variables
 }

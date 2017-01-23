@@ -67,10 +67,20 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Component id="jPanel2" min="-2" pref="168" max="-2" attributes="0"/>
-                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel2" min="-2" pref="226" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jScrollPane1" alignment="0" min="-2" pref="308" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane2" alignment="0" min="-2" pref="308" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
@@ -85,31 +95,19 @@
                                   </Group>
                               </Group>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jPanel10" min="-2" pref="287" max="-2" attributes="0"/>
-                                          <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jScrollPane1" alignment="0" min="-2" pref="308" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane2" alignment="0" min="-2" pref="308" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jPanel8" max="32767" attributes="0"/>
+                                  <Component id="jPanel5" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jPanel10" min="-2" pref="287" max="-2" attributes="0"/>
+                                  <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -121,33 +119,28 @@
                           <Component id="jPanel2" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jPanel5" min="-2" pref="139" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jPanel8" pref="201" max="32767" attributes="0"/>
-                                  </Group>
                                   <Group type="102" attributes="0">
+                                      <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jPanel8" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jPanel3" min="-2" pref="139" max="-2" attributes="0"/>
-                                                  <Component id="jPanel4" min="-2" pref="139" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="jPanel7" pref="195" max="32767" attributes="0"/>
-                                                  <Component id="jPanel6" max="32767" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="jPanel3" min="-2" pref="139" max="-2" attributes="0"/>
+                                          <Component id="jPanel4" min="-2" pref="139" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="jPanel7" pref="195" max="32767" attributes="0"/>
+                                          <Component id="jPanel6" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -155,10 +148,10 @@
                                   <Group type="102" attributes="0">
                                       <Component id="jScrollPane1" min="-2" pref="128" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jScrollPane2" min="-2" pref="128" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="jPanel9" max="32767" attributes="0"/>
-                                  <Component id="jPanel12" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jPanel12" alignment="1" pref="262" max="32767" attributes="0"/>
+                                  <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -191,13 +184,16 @@
                     <Property name="text" type="java.lang.String" value="Serie N&#xb0;:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup2">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjserie">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cjserieKeyPressed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
@@ -205,7 +201,7 @@
                     <Property name="text" type="java.lang.String" value="N&#xb0; Empresa:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup3">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjempresa">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -219,7 +215,7 @@
                     <Property name="text" type="java.lang.String" value="Marca:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup4">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjmarca">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -233,7 +229,7 @@
                     <Property name="text" type="java.lang.String" value="KVA:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup5">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjkva">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -247,7 +243,7 @@
                     <Property name="text" type="java.lang.String" value="Fases:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox1">
+                <Component class="javax.swing.JComboBox" name="comboFase">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
@@ -266,7 +262,7 @@
                     <Property name="text" type="java.lang.String" value="A&#xf1;o:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup7">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjano">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -280,7 +276,7 @@
                     <Property name="text" type="java.lang.String" value="Volt. Primario:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup8">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjvp">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -294,7 +290,7 @@
                     <Property name="text" type="java.lang.String" value="Volt. Secund.:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup9">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjvs">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -308,7 +304,7 @@
                     <Property name="text" type="java.lang.String" value="Servicio:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox2">
+                <Component class="javax.swing.JComboBox" name="comboServicio">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="4">
@@ -318,6 +314,7 @@
                         <StringItem index="3" value="MANTENIMIENTO"/>
                       </StringArray>
                     </Property>
+                    <Property name="selectedIndex" type="int" value="1"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -329,7 +326,7 @@
                     <Property name="text" type="java.lang.String" value="Frecuencia:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox3">
+                <Component class="javax.swing.JComboBox" name="comboFrecuencia">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
@@ -348,7 +345,7 @@
                     <Property name="text" type="java.lang.String" value="Refrigeracion:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox4">
+                <Component class="javax.swing.JComboBox" name="comboRefrigeracion">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="3">
@@ -368,7 +365,7 @@
                     <Property name="text" type="java.lang.String" value="Tension Serie:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup1">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjtensionSerie">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
@@ -379,7 +376,7 @@
                     <Property name="text" type="java.lang.String" value="NBA AT/BT:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup6">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjnba">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
@@ -390,9 +387,10 @@
                     <Property name="text" type="java.lang.String" value="Calent. Devn:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup10">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjcalentamientodevanado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="65"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel15">
@@ -401,7 +399,7 @@
                     <Property name="text" type="java.lang.String" value="Clase Aislam.:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox5">
+                <Component class="javax.swing.JComboBox" name="comboClaseAislamiento">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="6">
@@ -424,7 +422,7 @@
                     <Property name="text" type="java.lang.String" value="Alt Dise&#xf1;o:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup11">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjaltdiseno">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
@@ -435,7 +433,7 @@
                     <Property name="text" type="java.lang.String" value="I1:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup12">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cji1">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
@@ -446,7 +444,7 @@
                     <Property name="text" type="java.lang.String" value="I2:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup13">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cji2">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
@@ -479,7 +477,7 @@
                     <Property name="text" type="java.lang.String" value="Temperatura:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup23">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjtemperatura">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="30"/>
@@ -494,7 +492,7 @@
                     <Property name="text" type="java.lang.String" value="Conmutador:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox10">
+                <Component class="javax.swing.JComboBox" name="comboConmutador">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="5">
@@ -536,7 +534,7 @@
                     <Property name="text" type="java.lang.String" value="Aceite:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox7">
+                <Component class="javax.swing.JComboBox" name="comboAceite">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
@@ -555,7 +553,7 @@
                     <Property name="text" type="java.lang.String" value="Referencia:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox8">
+                <Component class="javax.swing.JComboBox" name="comboReferenciaAceite">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="3">
@@ -575,7 +573,7 @@
                     <Property name="text" type="java.lang.String" value="Ruptura(kv):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup16">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjRuptura">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="40"/>
@@ -590,7 +588,7 @@
                     <Property name="text" type="java.lang.String" value="Metodo:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup17">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjMetodo">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="ASTM 877"/>
@@ -625,7 +623,7 @@
                     <Property name="text" type="java.lang.String" value="Tiempo:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup18">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjtiemporalt">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="60"/>
@@ -640,7 +638,7 @@
                     <Property name="text" type="java.lang.String" value="Tens. Prueba:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox9">
+                <Component class="javax.swing.JComboBox" name="comboTensionPrueba">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="3">
@@ -660,7 +658,7 @@
                     <Property name="text" type="java.lang.String" value="AT contra BT:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup20">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjATcontraBT">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -674,7 +672,7 @@
                     <Property name="text" type="java.lang.String" value="AT contra Tierra:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup21">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjATcontraTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -688,7 +686,7 @@
                     <Property name="text" type="java.lang.String" value="BT contra Tierra:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup22">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjBTcontraTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -712,7 +710,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                 <Property name="columns" type="int" value="2"/>
-                <Property name="rows" type="int" value="4"/>
+                <Property name="rows" type="int" value="2"/>
                 <Property name="verticalGap" type="int" value="2"/>
               </Layout>
               <SubComponents>
@@ -722,7 +720,7 @@
                     <Property name="text" type="java.lang.String" value="Grupo de Conexion:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox11">
+                <Component class="javax.swing.JComboBox" name="comboGrupoConexion">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="6">
@@ -745,7 +743,7 @@
                     <Property name="text" type="java.lang.String" value="Polaridad:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox12">
+                <Component class="javax.swing.JComboBox" name="comboPolaridad">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="3">
@@ -758,36 +756,6 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabel33">
-                  <Properties>
-                    <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="Ruptura(kv):"/>
-                  </Properties>
-                </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup19">
-                  <Properties>
-                    <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="40"/>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[100, 20]"/>
-                    </Property>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabel34">
-                  <Properties>
-                    <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="Metodo:"/>
-                  </Properties>
-                </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup24">
-                  <Properties>
-                    <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="ASTM 877"/>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[100, 20]"/>
-                    </Property>
-                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -815,7 +783,7 @@
                     <Property name="text" type="java.lang.String" value="U-V OHM:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup25">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjuv">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -829,7 +797,7 @@
                     <Property name="text" type="java.lang.String" value="X-Y:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup33">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjxy">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -843,7 +811,7 @@
                     <Property name="text" type="java.lang.String" value="W-U OHM:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup26">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjwu">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -857,7 +825,7 @@
                     <Property name="text" type="java.lang.String" value="Y-Z:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup27">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjyz">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -871,7 +839,7 @@
                     <Property name="text" type="java.lang.String" value="V-W OHM:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup28">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjvw">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -885,7 +853,7 @@
                     <Property name="text" type="java.lang.String" value="Z-X:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup29">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjzx">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -899,7 +867,7 @@
                     <Property name="text" type="java.lang.String" value="Promedio:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup34">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjproresalta">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -913,7 +881,7 @@
                     <Property name="text" type="java.lang.String" value="Promedio:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup30">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjproresbaja">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -927,7 +895,7 @@
                     <Property name="text" type="java.lang.String" value="Material:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox18">
+                <Component class="javax.swing.JComboBox" name="comboMaterialAlta">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
@@ -946,7 +914,7 @@
                     <Property name="text" type="java.lang.String" value="Material:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox17">
+                <Component class="javax.swing.JComboBox" name="comboMaterialBaja">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="2">
@@ -985,7 +953,7 @@
                     <Property name="text" type="java.lang.String" value="BT contra AT y Tierra:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup31">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjBTcontraATyTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -999,7 +967,7 @@
                     <Property name="text" type="java.lang.String" value="AT contra BT y Tierra:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup35">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjATcontraBTyTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1013,7 +981,7 @@
                     <Property name="text" type="java.lang.String" value="Tiempo de Prueba:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup32">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjtiempoaplicado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1027,7 +995,7 @@
                     <Property name="text" type="java.lang.String" value="Tension BT:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup36">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjtensionBT">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1041,7 +1009,7 @@
                     <Property name="text" type="java.lang.String" value="Frecuencia (Hz):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup37">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjFrecuenciaInducida">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1055,7 +1023,7 @@
                     <Property name="text" type="java.lang.String" value="Timpo de Prueba:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup38">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjtiempoInducido">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1089,7 +1057,7 @@
                     <Property name="text" type="java.lang.String" value="Tension BT:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup39">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjTensionBT2">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1103,7 +1071,7 @@
                     <Property name="text" type="java.lang.String" value="Iu:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup40">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjiu">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1117,7 +1085,7 @@
                     <Property name="text" type="java.lang.String" value="Iv:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup41">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjiv">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1131,7 +1099,7 @@
                     <Property name="text" type="java.lang.String" value="Iw:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup42">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjiw">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1145,7 +1113,7 @@
                     <Property name="text" type="java.lang.String" value="Promedio I(%):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup43">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjpromedioi">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1159,7 +1127,7 @@
                     <Property name="text" type="java.lang.String" value="Io Garantizado:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup44">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjiogarantizado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1173,7 +1141,7 @@
                     <Property name="text" type="java.lang.String" value="Po Medido:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup45">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjpomedido">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1187,7 +1155,7 @@
                     <Property name="text" type="java.lang.String" value="Po Garantizado:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup46">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjpogarantizado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1221,7 +1189,7 @@
                     <Property name="text" type="java.lang.String" value="Vcc:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup47">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjvcc">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1235,7 +1203,7 @@
                     <Property name="text" type="java.lang.String" value="Pcu Medido:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup48">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjpcumedido">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1249,7 +1217,7 @@
                     <Property name="text" type="java.lang.String" value="Pcu a 85&#xb0;:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup49">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjpcua85">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1263,7 +1231,7 @@
                     <Property name="text" type="java.lang.String" value="Pcu Garantizado:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup50">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjpcugarantizado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1277,7 +1245,7 @@
                     <Property name="text" type="java.lang.String" value="I2r:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup51">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cji2r">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1291,7 +1259,7 @@
                     <Property name="text" type="java.lang.String" value="I2r a 85&#xb0;:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup52">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cji2ra85">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1305,7 +1273,7 @@
                     <Property name="text" type="java.lang.String" value="Impedancia Z (%):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup53">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjimpedancia">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1319,7 +1287,7 @@
                     <Property name="text" type="java.lang.String" value="Impedancia 85&#xb0; Z (%):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup54">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjimpedancia85">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1333,7 +1301,7 @@
                     <Property name="text" type="java.lang.String" value="Impendancia Garantizado:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup55">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjimpedanciagarantizado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1365,7 +1333,7 @@
                     <Property name="text" type="java.lang.String" value="8) Regulacion:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup56">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjreg">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1379,7 +1347,7 @@
                     <Property name="text" type="java.lang.String" value="9) Eficiencia:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup57">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjef">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1413,7 +1381,7 @@
                     <Property name="text" type="java.lang.String" value="Masa(Kg):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup58">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjmasa">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1427,7 +1395,7 @@
                     <Property name="text" type="java.lang.String" value="Aceite(L):"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup59">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjaceite">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1441,7 +1409,7 @@
                     <Property name="text" type="java.lang.String" value="Largo:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup60">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjlargo">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1455,7 +1423,7 @@
                     <Property name="text" type="java.lang.String" value="Ancho:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup61">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjancho">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1469,7 +1437,7 @@
                     <Property name="text" type="java.lang.String" value="Alto:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup62">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjalto">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1483,7 +1451,7 @@
                     <Property name="text" type="java.lang.String" value="Color:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup63">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjcolor">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1497,7 +1465,7 @@
                     <Property name="text" type="java.lang.String" value="Espesor:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup64">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjespesor">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1511,7 +1479,7 @@
                     <Property name="text" type="java.lang.String" value="N&#xb0; Elementos:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup65">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjelementos">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1525,7 +1493,7 @@
                     <Property name="text" type="java.lang.String" value="Largo Elemento:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup66">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjlargoelemento">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1539,7 +1507,7 @@
                     <Property name="text" type="java.lang.String" value="Ancho Elemento:"/>
                   </Properties>
                 </Component>
-                <Component class="CompuChiqui.JTextFieldPopup" name="jTextFieldPopup67">
+                <Component class="CompuChiqui.JTextFieldPopup" name="cjanchoelemento">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -1556,7 +1524,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="tablaUno">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="5" rowCount="5">
@@ -1582,7 +1550,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable2">
+                <Component class="javax.swing.JTable" name="tablaDos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="3" rowCount="5">
@@ -1639,7 +1607,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="CompuChiqui.JCTextArea" name="jCTextArea1">
+                    <Component class="CompuChiqui.JCTextArea" name="cjobservaciones">
                       <Properties>
                         <Property name="columns" type="int" value="20"/>
                         <Property name="rows" type="int" value="5"/>
@@ -1666,7 +1634,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jDateChooser1" pref="263" max="32767" attributes="0"/>
+                          <Component id="cjfechasalida" pref="263" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -1675,14 +1643,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
+                          <Component id="cjfechasalida" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
+                <Component class="com.toedter.calendar.JDateChooser" name="cjfechasalida">
                 </Component>
               </SubComponents>
             </Container>
