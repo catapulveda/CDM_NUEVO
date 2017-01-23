@@ -2236,7 +2236,7 @@ public final class PROTOCOLO extends javax.swing.JFrame {
 
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "2) RESISTENCIA DE AISLAMIENTO", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 10))); // NOI18N
 
-        cjratl.setModel(new javax.swing.SpinnerNumberModel(60, 0, null, 1));
+        cjratl.setModel(new javax.swing.SpinnerNumberModel(60, null, null, 1));
 
         jLabel31.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
         jLabel31.setText("Tiempo:");
