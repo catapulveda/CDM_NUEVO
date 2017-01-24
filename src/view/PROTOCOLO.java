@@ -831,6 +831,90 @@ public final class PROTOCOLO extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
+    
+    public void FuncionVp() {
+        if (!cjtensionprimaria.getText().isEmpty()) {
+            cjrelacionuno.setText(cjtensionprimaria.getText());
+            try {
+                int VP = Integer.parseInt(cjtensionprimaria.getText());
+                int fase = Integer.parseInt(combofasestransformador.getSelectedItem().toString());
+                HallarPolaridad(combofasestransformador, cjtensionprimaria);
+                if (VP <= 1200) {
+                    cjtensionserieuno.setText("1.2");
+                    cjnivelbasicodeaislamientouno.setText("30");
+                    cjtensionseriedos.setText("1.2");
+                }
+                if (7000 <= VP && VP <= 15000) {
+                    cjtensionserieuno.setText("15");
+                    cjnivelbasicodeaislamientouno.setText("95");
+                } else if (16000 <= VP && VP <= 25000) {
+                    cjtensionserieuno.setText("25");
+                    cjnivelbasicodeaislamientouno.setText("125");
+                } else if (26000 <= VP && VP <= 38000) {
+                    cjtensionserieuno.setText("36");
+                    cjnivelbasicodeaislamientouno.setText("200");
+                } else if (39000 <= VP && VP <= 52000) {
+                    cjtensionserieuno.setText("52");
+                    cjnivelbasicodeaislamientouno.setText("250");
+                }
+                CalcularCorrientePrimaria();
+                HallarReg();
+                CalcularCorrienteSecundaria();
+                if (!cjtensionprimaria.getText().isEmpty() && !HayQueActualizar) {
+                    CargarTablaUno(Integer.parseInt(cjtensionprimaria.getText()), (int) cjposicionconmutador.getValue(), combofasestransformador);
+                }
+                cjtensionsecundaria.grabFocus();
+            } catch (NumberFormatException e) {
+                M("Error en la escritura de la tension primaria, hay un caracter inconcluso\n" + e, mal);
+            }
+        } else {
+            M("La tension primaria no puede estar vacia", mal);
+        }
+    }
+    
+    public void FuncionVs() {
+        if (!cjtensionsecundaria.getText().isEmpty()) {
+            try {
+                if (Double.parseDouble(cjtensionsecundaria.getText()) <= 1200) {
+                    cjnivelbasicodeaislamientodos.setText("30");
+                } else if (7000 < Double.parseDouble(cjtensionsecundaria.getText()) && Double.parseDouble(cjtensionsecundaria.getText()) <= 15000) {
+                    cjnivelbasicodeaislamientodos.setText("95");
+                }
+                cjrelaciondos.setText(cjtensionsecundaria.getText());
+                int VS = Integer.parseInt(cjtensionsecundaria.getText());
+                cjtensionseriedos.setText((VS <= 1200) ? "1.2" : "15");
+                CalcularCorrientePrimaria();
+                CalcularCorrienteSecundaria();
+                MostrarNominalTablaDos();
+                cjtensionBT.setText("" + FORMULAS.HallarTensionBT(cjtensionsecundaria));
+                cjvoltajeBT.setText(cjtensionsecundaria.getText());
+            } catch (NumberFormatException e) {
+                M("ERROR!\nHay caracteres inconclusos en la tension que acabas de escribir\nverifica que este bien escrita", mal);
+            }
+            if(!cjpromedioresistenciaprimaria.getText().isEmpty() && !cjpromedioresistenciasecundaria.getText().isEmpty()) {
+                FORMULAS.HallarI2r(combofasestransformador, cjcorrienteprimaria, cjcorrientesecundaria, cjpromedioresistenciaprimaria, cjpromedioresistenciasecundaria, cji2r);
+            }
+            try{
+                if (!cjvcc.getText().isEmpty()){
+                    double k = getK(kc, cjtemperaturadeprueba);
+                    double I2r85 = getI2R85(k, cji2r);
+                    FORMULAS.HallarPcu85(cjperdidasdecobremedidas, cji2r, k, I2r85, cjpcureferidoa85);
+                    HallarI2R85();
+                    double R = getR(cjperdidasdecobremedidas, cjpotencia);
+                    double K = getK(kc, cjtemperaturadeprueba);
+                    double R85 = getR85(R, K);
+                    double Z = getZ(cjvcc, cjtensionprimaria);
+                    double X = getX(Z, R);
+                    double Z85 = FORMULAS.QuitarDecimales(getZ85(R85, X), 2);
+                    cjz85.setText(String.valueOf(Z85));
+                    HallarEf();
+                    HallarReg();
+                }
+            } catch (NumberFormatException | NullPointerException e) {
+                M("IMPOSIBLE REALIZAR LOS CALCULOS - LA TEMPERATURA DE PRUEBA ESTA VACIA O ESTA MAL ESCRITA", mal);
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -4655,55 +4739,7 @@ public final class PROTOCOLO extends javax.swing.JFrame {
             cjcorrienteprimaria.grabFocus();
         }
     }//GEN-LAST:event_cjderivacionsecundariaKeyTyped
-
-    public void FuncionVs() {
-        if (!cjtensionsecundaria.getText().isEmpty()) {
-            try {
-                if (Double.parseDouble(cjtensionsecundaria.getText()) <= 1200) {
-                    cjnivelbasicodeaislamientodos.setText("30");
-                } else if (7000 < Double.parseDouble(cjtensionsecundaria.getText()) && Double.parseDouble(cjtensionsecundaria.getText()) <= 15000) {
-                    cjnivelbasicodeaislamientodos.setText("95");
-                }
-                cjrelaciondos.setText(cjtensionsecundaria.getText());
-                int VS = Integer.parseInt(cjtensionsecundaria.getText());
-                cjtensionseriedos.setText((VS <= 1200) ? "1.2" : "15");
-                CalcularCorrientePrimaria();
-                CalcularCorrienteSecundaria();
-                MostrarNominalTablaDos();
-                cjtensionBT.setText("" + FORMULAS.HallarTensionBT(cjtensionsecundaria));
-                cjvoltajeBT.setText(cjtensionsecundaria.getText());
-            } catch (NumberFormatException e) {
-                M("ERROR!\nHay caracteres inconclusos en la tension que acabas de escribir\nverifica que este bien escrita", mal);
-            }
-            if(!cjpromedioresistenciaprimaria.getText().isEmpty() && !cjpromedioresistenciasecundaria.getText().isEmpty()) {
-                FORMULAS.HallarI2r(combofasestransformador, cjcorrienteprimaria, cjcorrientesecundaria, cjpromedioresistenciaprimaria, cjpromedioresistenciasecundaria, cji2r);
-            }
-            try{
-                if (!cjvcc.getText().isEmpty()){
-                    double k = getK(kc, cjtemperaturadeprueba);
-                    double I2r85 = getI2R85(k, cji2r);
-                    FORMULAS.HallarPcu85(cjperdidasdecobremedidas, cji2r, k, I2r85, cjpcureferidoa85);
-                    HallarI2R85();
-                    double R = getR(cjperdidasdecobremedidas, cjpotencia);
-                    double K = getK(kc, cjtemperaturadeprueba);
-                    double R85 = getR85(R, K);
-                    double Z = getZ(cjvcc, cjtensionprimaria);
-                    double X = getX(Z, R);
-                    double Z85 = FORMULAS.QuitarDecimales(getZ85(R85, X), 2);
-                    cjz85.setText(String.valueOf(Z85));
-                    HallarEf();
-                    HallarReg();
-                }
-            } catch (NumberFormatException | NullPointerException e) {
-                M("IMPOSIBLE REALIZAR LOS CALCULOS - LA TEMPERATURA DE PRUEBA ESTA VACIA O ESTA MAL ESCRITA", mal);
-            }
-        }
-        /*else {
-         M("ERROR!\nDebes ingresar una tension secundaria o voltaje de salida", mal);
-         }*/
-
-    }
-
+   
     private void cjtensionsecundariaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjtensionsecundariaKeyTyped
         if (evt.getKeyChar() == 10) {
             FuncionVs();
@@ -4711,47 +4747,7 @@ public final class PROTOCOLO extends javax.swing.JFrame {
             CargarMasDatos();
         }
     }//GEN-LAST:event_cjtensionsecundariaKeyTyped
-
-    public void FuncionVp() {
-        if (!cjtensionprimaria.getText().isEmpty()) {
-            cjrelacionuno.setText(cjtensionprimaria.getText());
-            try {
-                int VP = Integer.parseInt(cjtensionprimaria.getText());
-                int fase = Integer.parseInt(combofasestransformador.getSelectedItem().toString());
-                HallarPolaridad(combofasestransformador, cjtensionprimaria);
-                if (VP <= 1200) {
-                    cjtensionserieuno.setText("1.2");
-                    cjnivelbasicodeaislamientouno.setText("30");
-                    cjtensionseriedos.setText("1.2");
-                }
-                if (7000 <= VP && VP <= 15000) {
-                    cjtensionserieuno.setText("15");
-                    cjnivelbasicodeaislamientouno.setText("95");
-                } else if (16000 <= VP && VP <= 25000) {
-                    cjtensionserieuno.setText("25");
-                    cjnivelbasicodeaislamientouno.setText("125");
-                } else if (26000 <= VP && VP <= 38000) {
-                    cjtensionserieuno.setText("36");
-                    cjnivelbasicodeaislamientouno.setText("200");
-                } else if (39000 <= VP && VP <= 52000) {
-                    cjtensionserieuno.setText("52");
-                    cjnivelbasicodeaislamientouno.setText("250");
-                }
-                CalcularCorrientePrimaria();
-                HallarReg();
-                CalcularCorrienteSecundaria();
-                if (!cjtensionprimaria.getText().isEmpty() && !HayQueActualizar) {
-                    CargarTablaUno(Integer.parseInt(cjtensionprimaria.getText()), (int) cjposicionconmutador.getValue(), combofasestransformador);
-                }
-                cjtensionsecundaria.grabFocus();
-            } catch (NumberFormatException e) {
-                M("Error en la escritura de la tension primaria, hay un caracter inconcluso\n" + e, mal);
-            }
-        } else {
-            M("La tension primaria no puede estar vacia", mal);
-        }
-    }
-
+    
     private void cjtensionprimariaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjtensionprimariaKeyTyped
         if (evt.getKeyChar() == 10) {
             FuncionVp();
