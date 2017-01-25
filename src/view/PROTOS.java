@@ -66,15 +66,28 @@ public class PROTOS extends javax.swing.JFrame {
         cji2r.setText(""+QD((comboFase.getSelectedIndex()==0)?1:1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000))), 2));
     }
     
-    double getR() {
+    double R() {
         return cjpcumedido.getDouble() / (10 * cjkva.getDouble());
+    }
+    
+    double R85() {
+        return R() * K();
+    }
+    
+    double Z() {
+        cjimpedancia.setText(""+QD(Z(), 3));
+        return (cjvcc.getDouble() / cjvp.getDouble()) * 100;
+    }
+    
+    double X() {
+        return Math.sqrt((Math.pow(Z(), 2)) - (Math.pow(R(), 2)));        
     }
     
     double getkc(){
         return (comboMaterialAlta.getSelectedItem().toString().equalsIgnoreCase("COBRE")&& comboMaterialBaja.getSelectedItem().equals("COBRE"))?234.5:(comboMaterialAlta.getSelectedItem().toString().equalsIgnoreCase("ALUMINIO")&& comboMaterialBaja.getSelectedItem().equals("ALUMINIO"))?225:229;        
     }
     
-    double getK(){
+    double K(){
         double K = 0;
         if(comboRefrigeracion.getSelectedIndex() < 2){
             K = (getkc() + 85) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
@@ -154,6 +167,35 @@ public class PROTOS extends javax.swing.JFrame {
         cjzx.setEnabled(ver);
         cjiu.setEnabled(ver);
         cjiw.setEnabled(ver);
+    }
+    
+    public void HallarReg() {                                   
+        double REG = QD(Math.sqrt(R85() + Math.pow(X(), 2) + (200 * R85() * 0.8) + (200 * X() * 0.6) + 10000) - 100, 2);
+        REG = Math.pow(R85(), 2) + Math.pow(X(), 2) + 200 * R85() * 0.8 + 200 * X() * 0.6 + 10000;
+        REG = Math.sqrt(REG);
+        REG = REG - 100;
+        REG = QD(REG, 2);
+        cjreg.setText(String.valueOf(REG));       
+    }
+    
+    public void HallarEf() {
+        if (!cjpotencia.getText().isEmpty() && !cjtemperaturadeprueba.getText().isEmpty() && !cjpomedido.getText().isEmpty() && !cjperdidasdecobremedidas.getText().isEmpty() && !cjpcureferidoa85.getText().isEmpty()) {
+            try {
+                double po = Double.parseDouble(cjpomedido.getText());
+                double kva = Double(cjpotencia.getText());
+                double K = getK(kc, cjtemperaturadeprueba);
+                double I2R85 = getI2R85(K, cji2r);
+                double PCU85 = FORMULAS.HallarPcu85(cjperdidasdecobremedidas, cji2r, K, I2R85, cjpcureferidoa85);
+                double EF = (0.8 * kva * Math.pow(10, 5)) / (0.8 * kva * Math.pow(10, 3) + po + PCU85);
+                String m = "KVA = " + kva + "\n";
+                m += "K = " + K + "\n";
+                m += "I2R85 = " + I2R85 + "\n";
+                m += "PCU85 = " + PCU85 + "\n";
+                cjef.setText(String.valueOf(FORMULAS.QuitarDecimales(EF, 2)));
+//            M(m,bien);
+            } catch (Exception e) {
+            }
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -1319,6 +1361,7 @@ public class PROTOS extends javax.swing.JFrame {
         HallarPromedioCorrientes();
         HallarPromedioResistencias();
         HallarI2r();
+        HallarReg();
     }//GEN-LAST:event_subMenuItemRecalcularActionPerformed
 
     private void tablaUnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaUnoKeyTyped
