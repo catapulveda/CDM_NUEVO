@@ -13,6 +13,22 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="subMenuItemRecalcular">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+R"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/images/calculadora.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Recalcular"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuItemRecalcularActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -187,6 +203,10 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjserie">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="2014110679"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjATcontraBT"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -367,6 +387,13 @@
                 </Component>
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjtensionSerie">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="66" red="0" type="rgb"/>
+                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
                 </Component>
@@ -378,6 +405,13 @@
                 </Component>
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjnba">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="66" red="0" type="rgb"/>
+                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
                 </Component>
@@ -425,6 +459,7 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjaltdiseno">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="1000 MSNM"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel17">
@@ -435,6 +470,13 @@
                 </Component>
                 <Component class="CompuChiqui.JTextFieldPopup" name="cji1">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="66" red="0" type="rgb"/>
+                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
                 </Component>
@@ -446,6 +488,13 @@
                 </Component>
                 <Component class="CompuChiqui.JTextFieldPopup" name="cji2">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="66" red="0" type="rgb"/>
+                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
                 </Component>
@@ -492,7 +541,7 @@
                     <Property name="text" type="java.lang.String" value="Conmutador:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="comboConmutador">
+                <Component class="javax.swing.JComboBox" name="conmutador">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="5">
@@ -503,6 +552,7 @@
                         <StringItem index="4" value="5"/>
                       </StringArray>
                     </Property>
+                    <Property name="selectedIndex" type="int" value="1"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -661,9 +711,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjATcontraBT">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjATcontraTierra"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel27">
@@ -675,9 +729,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjATcontraTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjBTcontraTierra"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel28">
@@ -689,9 +747,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjBTcontraTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="tablaUno"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -786,9 +848,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjuv">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjwu"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel36">
@@ -800,9 +866,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjxy">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjyz"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel37">
@@ -814,9 +884,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjwu">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjvw"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel38">
@@ -828,9 +902,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjyz">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjzx"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel39">
@@ -842,9 +920,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjvw">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjxy"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel40">
@@ -856,9 +938,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjzx">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjiu"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel41">
@@ -956,6 +1042,10 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjBTcontraATyTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="10"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjATcontraBTyTierra"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -964,12 +1054,13 @@
                 <Component class="javax.swing.JLabel" name="jLabel46">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="AT contra BT y Tierra:"/>
+                    <Property name="text" type="java.lang.String" value="AT contra BT y TierraKv:"/>
                   </Properties>
                 </Component>
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjATcontraBTyTierra">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="34.5"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -978,12 +1069,13 @@
                 <Component class="javax.swing.JLabel" name="jLabel47">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="Tiempo de Prueba:"/>
+                    <Property name="text" type="java.lang.String" value="Tiempo de Prueba(s):"/>
                   </Properties>
                 </Component>
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjtiempoaplicado">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="60"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1012,6 +1104,7 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjFrecuenciaInducida">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="414"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1026,6 +1119,7 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjtiempoInducido">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="17"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1074,9 +1168,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjiu">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjiv"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel53">
@@ -1088,9 +1186,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjiv">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjiw"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel54">
@@ -1102,9 +1204,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjiw">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjpomedido"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel55">
@@ -1144,9 +1250,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjpomedido">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjvcc"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel58">
@@ -1192,9 +1302,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjvcc">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjpcumedido"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel60">
@@ -1206,9 +1320,13 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjpcumedido">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjobservaciones"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
+                    <Property name="validar" type="boolean" value="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel61">
@@ -1384,6 +1502,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjmasa">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjaceite"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1398,6 +1519,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjaceite">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjlargo"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1412,6 +1536,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjlargo">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjancho"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1426,6 +1553,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjancho">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjalto"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1440,6 +1570,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjalto">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjcolor"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1454,6 +1587,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjcolor">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjespesor"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1468,6 +1604,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjespesor">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjelementos"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1482,6 +1621,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjelementos">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjlargoelemento"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1496,6 +1638,9 @@
                 <Component class="CompuChiqui.JTextFieldPopup" name="cjlargoelemento">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="campodetexto" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="cjanchoelemento"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[100, 20]"/>
                     </Property>
@@ -1540,6 +1685,9 @@
                     </Property>
                     <Property name="rowHeight" type="int" value="20"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tablaUnoKeyTyped"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

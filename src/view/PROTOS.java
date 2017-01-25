@@ -1,16 +1,24 @@
 package view;
 
+import Dialogos.DialogoTrafosRepetidos;
+import java.awt.HeadlessException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import modelo.ConexionBD;
 
 public class PROTOS extends javax.swing.JFrame {
 
     ConexionBD conex = new ConexionBD();
+    private final int IDTRAFO = -1;
+    TableModelListener listenerTablaUno;
+    Hilofases alertas;
     
     public PROTOS() {
         initComponents();
@@ -18,23 +26,134 @@ public class PROTOS extends javax.swing.JFrame {
     
     void HallarTensionSerie(){
         String tensionserie = "", nba = "";
-        if (cjvp.getInt() <= 1200) {
-            tensionserie = "1.2/1.2";
-            cjnba.setText("30");
+        tensionserie = (7000 <= cjvp.getInt() && cjvp.getInt() <= 15000)?"15":(16000 <= cjvp.getInt() && cjvp.getInt() <= 25000)?"25":(26000 <= cjvp.getInt() && cjvp.getInt() <= 38000)?"38":(39000 <= cjvp.getInt() && cjvp.getInt() <= 52000)?"52":(cjvp.getInt() <= 1200)?"1.2":"0";
+        nba = (7000 <= cjvp.getInt() && cjvp.getInt() <= 15000)?"95":(16000 <= cjvp.getInt() && cjvp.getInt() <= 25000)?"125":(26000 <= cjvp.getInt() && cjvp.getInt() <= 38000)?"200":(39000 <= cjvp.getInt() && cjvp.getInt() <= 52000)?"250":(cjvp.getInt() <= 1200)?"30":"0";
+        tensionserie += (cjvs.getInt()>1200)?"/15":"/1.2";
+        nba += (cjvs.getInt()<=1200)?"/30":(7000 <= cjvs.getInt() && cjvs.getInt() <= 15000)?"/95":"0";
+        cjtensionSerie.setText(tensionserie);
+        cjnba.setText(nba);
+    }
+    
+    public void HallarConexionYPolaridad() {
+        if (comboFase.getSelectedIndex() == 0) {
+            comboGrupoConexion .setSelectedItem((cjvp.getInt()<=8000)?"Ii6":"Ii0");
+            comboPolaridad.setSelectedIndex((cjvp.getInt()<=8000)?1:0);
+        } else if (comboFase.getSelectedIndex() == 1) {
+            comboGrupoConexion .setSelectedItem("DYn5");
+            comboPolaridad.setSelectedIndex(0);
         }
-        if (7000 <= cjvp.getInt() && cjvp.getInt() <= 15000) {
-            tensionserie = "14";
-            cjnba.setText("95");
-        } else if (16000 <= cjvp.getInt() && cjvp.getInt() <= 25000) {
-            tensionserie = "25";
-            cjnba.setText("125");
-        } else if (26000 <= cjvp.getInt() && cjvp.getInt() <= 38000) {
-            tensionserie = "38";
-            cjnba.setText("200");
-        } else if (39000 <= cjvp.getInt() && cjvp.getInt() <= 52000) {
-            tensionserie = "52";
-            cjnba.setText("250");
+    }
+    
+    void HallarCorrientes(){
+        try{
+            cji1.setText(String.valueOf(QD(((cjkva.getDouble() * 1000) / ((comboFase.getSelectedIndex()==0)?1:Math.sqrt(3)) ) / cjvp.getInt(), 2)));
+            cji2.setText(String.valueOf(QD(((cjkva.getDouble() * 1000) / ((comboFase.getSelectedIndex()==0)?1:Math.sqrt(3)) ) / cjvs.getInt(), 2)));
+        }catch(Exception e){
+            Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, e);
+        }        
+    }
+    
+    void HallarPromedioResistencias(){
+        cjproresalta.setText(""+(cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/3);
+        cjproresbaja.setText(""+(cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/3);
+    }
+    
+    void HallarPromedioCorrientes(){        
+        cjpromedioi.setText(""+((comboFase.getSelectedIndex()==0)?QD((cjiu.getDouble() / cji2.getDouble()) * 100, 2):QD((((cjiu.getDouble() + cjiv.getDouble() + cjiw.getDouble()) / 3) / 1) * 100, 2)));
+    }
+    
+    void HallarI2r(){
+        cji2r.setText(""+QD((comboFase.getSelectedIndex()==0)?1:1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000))), 2));
+    }
+    
+    double getR() {
+        return cjpcumedido.getDouble() / (10 * cjkva.getDouble());
+    }
+    
+    double getkc(){
+        return (comboMaterialAlta.getSelectedItem().toString().equalsIgnoreCase("COBRE")&& comboMaterialBaja.getSelectedItem().equals("COBRE"))?234.5:(comboMaterialAlta.getSelectedItem().toString().equalsIgnoreCase("ALUMINIO")&& comboMaterialBaja.getSelectedItem().equals("ALUMINIO"))?225:229;        
+    }
+    
+    double getK(){
+        double K = 0;
+        if(comboRefrigeracion.getSelectedIndex() < 2){
+            K = (getkc() + 85) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
+        }else if (comboRefrigeracion.getSelectedIndex() == 2){
+            switch (comboClaseAislamiento.getSelectedIndex()){
+                case 1:
+                    K = (getkc() + 75) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
+                    break;
+                case 2:
+                    K = (getkc() + 85) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
+                    break;
+                case 3:
+                    K = (getkc() + 100) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
+                    break;
+                case 4:
+                    K = (getkc() + 120) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
+                    break;
+                case 5:
+                    K = (getkc() + 145) / (getkc() + Double.parseDouble(cjtemperatura.getText()));
+                    break;
+            }
         }
+        return K;
+    }
+    
+    public void CargarTablas() {
+        try {
+            tablaUno.getModel().removeTableModelListener(listenerTablaUno);
+            for (int i = 0; i < 5; i++){
+                tablaUno.setValueAt("Posic: "+(i+1), i, 0);
+                tablaUno.setValueAt(0, i, 2);
+                tablaUno.setValueAt(0, i, 3);
+                tablaUno.setValueAt(0, i, 4);
+            }
+            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 1.025):Math.round(cjvp.getInt() * 1.05), 0, 1);
+            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 1.00):Math.round(cjvp.getInt() * 1.025), 1, 1);
+            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 0.975):Math.round(cjvp.getInt() * 1.0), 2, 1);
+            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 0.95):Math.round(cjvp.getInt() * 0.975), 3, 1);
+            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 0.925):Math.round(cjvp.getInt() * 0.95), 4, 1);            
+            tablaUno.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            tablaUno.setCellSelectionEnabled(true);
+
+            for (int i = 0; i < tablaUno.getRowCount(); i++) {
+                tablaDos.setValueAt(QD((Integer.parseInt(tablaUno.getValueAt(i, 1).toString()) * ((comboFase.getSelectedIndex()==0)?1:Math.sqrt(3)) ) / cjvs.getInt(), 3), i, 0);
+                tablaDos.setValueAt(QD((Integer.parseInt(tablaUno.getValueAt(i, 1).toString()) * ((comboFase.getSelectedIndex()==0)?1:Math.sqrt(3)) ) / cjvs.getInt(), 3) * 0.995, i, 1);
+                tablaDos.setValueAt(QD((Integer.parseInt(tablaUno.getValueAt(i, 1).toString()) * ((comboFase.getSelectedIndex()==0)?1:Math.sqrt(3)) ) / cjvs.getInt(), 3) * 1.005, i, 2);
+            }
+            tablaDos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            tablaDos.setCellSelectionEnabled(true);
+            listenerTablaUno = new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    if(e.getType() == TableModelEvent.UPDATE){
+                        if(e.getColumn()>1){
+                            if(alertas==null || alertas.getState()==java.lang.Thread.State.TERMINATED){
+                                alertas = new Hilofases(e.getFirstRow(), e.getColumn());
+                                alertas.start();
+                            }
+                        }
+                    }
+                }
+            };
+            tablaUno.getModel().addTableModelListener(listenerTablaUno);
+        } catch (Exception e) {
+            Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, e);
+        }      
+    }
+    
+    double QD(double n, double d){
+        return Math.round(n * Math.pow(10, d)) / Math.pow(10, d);
+    }
+    
+    void habilitarCampos(boolean ver){
+        cjwu.setEnabled(ver);
+        cjvw.setEnabled(ver);
+        cjyz.setEnabled(ver);
+        cjzx.setEnabled(ver);
+        cjiu.setEnabled(ver);
+        cjiw.setEnabled(ver);
     }
     
     @SuppressWarnings("unchecked")
@@ -85,7 +204,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         cjtemperatura = new CompuChiqui.JTextFieldPopup();
         jLabel30 = new javax.swing.JLabel();
-        comboConmutador = new javax.swing.JComboBox<>();
+        conmutador = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         comboAceite = new javax.swing.JComboBox<>();
@@ -219,6 +338,7 @@ public class PROTOS extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        subMenuItemRecalcular = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -230,6 +350,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel2.add(jLabel3);
 
         cjserie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjserie.setText("2014110679");
+        cjserie.setCampodetexto(cjATcontraBT);
         cjserie.setPreferredSize(new java.awt.Dimension(100, 20));
         cjserie.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -319,6 +441,9 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel12.setText("Tension Serie:");
         jPanel2.add(jLabel12);
 
+        cjtensionSerie.setEditable(false);
+        cjtensionSerie.setBackground(new java.awt.Color(255, 255, 255));
+        cjtensionSerie.setForeground(new java.awt.Color(0, 102, 255));
         cjtensionSerie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel2.add(cjtensionSerie);
 
@@ -326,6 +451,9 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel13.setText("NBA AT/BT:");
         jPanel2.add(jLabel13);
 
+        cjnba.setEditable(false);
+        cjnba.setBackground(new java.awt.Color(255, 255, 255));
+        cjnba.setForeground(new java.awt.Color(0, 102, 255));
         cjnba.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel2.add(cjnba);
 
@@ -349,12 +477,16 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel2.add(jLabel16);
 
         cjaltdiseno.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjaltdiseno.setText("1000 MSNM");
         jPanel2.add(cjaltdiseno);
 
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("I1:");
         jPanel2.add(jLabel17);
 
+        cji1.setEditable(false);
+        cji1.setBackground(new java.awt.Color(255, 255, 255));
+        cji1.setForeground(new java.awt.Color(0, 102, 255));
         cji1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel2.add(cji1);
 
@@ -362,6 +494,9 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel18.setText("I2:");
         jPanel2.add(jLabel18);
 
+        cji2.setEditable(false);
+        cji2.setBackground(new java.awt.Color(255, 255, 255));
+        cji2.setForeground(new java.awt.Color(0, 102, 255));
         cji2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel2.add(cji2);
 
@@ -385,8 +520,9 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel30.setText("Conmutador:");
         jPanel2.add(jLabel30);
 
-        comboConmutador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
-        jPanel2.add(comboConmutador);
+        conmutador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+        conmutador.setSelectedIndex(1);
+        jPanel2.add(conmutador);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "1) Liquido Aislante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel3.setToolTipText("Liquido Aislante");
@@ -449,7 +585,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel4.add(jLabel26);
 
         cjATcontraBT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraBT.setCampodetexto(cjATcontraTierra);
         cjATcontraBT.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjATcontraBT.setValidar(true);
         jPanel4.add(cjATcontraBT);
 
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -457,7 +595,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel4.add(jLabel27);
 
         cjATcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraTierra.setCampodetexto(cjBTcontraTierra);
         cjATcontraTierra.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjATcontraTierra.setValidar(true);
         jPanel4.add(cjATcontraTierra);
 
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -465,7 +605,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel4.add(jLabel28);
 
         cjBTcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjBTcontraTierra.setCampodetexto(tablaUno);
         cjBTcontraTierra.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjBTcontraTierra.setValidar(true);
         jPanel4.add(cjBTcontraTierra);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "3) Relacion de Transformacion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
@@ -495,7 +637,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel35);
 
         cjuv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjuv.setCampodetexto(cjwu);
         cjuv.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjuv.setValidar(true);
         jPanel6.add(cjuv);
 
         jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -503,7 +647,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel36);
 
         cjxy.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjxy.setCampodetexto(cjyz);
         cjxy.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjxy.setValidar(true);
         jPanel6.add(cjxy);
 
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -511,7 +657,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel37);
 
         cjwu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjwu.setCampodetexto(cjvw);
         cjwu.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjwu.setValidar(true);
         jPanel6.add(cjwu);
 
         jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -519,7 +667,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel38);
 
         cjyz.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjyz.setCampodetexto(cjzx);
         cjyz.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjyz.setValidar(true);
         jPanel6.add(cjyz);
 
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -527,7 +677,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel39);
 
         cjvw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvw.setCampodetexto(cjxy);
         cjvw.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjvw.setValidar(true);
         jPanel6.add(cjvw);
 
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -535,7 +687,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel40);
 
         cjzx.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjzx.setCampodetexto(cjiu);
         cjzx.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjzx.setValidar(true);
         jPanel6.add(cjzx);
 
         jLabel41.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -577,22 +731,26 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel7.add(jLabel45);
 
         cjBTcontraATyTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjBTcontraATyTierra.setText("10");
+        cjBTcontraATyTierra.setCampodetexto(cjATcontraBTyTierra);
         cjBTcontraATyTierra.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(cjBTcontraATyTierra);
 
         jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel46.setText("AT contra BT y Tierra:");
+        jLabel46.setText("AT contra BT y TierraKv:");
         jPanel7.add(jLabel46);
 
         cjATcontraBTyTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraBTyTierra.setText("34.5");
         cjATcontraBTyTierra.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(cjATcontraBTyTierra);
 
         jLabel47.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel47.setText("Tiempo de Prueba:");
+        jLabel47.setText("Tiempo de Prueba(s):");
         jPanel7.add(jLabel47);
 
         cjtiempoaplicado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtiempoaplicado.setText("60");
         cjtiempoaplicado.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(cjtiempoaplicado);
 
@@ -609,6 +767,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel7.add(jLabel49);
 
         cjFrecuenciaInducida.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjFrecuenciaInducida.setText("414");
         cjFrecuenciaInducida.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(cjFrecuenciaInducida);
 
@@ -617,6 +776,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel7.add(jLabel50);
 
         cjtiempoInducido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjtiempoInducido.setText("17");
         cjtiempoInducido.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel7.add(cjtiempoInducido);
 
@@ -637,7 +797,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel52);
 
         cjiu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiu.setCampodetexto(cjiv);
         cjiu.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjiu.setValidar(true);
         jPanel8.add(cjiu);
 
         jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -645,7 +807,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel53);
 
         cjiv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiv.setCampodetexto(cjiw);
         cjiv.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjiv.setValidar(true);
         jPanel8.add(cjiv);
 
         jLabel54.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -653,7 +817,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel54);
 
         cjiw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiw.setCampodetexto(cjpomedido);
         cjiw.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjiw.setValidar(true);
         jPanel8.add(cjiw);
 
         jLabel55.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -677,7 +843,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel57);
 
         cjpomedido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpomedido.setCampodetexto(cjvcc);
         cjpomedido.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjpomedido.setValidar(true);
         jPanel8.add(cjpomedido);
 
         jLabel58.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -697,7 +865,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel9.add(jLabel59);
 
         cjvcc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvcc.setCampodetexto(cjpcumedido);
         cjvcc.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjvcc.setValidar(true);
         jPanel9.add(cjvcc);
 
         jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -705,7 +875,9 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel9.add(jLabel60);
 
         cjpcumedido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjpcumedido.setCampodetexto(cjobservaciones);
         cjpcumedido.setPreferredSize(new java.awt.Dimension(100, 20));
+        cjpcumedido.setValidar(true);
         jPanel9.add(cjpcumedido);
 
         jLabel61.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -793,6 +965,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel68);
 
         cjmasa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjmasa.setCampodetexto(cjaceite);
         cjmasa.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjmasa);
 
@@ -801,6 +974,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel69);
 
         cjaceite.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjaceite.setCampodetexto(cjlargo);
         cjaceite.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjaceite);
 
@@ -809,6 +983,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel70);
 
         cjlargo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjlargo.setCampodetexto(cjancho);
         cjlargo.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjlargo);
 
@@ -817,6 +992,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel71);
 
         cjancho.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjancho.setCampodetexto(cjalto);
         cjancho.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjancho);
 
@@ -825,6 +1001,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel72);
 
         cjalto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjalto.setCampodetexto(cjcolor);
         cjalto.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjalto);
 
@@ -833,6 +1010,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel73);
 
         cjcolor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjcolor.setCampodetexto(cjespesor);
         cjcolor.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjcolor);
 
@@ -841,6 +1019,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel74);
 
         cjespesor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjespesor.setCampodetexto(cjelementos);
         cjespesor.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjespesor);
 
@@ -849,6 +1028,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel75);
 
         cjelementos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjelementos.setCampodetexto(cjlargoelemento);
         cjelementos.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjelementos);
 
@@ -857,6 +1037,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel76);
 
         cjlargoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjlargoelemento.setCampodetexto(cjanchoelemento);
         cjlargoelemento.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjlargoelemento);
 
@@ -890,6 +1071,11 @@ public class PROTOS extends javax.swing.JFrame {
         });
         tablaUno.setGridColor(new java.awt.Color(227, 227, 227));
         tablaUno.setRowHeight(20);
+        tablaUno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tablaUnoKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaUno);
 
         tablaDos.setModel(new javax.swing.table.DefaultTableModel(
@@ -1048,6 +1234,17 @@ public class PROTOS extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        subMenuItemRecalcular.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuItemRecalcular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calculadora.png"))); // NOI18N
+        subMenuItemRecalcular.setText("Recalcular");
+        subMenuItemRecalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuItemRecalcularActionPerformed(evt);
+            }
+        });
+        jMenu2.add(subMenuItemRecalcular);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -1068,10 +1265,29 @@ public class PROTOS extends javax.swing.JFrame {
 
     private void cjserieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjserieKeyPressed
         if(evt.getKeyCode()==10){
-            conex.conectar();
-            ResultSet rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) WHERE t.numeroserie='"+cjserie.getText()+"'");
-            try {
+            try{
+                boolean mostrar = false;
+                ResultSet rs = null;
+                conex.conectar();
+                rs = conex.CONSULTAR("SELECT numeroserie, count(*) FROM transformador t WHERE t.numeroserie='"+cjserie.getText()+"' GROUP BY numeroserie ");
+                int total = 0;
                 if(rs.next()){
+                    total = rs.getInt("count");
+                }else{
+                    modelo.Metodos.M("NO SE ENCONTRÒ EL NUMERO DE SERIE DIGITADO", "advertencia.png");
+                    return;
+                }
+                rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) INNER JOIN cliente c USING (idcliente) WHERE t.numeroserie='"+cjserie.getText()+"'");
+                if(total == 1){                    
+                    mostrar = rs.next();
+                }else if(total > 1){
+                    DialogoTrafosRepetidos trafos = new DialogoTrafosRepetidos(this, rootPaneCheckingEnabled);
+                    trafos.CargarDatos(rs);
+                    trafos.setVisible(true);
+                    rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) WHERE t.idtransformador='"+trafos.getIDTRAFO()+"'");
+                    mostrar = rs.next();
+                }
+                if(mostrar){
                     cjempresa.setText(rs.getString("numeroempresa"));
                     cjmarca.setText(rs.getString("marca"));
                     cjkva.setText(rs.getString("kvasalida"));
@@ -1080,13 +1296,44 @@ public class PROTOS extends javax.swing.JFrame {
                     cjvp.setText(rs.getString("tps"));
                     cjvs.setText(rs.getString("tss"));
                     comboServicio.setSelectedItem(rs.getString("serviciosalida"));
+                    HallarTensionSerie();
+                    HallarConexionYPolaridad();
+                    HallarCorrientes();
+                    CargarTablas();
+                    habilitarCampos(rs.getString("fase").equals("3"));
                 }
-            } catch (SQLException ex) {
+            }catch(SQLException ex){
                 modelo.Metodos.M("ERROR AL BUSCAR EL NUMERO DE SERIE\n"+ex, "error.png");
                 Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                conex.CERRAR();
             }
         }
     }//GEN-LAST:event_cjserieKeyPressed
+
+    private void subMenuItemRecalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuItemRecalcularActionPerformed
+        HallarTensionSerie();
+        HallarConexionYPolaridad();
+        HallarCorrientes();
+        CargarTablas();
+        HallarPromedioCorrientes();
+        HallarPromedioResistencias();
+        HallarI2r();
+    }//GEN-LAST:event_subMenuItemRecalcularActionPerformed
+
+    private void tablaUnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaUnoKeyTyped
+        if(evt.getKeyChar()==10){
+            if(comboFase.getSelectedIndex()==0){
+                if(tablaUno.getSelectedRow()==0&&tablaUno.getSelectedColumn()==3){
+                    cjiu.grabFocus();
+                }
+            }else{
+                if(tablaUno.getSelectedRow()==0&&tablaUno.getSelectedColumn()==0){
+                    cjiu.grabFocus();
+                }
+            }
+        }
+    }//GEN-LAST:event_tablaUnoKeyTyped
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1184,7 +1431,6 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjzx;
     private javax.swing.JComboBox<String> comboAceite;
     private javax.swing.JComboBox<String> comboClaseAislamiento;
-    private javax.swing.JComboBox<String> comboConmutador;
     private javax.swing.JComboBox<String> comboFase;
     private javax.swing.JComboBox<String> comboFrecuencia;
     private javax.swing.JComboBox<String> comboGrupoConexion;
@@ -1195,6 +1441,7 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboRefrigeracion;
     private javax.swing.JComboBox<String> comboServicio;
     private javax.swing.JComboBox<String> comboTensionPrueba;
+    private javax.swing.JComboBox<String> conmutador;
     private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1293,7 +1540,66 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JMenuItem subMenuItemRecalcular;
     private javax.swing.JTable tablaDos;
     private javax.swing.JTable tablaUno;
     // End of variables declaration//GEN-END:variables
+
+    private class Hilofases extends Thread{
+        
+        private int fila = -1;
+        private int col = -1;
+        
+        public Hilofases(int row, int col) {
+            this.fila = row;
+            this.col = col;
+        }
+        
+        @Override
+        public void run(){
+            while(true){
+                System.out.println("CORRIENDO HILO");
+                double fase = Double.parseDouble(tablaUno.getValueAt(getFila(), getCol()).toString());
+                double minimo = Double.parseDouble(tablaDos.getValueAt(getFila(), 1).toString());
+                double maximo = Double.parseDouble(tablaDos.getValueAt(getFila(), 2).toString());
+                if(fase < minimo || fase > maximo){
+                    try {
+                        JTextField fileName = new JTextField(String.valueOf(fase));
+                        Object[] message = {"INGRESE UN NUEVO VALOR.\n(MIN = "+minimo+" MAX = "+maximo+")", fileName};
+                        int n =JOptionPane.showOptionDialog(rootPane, message, "VALOR FUERA DE RANGO", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE,modelo.Metodos.getIcon("advertencia.png"), new Object[]{"ACEPTAR","OMITIR ERROR"}, "ACEPTAR");
+                        if(n==1){
+                            break;
+                        }else if(n==0){
+                            if(Double.parseDouble(fileName.getText()) >= minimo && Double.parseDouble(fileName.getText()) <= maximo){
+                                tablaUno.setValueAt(Double.parseDouble(fileName.getText()), getFila(), getCol());
+                                break;
+                            }
+                        }
+                    } catch (HeadlessException | NumberFormatException ex){
+                        modelo.Metodos.M("ERROR\n"+ex, "error.png");
+                    }                                
+                }else{
+                    break;
+                }
+            }
+        }       
+
+        public int getFila() {
+            return fila;
+        }
+
+        public void setFila(int fila) {
+            this.fila = fila;
+        }
+
+        public int getCol() {
+            return col;
+        }
+
+        public void setCol(int col) {
+            this.col = col;
+        }
+        
+    }
+
 }
