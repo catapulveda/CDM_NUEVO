@@ -2,6 +2,7 @@ package view;
 
 import Dialogos.DialogoTrafosRepetidos;
 import java.awt.HeadlessException;
+import java.awt.event.ItemEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -15,6 +16,7 @@ import modelo.ConexionBD;
 
 public class PROTOS extends javax.swing.JFrame {
 
+    private String ESTADO_TRAFO = null;
     ConexionBD conex = new ConexionBD();
     private final int IDTRAFO = -1;
     TableModelListener listenerTablaUno;
@@ -22,6 +24,8 @@ public class PROTOS extends javax.swing.JFrame {
     
     public PROTOS() {
         initComponents();
+        
+        habilitarCampos((comboFase.getSelectedIndex()==0));
     }
     
     void HallarTensionSerie(){
@@ -54,16 +58,21 @@ public class PROTOS extends javax.swing.JFrame {
     }
     
     void HallarPromedioResistencias(){
-        cjproresalta.setText(""+(cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/3);
-        cjproresbaja.setText(""+(cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/3);
+        cjproresalta.setText(""+(cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/((comboFase.getSelectedIndex()==1)?3:1));
+        cjproresbaja.setText(""+(cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/((comboFase.getSelectedIndex()==1)?3:1));
     }
     
     void HallarPromedioCorrientes(){        
         cjpromedioi.setText(""+((comboFase.getSelectedIndex()==0)?QD((cjiu.getDouble() / cji2.getDouble()) * 100, 2):QD((((cjiu.getDouble() + cjiv.getDouble() + cjiw.getDouble()) / 3) / 1) * 100, 2)));
     }
     
-    void HallarI2r(){
+    double I2R(){        
         cji2r.setText(""+QD((comboFase.getSelectedIndex()==0)?1:1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000))), 2));
+        return (comboFase.getSelectedIndex()==0)?1:1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000)));
+    }
+    
+    double I2R85(){
+        return I2R() * K();
     }
     
     double R() {
@@ -75,7 +84,7 @@ public class PROTOS extends javax.swing.JFrame {
     }
     
     double Z() {
-        cjimpedancia.setText(""+QD(Z(), 3));
+        cjimpedancia.setText(""+QD((cjvcc.getDouble() / cjvp.getDouble()) * 100, 3));
         return (cjvcc.getDouble() / cjvp.getDouble()) * 100;
     }
     
@@ -165,8 +174,13 @@ public class PROTOS extends javax.swing.JFrame {
         cjvw.setEnabled(ver);
         cjyz.setEnabled(ver);
         cjzx.setEnabled(ver);
-        cjiu.setEnabled(ver);
+        cjiv.setEnabled(ver);
         cjiw.setEnabled(ver);
+    }
+    
+    double PCU85() {
+        cjpcua85.setText(String.valueOf(QD( ((cjpcumedido.getDouble() - I2R()) / K()) + I2R85(), 1)));
+        return QD( ((cjpcumedido.getDouble() - I2R()) / K()) + I2R85(), 1);
     }
     
     public void HallarReg() {                                   
@@ -178,24 +192,97 @@ public class PROTOS extends javax.swing.JFrame {
         cjreg.setText(String.valueOf(REG));       
     }
     
-    public void HallarEf() {
-        if (!cjpotencia.getText().isEmpty() && !cjtemperaturadeprueba.getText().isEmpty() && !cjpomedido.getText().isEmpty() && !cjperdidasdecobremedidas.getText().isEmpty() && !cjpcureferidoa85.getText().isEmpty()) {
-            try {
-                double po = Double.parseDouble(cjpomedido.getText());
-                double kva = Double(cjpotencia.getText());
-                double K = getK(kc, cjtemperaturadeprueba);
-                double I2R85 = getI2R85(K, cji2r);
-                double PCU85 = FORMULAS.HallarPcu85(cjperdidasdecobremedidas, cji2r, K, I2R85, cjpcureferidoa85);
-                double EF = (0.8 * kva * Math.pow(10, 5)) / (0.8 * kva * Math.pow(10, 3) + po + PCU85);
-                String m = "KVA = " + kva + "\n";
-                m += "K = " + K + "\n";
-                m += "I2R85 = " + I2R85 + "\n";
-                m += "PCU85 = " + PCU85 + "\n";
-                cjef.setText(String.valueOf(FORMULAS.QuitarDecimales(EF, 2)));
-//            M(m,bien);
-            } catch (Exception e) {
+    void HallarEf(){
+        cjef.setText(String.valueOf(QD((0.8 * cjkva.getDouble() * Math.pow(10, 5)) / (0.8 * cjkva.getDouble() * Math.pow(10, 3) + cjpomedido.getDouble() + PCU85()), 2)));
+    }
+    
+    void cargarValores(){
+        String servicio = comboServicio.getSelectedItem().toString(), tabla = null;
+        int ano = cjano.getInt();
+        int vp = cjvp.getInt();
+        int fase = Integer.parseInt(comboFase.getSelectedItem().toString());
+        if("NUEVO".equals(servicio)||"RECONSTRUIDO".equals(servicio) || cjcliente.getText().equals("EMPRESAS PUBLICAS DE MEDELLIN S.A E.S.P")){
+            tabla = (vp<=15000)?(fase==1)?"monofasiconuevo":"trifasiconuevo":(vp > 15000 && vp <= 35000)?(fase==1)?"monofasiconuevoserie35":"trifasiconuevoserie35":null;
+        }else if(servicio.equals("REPARACION")){
+            if(vp <= 15000){
+                tabla = (fase==1)?(ano < 1996)?"monofasicoantesde1996":"monofasicodespuesde1996":(ano < 1996)?"trifasicoantesde1996":"trifasicodespuesde1996";
+            }else if (vp > 15000 && vp <= 35000){
+                tabla = (fase==1)?(ano >= 1996)?"monofasicoantesde1996serie35":"monofasicodespuesde1996serie35":(ano < 1996)?"trifasicoantesde1996serie35":"trifasicodespuesde1996serie46";
+            }else if(vp > 35000 && vp <= 46000 && fase==3 ){
+                tabla = "trifasicodespuesde1996serie46";
             }
+        }else if(servicio.equals("MANTENIMIENTO")){
+            tabla = ESTADO_TRAFO.equals("REPARADO")?(ano < 1996)?(fase == 1)?"monofasicoantesde1996":"trifasicoantesde1996":(fase == 1)?"monofasicodespuesde1996":"trifasicodespuesde1996":(fase == 1)?"monofasiconuevo":"trifasiconuevo";
         }
+        if(comboRefrigeracion.getSelectedIndex() == 2){
+            tabla = (fase==3&&(vp > 1200 && vp <= 15000) )?"trifasicosecoserie1512":"trifasicosecoserie1212";
+        }        
+        double kva = getKva(tabla, cjkva.getDouble());
+        String sql = "SELECT * FROM " + tabla + " WHERE kva=" + kva;
+        conex.conectar();
+        ResultSet rs = conex.CONSULTAR(sql);
+        try {
+            if(rs.next()){
+                cjiogarantizado.setText("" + rs.getDouble("io"));
+                cjpogarantizado.setText("" + rs.getDouble("po"));
+                cjpcugarantizado.setText("" + rs.getDouble("pc"));
+                cjimpedanciagarantizado.setText("" + rs.getDouble("uz"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conex.CERRAR();
+        }
+    }
+    
+    public static double getKva(String tabla, double KVAdigitada){
+        double kva = 0;
+        String sql = "select * from " + tabla + " ORDER BY kva ASC";
+        ConexionBD conex = new ConexionBD();
+        conex.conectar();
+        ResultSet rs = conex.CONSULTAR(sql);
+        boolean esta = false;
+        try {
+            double BD, auxiliar = 0;
+            while (rs.next()) {
+                System.out.println(rs.getDouble(1));
+                BD = rs.getDouble("kva");
+                if (BD == KVAdigitada) {
+                    kva = BD;
+                    esta = true;
+                    break;
+                } else if (BD < KVAdigitada) {
+                    auxiliar = BD;
+                } else if(KVAdigitada < ((auxiliar + BD) / 2)) {
+                    kva = auxiliar;
+                    esta = true;
+                    break;
+                } else {
+                    kva = BD;
+                    esta = true;
+                    break;
+                }
+            }
+            if (!esta) {
+                JOptionPane.showMessageDialog(null, "NO SE ENCONTRO LA POTENCIA DE " + KVAdigitada + " EN LA TABLA " + tabla);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al buscar el kva mas adecuado\n" + ex);
+        } finally {
+            conex.CERRAR();
+        }
+        return kva;
+    }
+    
+    void cargarMedidas() {
+        double kva = cjkva.getDouble();        
+        cjancho.setText((comboFase.getSelectedIndex()==0)?((kva==3)?"250":(kva==5)?"280":(kva==10)?"320":(kva==15)?"350":(kva==25)?"380":(kva==37.5)?"420":(kva==50)?"450":(kva==75)?"480":"0"):((kva==15)?"350":(kva==30)?"500":(kva==45)?"600":(kva==75)?"620":(kva==112.5)?"700":(kva==150)?"750":(kva==225)?"800":"0"));
+        cjlargo.setText((comboFase.getSelectedIndex()==0)?((kva==3)?"250":(kva==5)?"280":(kva==10)?"320":(kva==15)?"350":(kva==25)?"380":(kva==37.5)?"420":(kva==50)?"450":(kva==75)?"480":"0"):((kva==15)?"280":(kva==30)?"320":(kva==45)?"350":(kva==75)?"380":(kva==112.5)?"430":(kva==150)?"480":(kva==225)?"520":"0"));
+        cjalto.setText((comboFase.getSelectedIndex()==0)?((kva==3)?"450":(kva==5)?"500":(kva==10)?"550":(kva==15)?"550":(kva==25)?"550":(kva==37.5)?"600":(kva==50)?"650":(kva==75)?"700":"0"):((kva==15)?"500":(kva==30)?"500":(kva==45)?"550":(kva==75)?"600":(kva==112.5)?"650":(kva==150)?"700":(kva==225)?"750":"0"));
+        cjelementos.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"6":(kva==75)?"8":"0"):((kva==75)?"6":(kva==112.5)?"10":(kva==150)?"14":(kva==225)?"18":"0"));
+        cjlargoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50||kva==75)?"300":"0"):((kva==75)?"300":(kva==112.5)?"380":(kva==150)?"300":(kva==225)?"300":"0"));
+        cjanchoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"480":(kva==75)?"480":"0"):((kva==75)?"480":(kva==112.5)?"380":(kva==150)?"480":(kva==225)?"480":"0"));
     }
     
     @SuppressWarnings("unchecked")
@@ -375,6 +462,10 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         cjobservaciones = new CompuChiqui.JCTextArea();
+        cjcliente = new CompuChiqui.JTextFieldPopup();
+        cjlote = new CompuChiqui.JTextFieldPopup();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         cjfechasalida = new com.toedter.calendar.JDateChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -431,6 +522,11 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel2.add(jLabel8);
 
         comboFase.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "3" }));
+        comboFase.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboFaseItemStateChanged(evt);
+            }
+        });
         jPanel2.add(comboFase);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -462,7 +558,11 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel2.add(jLabel1);
 
         comboServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NUEVO", "RECONSTRUIDO", "REPARACION", "MANTENIMIENTO" }));
-        comboServicio.setSelectedIndex(1);
+        comboServicio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboServicioItemStateChanged(evt);
+            }
+        });
         jPanel2.add(comboServicio);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -647,9 +747,14 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel4.add(jLabel28);
 
         cjBTcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjBTcontraTierra.setCampodetexto(tablaUno);
+        cjBTcontraTierra.setCampodetexto(null);
         cjBTcontraTierra.setPreferredSize(new java.awt.Dimension(100, 20));
         cjBTcontraTierra.setValidar(true);
+        cjBTcontraTierra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cjBTcontraTierraKeyPressed(evt);
+            }
+        });
         jPanel4.add(cjBTcontraTierra);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "3) Relacion de Transformacion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
@@ -679,9 +784,14 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel35);
 
         cjuv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjuv.setCampodetexto(cjwu);
+        cjuv.setCampodetexto(null);
         cjuv.setPreferredSize(new java.awt.Dimension(100, 20));
         cjuv.setValidar(true);
+        cjuv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cjuvKeyPressed(evt);
+            }
+        });
         jPanel6.add(cjuv);
 
         jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -689,9 +799,14 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel36);
 
         cjxy.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjxy.setCampodetexto(cjyz);
+        cjxy.setCampodetexto(null);
         cjxy.setPreferredSize(new java.awt.Dimension(100, 20));
         cjxy.setValidar(true);
+        cjxy.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjxyKeyReleased(evt);
+            }
+        });
         jPanel6.add(cjxy);
 
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -839,9 +954,14 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel52);
 
         cjiu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjiu.setCampodetexto(cjiv);
+        cjiu.setCampodetexto(null);
         cjiu.setPreferredSize(new java.awt.Dimension(100, 20));
         cjiu.setValidar(true);
+        cjiu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cjiuKeyPressed(evt);
+            }
+        });
         jPanel8.add(cjiu);
 
         jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -920,6 +1040,11 @@ public class PROTOS extends javax.swing.JFrame {
         cjpcumedido.setCampodetexto(cjobservaciones);
         cjpcumedido.setPreferredSize(new java.awt.Dimension(100, 20));
         cjpcumedido.setValidar(true);
+        cjpcumedido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cjpcumedidoKeyPressed(evt);
+            }
+        });
         jPanel9.add(cjpcumedido);
 
         jLabel61.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1158,13 +1283,36 @@ public class PROTOS extends javax.swing.JFrame {
         cjobservaciones.setRows(5);
         jScrollPane3.setViewportView(cjobservaciones);
 
+        cjcliente.setEditable(false);
+        cjcliente.setBackground(new java.awt.Color(255, 255, 255));
+        cjcliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjcliente.setPreferredSize(new java.awt.Dimension(100, 20));
+
+        cjlote.setEditable(false);
+        cjlote.setBackground(new java.awt.Color(255, 255, 255));
+        cjlote.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjlote.setPreferredSize(new java.awt.Dimension(100, 20));
+
+        jLabel33.setText("Cliente:");
+
+        jLabel34.setText("Lote:");
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(jLabel33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cjcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                        .addComponent(jLabel34)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cjlote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
@@ -1172,7 +1320,15 @@ public class PROTOS extends javax.swing.JFrame {
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cjcliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel33))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cjlote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fecha Salida Laboratorio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
@@ -1247,18 +1403,21 @@ public class PROTOS extends javax.swing.JFrame {
                                 .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(6, 6, 6)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(6, 6, 6)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -1277,7 +1436,7 @@ public class PROTOS extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        subMenuItemRecalcular.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuItemRecalcular.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
         subMenuItemRecalcular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calculadora.png"))); // NOI18N
         subMenuItemRecalcular.setText("Recalcular");
         subMenuItemRecalcular.addActionListener(new java.awt.event.ActionListener() {
@@ -1326,10 +1485,12 @@ public class PROTOS extends javax.swing.JFrame {
                     DialogoTrafosRepetidos trafos = new DialogoTrafosRepetidos(this, rootPaneCheckingEnabled);
                     trafos.CargarDatos(rs);
                     trafos.setVisible(true);
-                    rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) WHERE t.idtransformador='"+trafos.getIDTRAFO()+"'");
+                    rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) INNER JOIN cliente c USING (idcliente) WHERE t.idtransformador='"+trafos.getIDTRAFO()+"'");
                     mostrar = rs.next();
                 }
                 if(mostrar){
+                    cjcliente.setText(rs.getString("nombrecliente"));
+                    cjlote.setText(rs.getString("lote"));
                     cjempresa.setText(rs.getString("numeroempresa"));
                     cjmarca.setText(rs.getString("marca"));
                     cjkva.setText(rs.getString("kvasalida"));
@@ -1337,12 +1498,12 @@ public class PROTOS extends javax.swing.JFrame {
                     cjano.setText(rs.getString("ano"));
                     cjvp.setText(rs.getString("tps"));
                     cjvs.setText(rs.getString("tss"));
-                    comboServicio.setSelectedItem(rs.getString("serviciosalida"));
-                    HallarTensionSerie();
-                    HallarConexionYPolaridad();
-                    HallarCorrientes();
+                    cjtensionBT.setText(String.valueOf(rs.getInt("tss")*2));
+                    cjTensionBT2.setText(rs.getString("tss"));
+                    comboServicio.setSelectedItem(rs.getString("serviciosalida"));                    
                     CargarTablas();
                     habilitarCampos(rs.getString("fase").equals("3"));
+                    subMenuItemRecalcular.doClick();
                 }
             }catch(SQLException ex){
                 modelo.Metodos.M("ERROR AL BUSCAR EL NUMERO DE SERIE\n"+ex, "error.png");
@@ -1357,26 +1518,94 @@ public class PROTOS extends javax.swing.JFrame {
         HallarTensionSerie();
         HallarConexionYPolaridad();
         HallarCorrientes();
-        CargarTablas();
+//        CargarTablas();
         HallarPromedioCorrientes();
         HallarPromedioResistencias();
-        HallarI2r();
+        I2R();
+        I2R85();
         HallarReg();
+        HallarEf();
+        cargarValores();
+        cargarMedidas();
     }//GEN-LAST:event_subMenuItemRecalcularActionPerformed
 
     private void tablaUnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaUnoKeyTyped
         if(evt.getKeyChar()==10){
             if(comboFase.getSelectedIndex()==0){
                 if(tablaUno.getSelectedRow()==0&&tablaUno.getSelectedColumn()==3){
-                    cjiu.grabFocus();
+                    cjuv.grabFocus();
                 }
             }else{
                 if(tablaUno.getSelectedRow()==0&&tablaUno.getSelectedColumn()==0){
-                    cjiu.grabFocus();
+                    cjuv.grabFocus();
                 }
             }
         }
     }//GEN-LAST:event_tablaUnoKeyTyped
+
+    private void cjuvKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjuvKeyPressed
+        if(evt.getKeyCode()==10){
+            if(comboFase.getSelectedIndex()==0){
+                cjxy.grabFocus();
+            }else{
+                cjwu.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_cjuvKeyPressed
+
+    private void cjxyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjxyKeyReleased
+        if(evt.getKeyCode()==10 && !cjxy.getText().isEmpty()){
+            if(comboFase.getSelectedIndex()==0){
+                cjiu.grabFocus();
+            }else{
+                cjyz.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_cjxyKeyReleased
+
+    private void comboFaseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboFaseItemStateChanged
+        if(evt.getStateChange()==ItemEvent.DESELECTED){
+            habilitarCampos((comboFase.getSelectedIndex()==0));
+        }
+    }//GEN-LAST:event_comboFaseItemStateChanged
+
+    private void cjBTcontraTierraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBTcontraTierraKeyPressed
+        if(evt.getKeyCode()==10){
+            tablaUno.setRowSelectionInterval(0, 0);
+            tablaUno.setColumnSelectionInterval(2, 2);
+            tablaUno.grabFocus();
+        }
+    }//GEN-LAST:event_cjBTcontraTierraKeyPressed
+
+    private void cjiuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjiuKeyPressed
+        if(evt.getKeyCode()==10){
+            if(comboFase.getSelectedIndex()==0){
+                cjpomedido.grabFocus();
+            }else{
+                cjiv.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_cjiuKeyPressed
+
+    private void cjpcumedidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpcumedidoKeyPressed
+        if(evt.getKeyCode()==10){
+            subMenuItemRecalcular.doClick();
+        }
+    }//GEN-LAST:event_cjpcumedidoKeyPressed
+
+    private void comboServicioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboServicioItemStateChanged
+        if(evt.getStateChange() == ItemEvent.DESELECTED){
+            if("MANTENIMIENTO".equals(comboServicio.getSelectedItem().toString())){
+                while(true){
+                    int n = JOptionPane.showOptionDialog(this, "SELECCIONE EL ESTADO DEL TRANSFORMADOR", "Seleccione una opcion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, modelo.Metodos.getIcon("advertencia.png"), new Object[]{"ORIGINAL","REPARADO"}, "ORIGINAL");
+                    if(n>=0){
+                        ESTADO_TRAFO = (n==0)?"ORIGINAL":"REPARADO";
+                        break;
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_comboServicioItemStateChanged
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1423,6 +1652,7 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjanchoelemento;
     private CompuChiqui.JTextFieldPopup cjano;
     private CompuChiqui.JTextFieldPopup cjcalentamientodevanado;
+    private CompuChiqui.JTextFieldPopup cjcliente;
     private CompuChiqui.JTextFieldPopup cjcolor;
     private CompuChiqui.JTextFieldPopup cjef;
     private CompuChiqui.JTextFieldPopup cjelementos;
@@ -1443,6 +1673,7 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjkva;
     private CompuChiqui.JTextFieldPopup cjlargo;
     private CompuChiqui.JTextFieldPopup cjlargoelemento;
+    private CompuChiqui.JTextFieldPopup cjlote;
     private CompuChiqui.JTextFieldPopup cjmarca;
     private CompuChiqui.JTextFieldPopup cjmasa;
     private CompuChiqui.JTextFieldPopup cjnba;
@@ -1512,6 +1743,8 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
