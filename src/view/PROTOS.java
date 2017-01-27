@@ -5,6 +5,7 @@ import java.awt.HeadlessException;
 import java.awt.event.ItemEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -17,14 +18,17 @@ import modelo.ConexionBD;
 public class PROTOS extends javax.swing.JFrame {
 
     private String ESTADO_TRAFO = null;
+    private boolean ACTUALIZANDO = false;
     ConexionBD conex = new ConexionBD();
-    private final int IDTRAFO = -1;
+    private int IDTRAFO = -1, IDPROTOCOLO = -1;
     TableModelListener listenerTablaUno;
     Hilofases alertas;
+    modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
     
     public PROTOS() {
         initComponents();
         
+        cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", false)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
         habilitarCampos((comboFase.getSelectedIndex()==0));
     }
     
@@ -298,8 +302,68 @@ public class PROTOS extends javax.swing.JFrame {
         cjalto.setText((comboFase.getSelectedIndex()==0)?((kva==3)?"450":(kva==5)?"500":(kva==10)?"550":(kva==15)?"550":(kva==25)?"550":(kva==37.5)?"600":(kva==50)?"650":(kva==75)?"700":"0"):((kva==15)?"500":(kva==30)?"500":(kva==45)?"550":(kva==75)?"600":(kva==112.5)?"650":(kva==150)?"700":(kva==225)?"750":"0"));
         cjelementos.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"6":(kva==75)?"8":"0"):((kva==75)?"6":(kva==112.5)?"10":(kva==150)?"14":(kva==225)?"18":"0"));
         cjlargoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50||kva==75)?"300":"0"):((kva==75)?"300":(kva==112.5)?"380":(kva==150)?"300":(kva==225)?"300":"0"));
-        cjanchoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"480":(kva==75)?"480":"0"):((kva==75)?"480":(kva==112.5)?"380":(kva==150)?"480":(kva==225)?"480":"0"));
+        cjaltoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"480":(kva==75)?"480":"0"):((kva==75)?"480":(kva==112.5)?"380":(kva==150)?"480":(kva==225)?"480":"0"));
     }
+    
+    Object getT(int r, int col){return tablaUno.getValueAt(r, col);}
+    
+    void guardar(){
+        String GUARDAR = null;
+        if(ACTUALIZANDO){
+            GUARDAR = "INSERT INTO public.protocolos(\n" +
+    "            idtransformador, codigo, frecuencia, refrigeracion, \n" +
+    "            tensionserie, nba, calentamientodevanado, claseaislamiento, alturadiseno, \n" +
+    "            derivacionprimaria, i1, i2, temperaturadeensayo, conmutador, \n" +
+    "            liquidoaislante, referenciadeaceite, tensionderuptura, metodo, \n" +
+    "            tiemporesistenciadeaislamiento, tensiondeprueba, atcontrabt, \n" +
+    "            atcontratierra, btcontratierra, grupodeconexion, polaridad, punou, \n" +
+    "            punov, punow, pdosu, pdosv, pdosw, ptresu, ptresv, ptresw, pcuatrou, \n" +
+    "            pcuatrov, pcuatrow, pcincou, pcincov, pcincow, resuv, resvw, \n" +
+    "            reswu, proresuno, materialconductoralta, resxy, resyz, reszx, \n" +
+    "            proresdos, materialconductorbaja, iu, iv, iw, promedioi, iogarantizado, \n" +
+    "            pomedido, pogarantizado, vcc, pcu, pcua85, pcugarantizado, i2r, \n" +
+    "            i2ra85, impedancia, impedancia85, impedanciagarantizada, reg, \n" +
+    "            ef, largotanque, anchotanque, altotanque, color, espesor, radiadores, \n" +
+    "            largoradiador, altoradiador, observaciones, fechalaboratorio, \n" +
+    "            fechaderegistro, idusuario)\n" +
+    "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', "+comboFrecuencia.getSelectedItem()+", '"+comboRefrigeracion.getSelectedItem()+"', \n" +
+    "            '"+cjtensionSerie.getText()+"', '"+cjnba.getText()+"', '"+cjcalentamientodevanado.getText()+"', '"+comboClaseAislamiento.getSelectedItem()+"', '"+cjaltdiseno.getText()+"', \n" +
+    "            '"+comboDerivacion.getSelectedItem()+"', "+cji1.getText()+", "+cji2.getText()+", "+cjtemperatura.getText()+", "+conmutador.getSelectedItem()+", \n" +
+    "            '"+comboAceite.getSelectedItem()+"', '"+comboReferenciaAceite.getSelectedItem()+"', '"+cjRuptura.getText()+"', '"+cjmetodo.getText()+"', \n" +
+    "            "+cjtiemporalt.getText()+", '"+comboTensionPrueba.getSelectedItem()+"', "+cjATcontraBT.getText()+", \n" +
+    "            "+cjATcontraTierra.getText()+", "+cjBTcontraTierra.getText()+", '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
+    "            "+getT(0,3)+", "+getT(0,4)+", "+getT(1,2)+", "+getT(1,3)+", "+getT(1,3)+", "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+", "+getT(3,2)+", \n" +
+    "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", "+cjuv.getText()+", "+cjvw.getText()+", \n" +
+    "            "+cjwu.getText()+", "+cjproresalta.getText()+", '"+comboMaterialAlta.getSelectedItem()+"', "+cjxy.getText()+", "+cjyz.getText()+", "+cjzx.getText()+", \n" +
+    "            "+cjproresbaja.getText()+", "+comboMaterialBaja.getSelectedItem()+", "+cjiu.getText()+", "+cjiv.getText()+", "+cjiw.getText()+", "+cjpromedioi.getText()+", "+cjiogarantizado.getText()+", \n" +
+    "            "+cjpomedido.getText()+", "+cjpogarantizado.getText()+", "+cjvcc.getText()+", "+cjpcumedido.getText()+", "+cjpcua85.getText()+", "+cjpcugarantizado.getText()+", "+cji2r.getText()+", \n" +
+    "            "+cji2ra85.getText()+", "+cjimpedancia.getText()+", "+cjimpedancia85.getText()+", "+cjimpedanciagarantizado.getText()+", "+cjreg.getText()+", \n" +
+    "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", "+cjcolor.getText()+", "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
+    "            "+cjlargoelemento.getText()+", "+cjaltoelemento.getText()+", '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
+    "            '"+new java.util.Date()+"', "+sesion.getIdUsuario()+")";
+        }else{
+            GUARDAR = "UPDATE public.protocolos SET\n" +
+    "            frecuencia="+comboFrecuencia.getSelectedItem()+", refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
+    "            tensionserie='"+cjtensionSerie.getText()+"', nba='"+cjnba.getText()+"', calentamientodevanado='"+cjcalentamientodevanado.getText()+"', claseaislamiento='"+comboClaseAislamiento.getSelectedItem()+"', alturadiseno='"+cjaltdiseno.getText()+"', \n" +
+    "            derivacionprimaria='"+comboDerivacion.getSelectedItem()+"', i1="+cji1.getText()+", i2="+cji2.getText()+", temperaturadeensayo="+cjtemperatura.getText()+", conmutador="+conmutador.getSelectedItem()+", \n" +
+    "            liquidoaislante='"+comboAceite.getSelectedItem()+"', referenciadeaceite='"+comboReferenciaAceite.getSelectedItem()+"', tensionderuptura='"+cjRuptura.getText()+"', metodo='"+cjmetodo.getText()+"', \n" +
+    "            tiemporesistenciadeaislamiento="+cjtiemporalt.getText()+", tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt="+cjATcontraBT.getText()+", \n" +
+    "            atcontratierra="+cjATcontraTierra.getText()+", btcontratierra="+cjBTcontraTierra.getText()+", grupodeconexion='"+comboGrupoConexion.getSelectedItem()+"', polaridad='"+comboPolaridad.getSelectedItem()+"', punou="+getT(0,2)+", \n" +
+    "            punov="+getT(0,3)+", punow="+getT(0,4)+", pdosu="+getT(1,2)+", pdosv="+getT(1,3)+", pdosw="+getT(1,3)+", ptresu="+getT(2,2)+", ptresv="+getT(2,3)+", ptresw="+getT(2,4)+", pcuatrou="+getT(3,2)+", \n" +
+    "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv="+cjuv.getText()+", resvw="+cjvw.getText()+", \n" +
+    "            reswu="+cjwu.getText()+", proresuno="+cjproresalta.getText()+", materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy="+cjxy.getText()+", resyz="+cjyz.getText()+", reszx="+cjzx.getText()+", \n" +
+    "            proresdos="+cjproresbaja.getText()+", materialconductorbaja="+comboMaterialBaja.getSelectedItem()+", iu="+cjiu.getText()+", iv="+cjiv.getText()+", iw="+cjiw.getText()+", promedioi="+cjpromedioi.getText()+", iogarantizado="+cjiogarantizado.getText()+", \n" +
+    "            pomedido="+cjpomedido.getText()+", pogarantizado="+cjpogarantizado.getText()+", vcc="+cjvcc.getText()+", pcu="+cjpcumedido.getText()+", pcua85="+cjpcua85.getText()+", pcugarantizado="+cjpcugarantizado.getText()+", i2r="+cji2r.getText()+", \n" +
+    "            i2ra85="+cji2ra85.getText()+", impedancia="+cjimpedancia.getText()+", impedancia85="+cjimpedancia85.getText()+", impedanciagarantizada="+cjimpedanciagarantizado.getText()+", reg="+cjreg.getText()+", \n" +
+    "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color="+cjcolor.getText()+", espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
+    "            largoradiador="+cjlargoelemento.getText()+", altoradiador="+cjaltoelemento.getText()+", observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
+    "            fechaderegistro='"+new java.util.Date()+"', idusuario"+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
+        }
+        if(conex.GUARDAR(GUARDAR)){
+            modelo.Metodos.M("PROTOCOLO REGISTRADO", "bien.png");
+        }
+    }
+       
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -309,6 +373,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        cjprotocolo = new CompuChiqui.JTextFieldPopup();
+        jLabel80 = new javax.swing.JLabel();
         cjserie = new CompuChiqui.JTextFieldPopup();
         jLabel4 = new javax.swing.JLabel();
         cjempresa = new CompuChiqui.JTextFieldPopup();
@@ -345,7 +411,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         cji2 = new CompuChiqui.JTextFieldPopup();
         jLabel19 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
+        comboDerivacion = new javax.swing.JComboBox<>();
         jLabel29 = new javax.swing.JLabel();
         cjtemperatura = new CompuChiqui.JTextFieldPopup();
         jLabel30 = new javax.swing.JLabel();
@@ -358,7 +424,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         cjRuptura = new CompuChiqui.JTextFieldPopup();
         jLabel23 = new javax.swing.JLabel();
-        cjMetodo = new CompuChiqui.JTextFieldPopup();
+        cjmetodo = new CompuChiqui.JTextFieldPopup();
         jPanel4 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         cjtiemporalt = new CompuChiqui.JTextFieldPopup();
@@ -470,7 +536,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel76 = new javax.swing.JLabel();
         cjlargoelemento = new CompuChiqui.JTextFieldPopup();
         jLabel77 = new javax.swing.JLabel();
-        cjanchoelemento = new CompuChiqui.JTextFieldPopup();
+        cjaltoelemento = new CompuChiqui.JTextFieldPopup();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaUno = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -482,6 +548,7 @@ public class PROTOS extends javax.swing.JFrame {
         cjlote = new CompuChiqui.JTextFieldPopup();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         cjfechasalida = new com.toedter.calendar.JDateChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -492,11 +559,24 @@ public class PROTOS extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informacion General", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
-        jPanel2.setLayout(new java.awt.GridLayout(21, 2, 0, 2));
+        jPanel2.setLayout(new java.awt.GridLayout(22, 2, 0, 2));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Serie N°:");
+        jLabel3.setText("Protocolo N°:");
         jPanel2.add(jLabel3);
+
+        cjprotocolo.setEditable(false);
+        cjprotocolo.setBackground(new java.awt.Color(255, 255, 255));
+        cjprotocolo.setForeground(new java.awt.Color(0, 102, 255));
+        cjprotocolo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjprotocolo.setCampodetexto(cjATcontraBT);
+        cjprotocolo.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        cjprotocolo.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel2.add(cjprotocolo);
+
+        jLabel80.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel80.setText("Serie N°:");
+        jPanel2.add(jLabel80);
 
         cjserie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjserie.setText("2014110679");
@@ -662,8 +742,8 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel19.setText("Deriv. Prim:");
         jPanel2.add(jLabel19);
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(-4)*2.5%", "(+1-3)*2.5%", "(+2-2)*2.5%", "(+3-1)*2.5%", "(+4)*2.5%" }));
-        jPanel2.add(jComboBox6);
+        comboDerivacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(-4)*2.5%", "(+1-3)*2.5%", "(+2-2)*2.5%", "(+3-1)*2.5%", "(+4)*2.5%" }));
+        jPanel2.add(comboDerivacion);
 
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel29.setText("Temperatura:");
@@ -713,10 +793,10 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel23.setText("Metodo:");
         jPanel3.add(jLabel23);
 
-        cjMetodo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjMetodo.setText("ASTM 877");
-        cjMetodo.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel3.add(cjMetodo);
+        cjmetodo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjmetodo.setText("ASTM 877");
+        cjmetodo.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel3.add(cjmetodo);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "2) Resist. Aislamiento:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel4.setToolTipText("Resistencia de Aislamiento");
@@ -1250,7 +1330,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel76);
 
         cjlargoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjlargoelemento.setCampodetexto(cjanchoelemento);
+        cjlargoelemento.setCampodetexto(cjaltoelemento);
         cjlargoelemento.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjlargoelemento);
 
@@ -1258,9 +1338,9 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel77.setText("Ancho Elemento:");
         jPanel12.add(jLabel77);
 
-        cjanchoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjanchoelemento.setPreferredSize(new java.awt.Dimension(100, 20));
-        jPanel12.add(cjanchoelemento);
+        cjaltoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjaltoelemento.setPreferredSize(new java.awt.Dimension(100, 20));
+        jPanel12.add(cjaltoelemento);
 
         tablaUno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1345,6 +1425,14 @@ public class PROTOS extends javax.swing.JFrame {
 
         jLabel34.setText("Lote:");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Guardar.png"))); // NOI18N
+        jButton1.setToolTipText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
@@ -1357,8 +1445,10 @@ public class PROTOS extends javax.swing.JFrame {
                         .addComponent(jLabel33)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cjcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                        .addComponent(jLabel34)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jLabel34, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cjlote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -1376,7 +1466,9 @@ public class PROTOS extends javax.swing.JFrame {
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cjlote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel34))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fecha Salida Laboratorio", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
@@ -1533,10 +1625,12 @@ public class PROTOS extends javax.swing.JFrame {
                     DialogoTrafosRepetidos trafos = new DialogoTrafosRepetidos(this, rootPaneCheckingEnabled);
                     trafos.CargarDatos(rs);
                     trafos.setVisible(true);
+                    IDTRAFO = trafos.getIDTRAFO();
                     rs = conex.CONSULTAR("SELECT * FROM entrada e INNER JOIN transformador t USING(identrada) INNER JOIN cliente c USING (idcliente) WHERE t.idtransformador='"+trafos.getIDTRAFO()+"'");
                     mostrar = rs.next();
                 }
                 if(mostrar){
+                    IDTRAFO = rs.getInt("idtransformador");
                     cjcliente.setText(rs.getString("nombrecliente"));
                     cjlote.setText(rs.getString("lote"));
                     cjempresa.setText(rs.getString("numeroempresa"));
@@ -1553,6 +1647,7 @@ public class PROTOS extends javax.swing.JFrame {
                     cjaceite.setText(rs.getString("aceite"));
                     CargarTablas();
                     habilitarCampos(rs.getString("fase").equals("3"));
+                    cjcliente.setCaretPosition(0);
                     subMenuItemRecalcular.doClick();
                 }
             }catch(SQLException ex){
@@ -1659,6 +1754,10 @@ public class PROTOS extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboServicioItemStateChanged
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        guardar();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1694,14 +1793,13 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjBTcontraATyTierra;
     private CompuChiqui.JTextFieldPopup cjBTcontraTierra;
     private CompuChiqui.JTextFieldPopup cjFrecuenciaInducida;
-    private CompuChiqui.JTextFieldPopup cjMetodo;
     private CompuChiqui.JTextFieldPopup cjRuptura;
     private CompuChiqui.JTextFieldPopup cjTensionBT2;
     private CompuChiqui.JTextFieldPopup cjaceite;
     private CompuChiqui.JTextFieldPopup cjaltdiseno;
     private CompuChiqui.JTextFieldPopup cjalto;
+    private CompuChiqui.JTextFieldPopup cjaltoelemento;
     private CompuChiqui.JTextFieldPopup cjancho;
-    private CompuChiqui.JTextFieldPopup cjanchoelemento;
     private CompuChiqui.JTextFieldPopup cjano;
     private CompuChiqui.JTextFieldPopup cjcalentamientodevanado;
     private CompuChiqui.JTextFieldPopup cjcliente;
@@ -1728,6 +1826,7 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjlote;
     private CompuChiqui.JTextFieldPopup cjmarca;
     private CompuChiqui.JTextFieldPopup cjmasa;
+    private CompuChiqui.JTextFieldPopup cjmetodo;
     private CompuChiqui.JTextFieldPopup cjnba;
     private CompuChiqui.JCTextArea cjobservaciones;
     private CompuChiqui.JTextFieldPopup cjpcua85;
@@ -1738,6 +1837,7 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjpromedioi;
     private CompuChiqui.JTextFieldPopup cjproresalta;
     private CompuChiqui.JTextFieldPopup cjproresbaja;
+    private CompuChiqui.JTextFieldPopup cjprotocolo;
     private CompuChiqui.JTextFieldPopup cjreg;
     private CompuChiqui.JTextFieldPopup cjserie;
     private CompuChiqui.JTextFieldPopup cjtemperatura;
@@ -1757,6 +1857,7 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjzx;
     private javax.swing.JComboBox<String> comboAceite;
     private javax.swing.JComboBox<String> comboClaseAislamiento;
+    private javax.swing.JComboBox<String> comboDerivacion;
     private javax.swing.JComboBox<String> comboFase;
     private javax.swing.JComboBox<String> comboFrecuencia;
     private javax.swing.JComboBox<String> comboGrupoConexion;
@@ -1768,7 +1869,7 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboServicio;
     private javax.swing.JComboBox<String> comboTensionPrueba;
     private javax.swing.JComboBox<String> conmutador;
-    private javax.swing.JComboBox<String> jComboBox6;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1847,6 +1948,7 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel80;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
