@@ -599,7 +599,7 @@ public final class PROTOCOLO extends javax.swing.JFrame {
                     }
                 }
             }
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e){
             M("La temperatura de prueba esta vacia, imposible calcular (K)\n" + e, mal);
             cjtemperaturadeprueba.grabFocus();
             cjtemperaturadeprueba.setBorder(new LineBorder(Color.red));
@@ -4814,7 +4814,7 @@ public final class PROTOCOLO extends javax.swing.JFrame {
                 }
                 FORMULAS.HallarI2r(combofasestransformador, cjcorrienteprimaria, cjcorrientesecundaria, cjpromedioresistenciaprimaria, cjpromedioresistenciasecundaria, cji2r);
                 CargarMasDatos();
-            } else if (combofasestransformador.getSelectedItem().toString().equalsIgnoreCase("3")) {
+            } else if (combofasestransformador.getSelectedItem().toString().equalsIgnoreCase("3")){
                 combopolaridad.setSelectedIndex(2);
                 CalcularCorrientePrimaria();
                 CalcularCorrienteSecundaria();
@@ -6876,11 +6876,11 @@ public final class PROTOCOLO extends javax.swing.JFrame {
         @Override
         public void run() {
             while (true) {
-                if (work) {
+                if (work){
                     if (inteligente.isSelected()) {
-                        if (valores[0][0] > 0) {
-                            for (int row = 0; row < tablauno.getRowCount(); row++) {
-                                for (int col = 2; col < tablauno.getRowCount(); col++) {
+                        if(valores[0][0] > 0){
+                            for (int row = 0; row < tablauno.getRowCount(); row++){
+                                for (int col = 2; col < tablauno.getRowCount(); col++){
                                     try {
                                         double fase = Double.parseDouble(String.valueOf(tablauno.getValueAt(row, col)));
                                         if (fase > 0) {

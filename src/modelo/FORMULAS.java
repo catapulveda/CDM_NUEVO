@@ -240,7 +240,7 @@ public class FORMULAS {
                 } else {
                     ano = Double.parseDouble(cjfechafabricacion.getText());
                 }
-                if (comboservicio.getSelectedItem().toString().equalsIgnoreCase("NUEVO") || comboservicio.getSelectedItem().toString().equalsIgnoreCase("RECONSTRUIDO")) {
+                if(comboservicio.getSelectedItem().toString().equalsIgnoreCase("NUEVO") || comboservicio.getSelectedItem().toString().equalsIgnoreCase("RECONSTRUIDO")) {
                     double vp = Double.parseDouble(cjtensionprimaria.getText());
                     if (combofasetransformador.getSelectedItem().toString().equalsIgnoreCase("1")) {
                         if (vp <= 15000) {
@@ -248,7 +248,7 @@ public class FORMULAS {
                         } else if (vp > 15000 && vp <= 35000) {
                             tabla = "monofasiconuevoserie35";
                         }
-                    } else if (combofasetransformador.getSelectedItem().toString().equalsIgnoreCase("3")) {
+                    }else if (combofasetransformador.getSelectedItem().toString().equalsIgnoreCase("3")){
                         if (vp <= 15000) {
                             tabla = "trifasiconuevo";
                         } else if (vp > 15000 && vp <= 35000) {
@@ -339,7 +339,7 @@ public class FORMULAS {
                     //KVA = nf.parse(cjpotencia.getText()).doubleValue();        
                 }
                 if (comborefrigeracion.getSelectedIndex() == 2) {
-                    if (combofasetransformador.getSelectedItem().toString().equalsIgnoreCase("3")) {
+                    if (combofasetransformador.getSelectedItem().toString().equalsIgnoreCase("3")){
                         double vp = Double.parseDouble(cjtensionprimaria.getText());
                         if (vp > 1200 && vp <= 15000) {
                             tabla = "trifasicosecoserie1512";
@@ -439,7 +439,7 @@ public class FORMULAS {
                                             I2r = QuitarDecimales((Math.pow(Ip, 2) * Rp) + (Math.pow(Is, 2) * (Rs / 1000)), 1);
                                             cji2r.setText(String.valueOf(I2r));
                                         } else if (Integer.parseInt(combofasetransformador.getSelectedItem().toString()) == 3) {
-                                            I2r = QuitarDecimales(1.5 * ((Math.pow(Ip, 2) * Rp) + (Math.pow(Is, 2) * (Rs / 1000))), 2);
+                                            I2r = QuitarDecimales( 1.5 * ((Math.pow(Ip, 2) * Rp) + (Math.pow(Is, 2) * (Rs / 1000))), 2);
                                             cji2r.setText(String.valueOf(I2r));
                                         }
                                     }

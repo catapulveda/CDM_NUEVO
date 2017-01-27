@@ -58,20 +58,30 @@ public class PROTOS extends javax.swing.JFrame {
     }
     
     void HallarPromedioResistencias(){
-        cjproresalta.setText(""+(cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/((comboFase.getSelectedIndex()==1)?3:1));
-        cjproresbaja.setText(""+(cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/((comboFase.getSelectedIndex()==1)?3:1));
+        cjproresalta.setText(""+QD((cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/((comboFase.getSelectedIndex()==1)?3:1), 2));
+        cjproresbaja.setText(""+QD((cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/((comboFase.getSelectedIndex()==1)?3:1), 2));
     }
     
-    void HallarPromedioCorrientes(){        
-        cjpromedioi.setText(""+((comboFase.getSelectedIndex()==0)?QD((cjiu.getDouble() / cji2.getDouble()) * 100, 2):QD((((cjiu.getDouble() + cjiv.getDouble() + cjiw.getDouble()) / 3) / 1) * 100, 2)));
+    void HallarPromedioCorrientes(){
+        if(comboFase.getSelectedIndex()==0){
+            cjpromedioi.setText(String.valueOf(QD((cjiu.getDouble() / cji2.getDouble()) * 100, 2)));
+        }else{
+            cjpromedioi.setText(String.valueOf(QD((((cjiu.getDouble() + cjiv.getDouble() + cjiw.getDouble()) / 3) / cji2.getDouble()) * 100, 2)));
+        }        
     }
     
-    double I2R(){        
-        cji2r.setText(""+QD((comboFase.getSelectedIndex()==0)?1:1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000))), 2));
-        return (comboFase.getSelectedIndex()==0)?1:1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000)));
+    double I2R(){
+        if(comboFase.getSelectedIndex()==0){
+            cji2r.setText(""+QD(((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000))), 2));
+            return ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000)));
+        }else{
+            cji2r.setText(""+QD(1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000))), 2));
+            return 1.5 * ((Math.pow(cji1.getDouble(), 2) * cjproresalta.getDouble()) + (Math.pow(cji2.getDouble(), 2) * (cjproresbaja.getDouble() / 1000)));
+        }                
     }
     
     double I2R85(){
+        cji2ra85.setText(String.valueOf(QD(I2R() * K(), 1)));
         return I2R() * K();
     }
     
@@ -86,6 +96,12 @@ public class PROTOS extends javax.swing.JFrame {
     double Z() {
         cjimpedancia.setText(""+QD((cjvcc.getDouble() / cjvp.getDouble()) * 100, 3));
         return (cjvcc.getDouble() / cjvp.getDouble()) * 100;
+    }
+    
+    public double Z85() {
+        double Z85 = Math.sqrt((Math.pow(R85(), 2)) + (Math.pow(X(), 2)));
+        cjimpedancia85.setText(String.valueOf(QD(Z85, 2)));
+        return Z85;
     }
     
     double X() {
@@ -221,14 +237,14 @@ public class PROTOS extends javax.swing.JFrame {
         String sql = "SELECT * FROM " + tabla + " WHERE kva=" + kva;
         conex.conectar();
         ResultSet rs = conex.CONSULTAR(sql);
-        try {
+        try{
             if(rs.next()){
-                cjiogarantizado.setText("" + rs.getDouble("io"));
-                cjpogarantizado.setText("" + rs.getDouble("po"));
-                cjpcugarantizado.setText("" + rs.getDouble("pc"));
-                cjimpedanciagarantizado.setText("" + rs.getDouble("uz"));
+                cjiogarantizado.setText(""+rs.getDouble("io"));
+                cjpogarantizado.setText(""+rs.getDouble("po"));
+                cjpcugarantizado.setText(""+rs.getInt("pc"));
+                cjimpedanciagarantizado.setText(""+rs.getDouble("uz"));
             }
-        } catch (SQLException ex) {
+        }catch(SQLException ex){
             Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             conex.CERRAR();
@@ -727,6 +743,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel4.add(jLabel26);
 
         cjATcontraBT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraBT.setAbajo(cjATcontraBTyTierra);
+        cjATcontraBT.setArriba(comboTensionPrueba);
         cjATcontraBT.setCampodetexto(cjATcontraTierra);
         cjATcontraBT.setPreferredSize(new java.awt.Dimension(100, 20));
         cjATcontraBT.setValidar(true);
@@ -737,6 +755,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel4.add(jLabel27);
 
         cjATcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjATcontraTierra.setAbajo(null);
+        cjATcontraTierra.setArriba(cjATcontraBT);
         cjATcontraTierra.setCampodetexto(cjBTcontraTierra);
         cjATcontraTierra.setPreferredSize(new java.awt.Dimension(100, 20));
         cjATcontraTierra.setValidar(true);
@@ -784,6 +804,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel35);
 
         cjuv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjuv.setAbajo(cjwu);
         cjuv.setCampodetexto(null);
         cjuv.setPreferredSize(new java.awt.Dimension(100, 20));
         cjuv.setValidar(true);
@@ -799,6 +820,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel36);
 
         cjxy.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjxy.setAbajo(cjyz);
         cjxy.setCampodetexto(null);
         cjxy.setPreferredSize(new java.awt.Dimension(100, 20));
         cjxy.setValidar(true);
@@ -814,6 +836,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel37);
 
         cjwu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjwu.setAbajo(cjvw);
+        cjwu.setArriba(cjuv);
         cjwu.setCampodetexto(cjvw);
         cjwu.setPreferredSize(new java.awt.Dimension(100, 20));
         cjwu.setValidar(true);
@@ -824,6 +848,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel38);
 
         cjyz.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjyz.setAbajo(cjvcc);
+        cjyz.setArriba(cjxy);
         cjyz.setCampodetexto(cjzx);
         cjyz.setPreferredSize(new java.awt.Dimension(100, 20));
         cjyz.setValidar(true);
@@ -834,6 +860,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel39);
 
         cjvw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvw.setArriba(cjwu);
         cjvw.setCampodetexto(cjxy);
         cjvw.setPreferredSize(new java.awt.Dimension(100, 20));
         cjvw.setValidar(true);
@@ -844,6 +871,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(jLabel40);
 
         cjzx.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjzx.setArriba(cjyz);
         cjzx.setCampodetexto(cjiu);
         cjzx.setPreferredSize(new java.awt.Dimension(100, 20));
         cjzx.setValidar(true);
@@ -853,6 +881,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel41.setText("Promedio:");
         jPanel6.add(jLabel41);
 
+        cjproresalta.setForeground(new java.awt.Color(0, 102, 255));
         cjproresalta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjproresalta.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel6.add(cjproresalta);
@@ -861,6 +890,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel42.setText("Promedio:");
         jPanel6.add(jLabel42);
 
+        cjproresbaja.setForeground(new java.awt.Color(0, 102, 255));
         cjproresbaja.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjproresbaja.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel6.add(cjproresbaja);
@@ -945,6 +975,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel51.setText("Tension BT:");
         jPanel8.add(jLabel51);
 
+        cjTensionBT2.setForeground(new java.awt.Color(0, 102, 255));
         cjTensionBT2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjTensionBT2.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(cjTensionBT2);
@@ -954,6 +985,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel52);
 
         cjiu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiu.setAbajo(cjiv);
         cjiu.setCampodetexto(null);
         cjiu.setPreferredSize(new java.awt.Dimension(100, 20));
         cjiu.setValidar(true);
@@ -969,6 +1001,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel53);
 
         cjiv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiv.setAbajo(cji2ra85);
+        cjiv.setArriba(cjiu);
         cjiv.setCampodetexto(cjiw);
         cjiv.setPreferredSize(new java.awt.Dimension(100, 20));
         cjiv.setValidar(true);
@@ -979,6 +1013,8 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel8.add(jLabel54);
 
         cjiw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjiw.setAbajo(cjpomedido);
+        cjiw.setArriba(cjiv);
         cjiw.setCampodetexto(cjpomedido);
         cjiw.setPreferredSize(new java.awt.Dimension(100, 20));
         cjiw.setValidar(true);
@@ -988,6 +1024,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel55.setText("Promedio I(%):");
         jPanel8.add(jLabel55);
 
+        cjpromedioi.setForeground(new java.awt.Color(0, 102, 255));
         cjpromedioi.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjpromedioi.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(cjpromedioi);
@@ -996,6 +1033,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel56.setText("Io Garantizado:");
         jPanel8.add(jLabel56);
 
+        cjiogarantizado.setForeground(new java.awt.Color(0, 102, 255));
         cjiogarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjiogarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(cjiogarantizado);
@@ -1014,6 +1052,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel58.setText("Po Garantizado:");
         jPanel8.add(jLabel58);
 
+        cjpogarantizado.setForeground(new java.awt.Color(0, 102, 255));
         cjpogarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjpogarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel8.add(cjpogarantizado);
@@ -1051,6 +1090,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel61.setText("Pcu a 85°:");
         jPanel9.add(jLabel61);
 
+        cjpcua85.setForeground(new java.awt.Color(0, 102, 255));
         cjpcua85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjpcua85.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cjpcua85);
@@ -1059,6 +1099,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel62.setText("Pcu Garantizado:");
         jPanel9.add(jLabel62);
 
+        cjpcugarantizado.setForeground(new java.awt.Color(0, 102, 255));
         cjpcugarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjpcugarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cjpcugarantizado);
@@ -1067,6 +1108,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel63.setText("I2r:");
         jPanel9.add(jLabel63);
 
+        cji2r.setForeground(new java.awt.Color(0, 102, 255));
         cji2r.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cji2r.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cji2r);
@@ -1075,6 +1117,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel64.setText("I2r a 85°:");
         jPanel9.add(jLabel64);
 
+        cji2ra85.setForeground(new java.awt.Color(0, 102, 255));
         cji2ra85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cji2ra85.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cji2ra85);
@@ -1083,6 +1126,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel65.setText("Impedancia Z (%):");
         jPanel9.add(jLabel65);
 
+        cjimpedancia.setForeground(new java.awt.Color(0, 102, 255));
         cjimpedancia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjimpedancia.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cjimpedancia);
@@ -1091,6 +1135,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel66.setText("Impedancia 85° Z (%):");
         jPanel9.add(jLabel66);
 
+        cjimpedancia85.setForeground(new java.awt.Color(0, 102, 255));
         cjimpedancia85.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjimpedancia85.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cjimpedancia85);
@@ -1099,6 +1144,7 @@ public class PROTOS extends javax.swing.JFrame {
         jLabel67.setText("Impendancia Garantizado:");
         jPanel9.add(jLabel67);
 
+        cjimpedanciagarantizado.setForeground(new java.awt.Color(0, 102, 255));
         cjimpedanciagarantizado.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjimpedanciagarantizado.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel9.add(cjimpedanciagarantizado);
@@ -1285,11 +1331,13 @@ public class PROTOS extends javax.swing.JFrame {
 
         cjcliente.setEditable(false);
         cjcliente.setBackground(new java.awt.Color(255, 255, 255));
+        cjcliente.setForeground(new java.awt.Color(0, 102, 255));
         cjcliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjcliente.setPreferredSize(new java.awt.Dimension(100, 20));
 
         cjlote.setEditable(false);
         cjlote.setBackground(new java.awt.Color(255, 255, 255));
+        cjlote.setForeground(new java.awt.Color(0, 102, 255));
         cjlote.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         cjlote.setPreferredSize(new java.awt.Dimension(100, 20));
 
@@ -1431,10 +1479,10 @@ public class PROTOS extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Resultados y Ensayos", jPanel1);
 
-        jMenu1.setText("File");
+        jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Editar");
 
         subMenuItemRecalcular.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
         subMenuItemRecalcular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calculadora.png"))); // NOI18N
@@ -1500,7 +1548,9 @@ public class PROTOS extends javax.swing.JFrame {
                     cjvs.setText(rs.getString("tss"));
                     cjtensionBT.setText(String.valueOf(rs.getInt("tss")*2));
                     cjTensionBT2.setText(rs.getString("tss"));
-                    comboServicio.setSelectedItem(rs.getString("serviciosalida"));                    
+                    comboServicio.setSelectedItem(rs.getString("serviciosalida"));
+                    cjmasa.setText(rs.getString("peso"));
+                    cjaceite.setText(rs.getString("aceite"));
                     CargarTablas();
                     habilitarCampos(rs.getString("fase").equals("3"));
                     subMenuItemRecalcular.doClick();
@@ -1515,6 +1565,7 @@ public class PROTOS extends javax.swing.JFrame {
     }//GEN-LAST:event_cjserieKeyPressed
 
     private void subMenuItemRecalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuItemRecalcularActionPerformed
+        cargarValores();
         HallarTensionSerie();
         HallarConexionYPolaridad();
         HallarCorrientes();
@@ -1523,9 +1574,9 @@ public class PROTOS extends javax.swing.JFrame {
         HallarPromedioResistencias();
         I2R();
         I2R85();
+        Z85();
         HallarReg();
-        HallarEf();
-        cargarValores();
+        HallarEf();        
         cargarMedidas();
     }//GEN-LAST:event_subMenuItemRecalcularActionPerformed
 
@@ -1544,7 +1595,7 @@ public class PROTOS extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaUnoKeyTyped
 
     private void cjuvKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjuvKeyPressed
-        if(evt.getKeyCode()==10){
+        if(evt.getKeyCode()==10 && !cjuv.getText().isEmpty()){
             if(comboFase.getSelectedIndex()==0){
                 cjxy.grabFocus();
             }else{
@@ -1565,7 +1616,8 @@ public class PROTOS extends javax.swing.JFrame {
 
     private void comboFaseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboFaseItemStateChanged
         if(evt.getStateChange()==ItemEvent.DESELECTED){
-            habilitarCampos((comboFase.getSelectedIndex()==0));
+            habilitarCampos((comboFase.getSelectedIndex()==1));
+            subMenuItemRecalcular.doClick();
         }
     }//GEN-LAST:event_comboFaseItemStateChanged
 

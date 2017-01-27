@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -184,6 +185,10 @@ public class Metodos {
             con.CERRAR();
         }
         return list;
+    }
+    
+    public static Icon getIcon(String icono){
+        return new ImageIcon(Metodos.class.getResource("/recursos/images/"+icono));
     }
     
 }
