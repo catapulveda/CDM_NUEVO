@@ -84,6 +84,7 @@ public class Metodos {
                 }finally{
                     btn.setEnabled(true);
                     btn.setIcon(new ImageIcon(getClass().getResource("/recursos/images/excel.png")));
+                    barra.setValue(0);
                 }
             }
         }).start();        

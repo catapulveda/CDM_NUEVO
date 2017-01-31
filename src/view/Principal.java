@@ -40,7 +40,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
                 
             //REGISTRA LAS ENTRADAS O LOTES
-//        ResultSet rs1 = model.Conexion2.CONSULTAR("SELECT * FROM entrada e, conductor c WHERE e.conductor=c.nombre_conductor ORDER BY e.identrada");
+//        ResultSet rs1 = modelo.Conexion2.CONSULTAR("SELECT * FROM entrada e, conductor c WHERE e.conductor=c.nombre_conductor ORDER BY e.identrada");
 //        try {
 //            String sql = " INSERT INTO entrada (identrada,idcliente,idciudad,idconductor, \n";
 //            sql += " idusuario,identradaalmacen,nombrepc,lote,contrato,op,centrodecostos, \n";
@@ -62,7 +62,7 @@ public class Principal extends javax.swing.JFrame {
 //            system = Toolkit.getDefaultToolkit().getSystemClipboard();
 //            system.setContents(stsel,stsel);
 //            System.out.println(sql);
-//            if(new model.ConexionBD().GUARDAR(sql)){
+//            if(new modelo.ConexionBD().GUARDAR(sql)){
 //                
 //            }
 //        }catch(SQLException ex){
@@ -72,10 +72,10 @@ public class Principal extends javax.swing.JFrame {
 //REGISTRA LOS TRANSFORMADORES
 //    (new Thread(){
 //            public void run(){
-//                ResultSet rs = model.Conexion2.CONSULTAR("SELECT * FROM datosentrada");
+//                ResultSet rs = modelo.Conexion2.CONSULTAR("SELECT * FROM datosentrada");
 //                try {
 //                    String GUARDAR = " INSERT INTO transformador ( ";
-//                    GUARDAR += " item, numeroempresa, numeroserie, marca, kvaentrada, kvasalida, fase, tpe, tse, ";
+//                    GUARDAR += " idtransformador, item, numeroempresa, numeroserie, marca, kvaentrada, kvasalida, fase, tpe, tse, ";
 //                    GUARDAR += " tte, tps, tss, tts, aat, abt, hat, hbt, ci, ce, herraje, ano, ";
 //                    GUARDAR += " peso, aceite, observacionentrada, observacionsalida, servicioentrada, serviciosalida, ";
 //                    GUARDAR += " tipotrafoentrada, tipotrafosalida, estado, identrada, iddespacho, idremision ";
@@ -83,7 +83,7 @@ public class Principal extends javax.swing.JFrame {
 //                    while(rs.next()){
 //                        //System.out.println(rs.getRow()+" "+rs.getString("tension_salida")+" "+rs.getString("noplaca"));
 //                        area.setText(rs.getRow()+" "+rs.getString("tension_salida")+" "+rs.getString("noplaca"));
-//                        GUARDAR += " ( ";
+//                        GUARDAR += " ( "+rs.getInt("idtrafo")+" , ";
 //                        GUARDAR += " '"+rs.getString("no")+"' , '"+rs.getString("noempresa")+"' , '"+rs.getString("noplaca")+"' , ";
 //                        GUARDAR += " '"+rs.getString("marca")+"' , '"+rs.getString("kva")+"' , '"+rs.getString("kva_salida")+"' , ";
 //                        GUARDAR += " '"+rs.getString("fase")+"' , '"+rs.getString("tension").split("/")[0]+"' , '"+rs.getString("tension").split("/")[1]+"' , ";
@@ -106,7 +106,7 @@ public class Principal extends javax.swing.JFrame {
 //                    stsel  = new StringSelection(GUARDAR);
 //                    system = Toolkit.getDefaultToolkit().getSystemClipboard();
 //                    system.setContents(stsel,stsel);
-//                    if(new model.ConexionBD().GUARDAR(GUARDAR)){
+//                    if(new modelo.ConexionBD().GUARDAR(GUARDAR)){
 //
 //                    }
 //                } catch (SQLException ex) {
@@ -133,15 +133,15 @@ public class Principal extends javax.swing.JFrame {
 
 
 //REGISTRA LOS DESPACHOS
-//        ResultSet rs = model.Conexion2.CONSULTAR("SELECT * FROM despacho");
+//        ResultSet rs = modelo.Conexion2.CONSULTAR("SELECT * FROM despacho");
 //        String GUARDAR = " INSERT INTO despacho VALUES ";
 //        try {
 //            while(rs.next()){
 //                GUARDAR += " ( '"+rs.getString("iddespacho")+"' , '"+rs.getString("nodespacho")+"' , '"+rs.getString("fecha_despacho")+"' , '"+rs.getString("idcliente")+"' , '"+((rs.getString("peso_despacho")==null)?0:rs.getInt("peso_despacho"))+"' , '"+rs.getString("estado_despacho")+"' , '"+rs.getString("descripcion_despacho")+"' , 1) ,\n";
 //            }
-////            System.out.println(GUARDAR);
+//            System.out.println(GUARDAR);
 //            GUARDAR = GUARDAR.substring(0, GUARDAR.length()-2);
-//            if(new model.ConexionBD().GUARDAR(GUARDAR)){
+//            if(new modelo.ConexionBD().GUARDAR(GUARDAR)){
 //                
 //            }
 //        } catch (SQLException ex) {
@@ -149,7 +149,7 @@ public class Principal extends javax.swing.JFrame {
 //        }
         
 //REGISTRA LAS REMISIONES
-//        ResultSet rs = model.Conexion2.CONSULTAR("SELECT * FROM remision");
+//        ResultSet rs = modelo.Conexion2.CONSULTAR("SELECT * FROM remision");
 //        String GUARDAR = " INSERT INTO remision VALUES ";
 //        try {
 //            while(rs.next()){
@@ -173,7 +173,7 @@ public class Principal extends javax.swing.JFrame {
 //            system = Toolkit.getDefaultToolkit().getSystemClipboard();
 //            system.setContents(stsel,stsel);
 //            GUARDAR = GUARDAR.substring(0, GUARDAR.length()-2);
-//            if(new model.ConexionBD().GUARDAR(GUARDAR)){
+//            if(new modelo.ConexionBD().GUARDAR(GUARDAR)){
 //                
 //            }
 //        } catch (SQLException ex) {

@@ -1,21 +1,35 @@
 package view;
 
 import Dialogos.DialogoTrafosRepetidos;
+import JTableAutoResizeColumn.TableColumnAdjuster;
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
+import modelo.CustomTableModel;
 
-public class PROTOS extends javax.swing.JFrame {
+public class PROTOS extends javax.swing.JFrame{
 
     private String ESTADO_TRAFO = null;
     private boolean ACTUALIZANDO = false;
@@ -25,11 +39,25 @@ public class PROTOS extends javax.swing.JFrame {
     Hilofases alertas;
     modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
     
+    CustomTableModel modeloTabla;
+    TableRowSorter rowSorter;
+    RowFilter<TableModel, Object>  compoundRowFilter;
+    private int IDBUSQUEDA = 3;
+    
+    private int idUsuario = 1;
+    
+    TableColumnAdjuster ajustarColumna;
+    
     public PROTOS() {
         initComponents();
-        
+              
+        setExtendedState(Frame.MAXIMIZED_BOTH);
+        cjfechasalida.setDate(new java.util.Date());
         cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", false)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
         habilitarCampos((comboFase.getSelectedIndex()==0));
+        
+        ajustarColumna = new TableColumnAdjuster(tablaProtocolos);
+        cargarProtocolos();        
     }
     
     void HallarTensionSerie(){
@@ -58,12 +86,17 @@ public class PROTOS extends javax.swing.JFrame {
             cji2.setText(String.valueOf(QD(((cjkva.getDouble() * 1000) / ((comboFase.getSelectedIndex()==0)?1:Math.sqrt(3)) ) / cjvs.getInt(), 2)));
         }catch(Exception e){
             Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, e);
-        }        
+        }
     }
     
     void HallarPromedioResistencias(){
-        cjproresalta.setText(""+QD((cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/((comboFase.getSelectedIndex()==1)?3:1), 2));
-        cjproresbaja.setText(""+QD((cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/((comboFase.getSelectedIndex()==1)?3:1), 2));
+        if(comboFase.getSelectedIndex()==0){
+            cjproresalta.setText(""+cjuv.getDouble());
+            cjproresbaja.setText(""+cjxy.getDouble());
+        }else{
+            cjproresalta.setText(""+QD((cjuv.getDouble()+cjwu.getDouble()+cjvw.getDouble())/3, 2));
+            cjproresbaja.setText(""+QD((cjxy.getDouble()+cjyz.getDouble()+cjzx.getDouble())/3, 2));
+        }        
     }
     
     void HallarPromedioCorrientes(){
@@ -303,19 +336,20 @@ public class PROTOS extends javax.swing.JFrame {
         cjelementos.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"6":(kva==75)?"8":"0"):((kva==75)?"6":(kva==112.5)?"10":(kva==150)?"14":(kva==225)?"18":"0"));
         cjlargoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50||kva==75)?"300":"0"):((kva==75)?"300":(kva==112.5)?"380":(kva==150)?"300":(kva==225)?"300":"0"));
         cjaltoelemento.setText((comboFase.getSelectedIndex()==0)?((kva==50)?"480":(kva==75)?"480":"0"):((kva==75)?"480":(kva==112.5)?"380":(kva==150)?"480":(kva==225)?"480":"0"));
+        cjcolor.setText((cjcliente.getText().equals("EMPRESAS PUBLICAS DE MEDELLIN S.A E.S.P"))?"VERDE":"GRIS");
     }
     
     Object getT(int r, int col){return tablaUno.getValueAt(r, col);}
     
-    void guardar(){
+    void guardarProtocolo(){
         String GUARDAR = null;
-        if(ACTUALIZANDO){
+        if(!ACTUALIZANDO){
             GUARDAR = "INSERT INTO public.protocolos(\n" +
     "            idtransformador, codigo, frecuencia, refrigeracion, \n" +
     "            tensionserie, nba, calentamientodevanado, claseaislamiento, alturadiseno, \n" +
     "            derivacionprimaria, i1, i2, temperaturadeensayo, conmutador, \n" +
     "            liquidoaislante, referenciadeaceite, tensionderuptura, metodo, \n" +
-    "            tiemporesistenciadeaislamiento, tensiondeprueba, atcontrabt, \n" +
+    "            tiemporalt, tensiondeprueba, atcontrabt, \n" +
     "            atcontratierra, btcontratierra, grupodeconexion, polaridad, punou, \n" +
     "            punov, punow, pdosu, pdosv, pdosw, ptresu, ptresv, ptresw, pcuatrou, \n" +
     "            pcuatrov, pcuatrow, pcincou, pcincov, pcincow, resuv, resvw, \n" +
@@ -325,7 +359,7 @@ public class PROTOS extends javax.swing.JFrame {
     "            i2ra85, impedancia, impedancia85, impedanciagarantizada, reg, \n" +
     "            ef, largotanque, anchotanque, altotanque, color, espesor, radiadores, \n" +
     "            largoradiador, altoradiador, observaciones, fechalaboratorio, \n" +
-    "            fechaderegistro, idusuario)\n" +
+    "            fechaderegistro, estadoservicio, idusuario)\n" +
     "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', "+comboFrecuencia.getSelectedItem()+", '"+comboRefrigeracion.getSelectedItem()+"', \n" +
     "            '"+cjtensionSerie.getText()+"', '"+cjnba.getText()+"', '"+cjcalentamientodevanado.getText()+"', '"+comboClaseAislamiento.getSelectedItem()+"', '"+cjaltdiseno.getText()+"', \n" +
     "            '"+comboDerivacion.getSelectedItem()+"', "+cji1.getText()+", "+cji2.getText()+", "+cjtemperatura.getText()+", "+conmutador.getSelectedItem()+", \n" +
@@ -333,35 +367,190 @@ public class PROTOS extends javax.swing.JFrame {
     "            "+cjtiemporalt.getText()+", '"+comboTensionPrueba.getSelectedItem()+"', "+cjATcontraBT.getText()+", \n" +
     "            "+cjATcontraTierra.getText()+", "+cjBTcontraTierra.getText()+", '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
     "            "+getT(0,3)+", "+getT(0,4)+", "+getT(1,2)+", "+getT(1,3)+", "+getT(1,3)+", "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+", "+getT(3,2)+", \n" +
-    "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", "+cjuv.getText()+", "+cjvw.getText()+", \n" +
-    "            "+cjwu.getText()+", "+cjproresalta.getText()+", '"+comboMaterialAlta.getSelectedItem()+"', "+cjxy.getText()+", "+cjyz.getText()+", "+cjzx.getText()+", \n" +
-    "            "+cjproresbaja.getText()+", "+comboMaterialBaja.getSelectedItem()+", "+cjiu.getText()+", "+cjiv.getText()+", "+cjiw.getText()+", "+cjpromedioi.getText()+", "+cjiogarantizado.getText()+", \n" +
+    "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", "+cjuv.getDouble()+", "+cjvw.getDouble()+", \n" +
+    "            "+cjwu.getDouble()+", "+cjproresalta.getText()+", '"+comboMaterialAlta.getSelectedItem()+"', "+cjxy.getDouble()+", "+cjyz.getDouble()+", "+cjzx.getDouble()+", \n" +
+    "            "+cjproresbaja.getText()+", '"+comboMaterialBaja.getSelectedItem()+"', "+cjiu.getDouble()+", "+cjiv.getDouble()+", "+cjiw.getDouble()+", "+cjpromedioi.getText()+", "+cjiogarantizado.getText()+", \n" +
     "            "+cjpomedido.getText()+", "+cjpogarantizado.getText()+", "+cjvcc.getText()+", "+cjpcumedido.getText()+", "+cjpcua85.getText()+", "+cjpcugarantizado.getText()+", "+cji2r.getText()+", \n" +
     "            "+cji2ra85.getText()+", "+cjimpedancia.getText()+", "+cjimpedancia85.getText()+", "+cjimpedanciagarantizado.getText()+", "+cjreg.getText()+", \n" +
-    "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", "+cjcolor.getText()+", "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
+    "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", '"+cjcolor.getText()+"', "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
     "            "+cjlargoelemento.getText()+", "+cjaltoelemento.getText()+", '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
-    "            '"+new java.util.Date()+"', "+sesion.getIdUsuario()+")";
+    "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , "+sesion.getIdUsuario()+")";
         }else{
             GUARDAR = "UPDATE public.protocolos SET\n" +
     "            frecuencia="+comboFrecuencia.getSelectedItem()+", refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
     "            tensionserie='"+cjtensionSerie.getText()+"', nba='"+cjnba.getText()+"', calentamientodevanado='"+cjcalentamientodevanado.getText()+"', claseaislamiento='"+comboClaseAislamiento.getSelectedItem()+"', alturadiseno='"+cjaltdiseno.getText()+"', \n" +
     "            derivacionprimaria='"+comboDerivacion.getSelectedItem()+"', i1="+cji1.getText()+", i2="+cji2.getText()+", temperaturadeensayo="+cjtemperatura.getText()+", conmutador="+conmutador.getSelectedItem()+", \n" +
     "            liquidoaislante='"+comboAceite.getSelectedItem()+"', referenciadeaceite='"+comboReferenciaAceite.getSelectedItem()+"', tensionderuptura='"+cjRuptura.getText()+"', metodo='"+cjmetodo.getText()+"', \n" +
-    "            tiemporesistenciadeaislamiento="+cjtiemporalt.getText()+", tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt="+cjATcontraBT.getText()+", \n" +
+    "            tiemporalt="+cjtiemporalt.getText()+", tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt="+cjATcontraBT.getText()+", \n" +
     "            atcontratierra="+cjATcontraTierra.getText()+", btcontratierra="+cjBTcontraTierra.getText()+", grupodeconexion='"+comboGrupoConexion.getSelectedItem()+"', polaridad='"+comboPolaridad.getSelectedItem()+"', punou="+getT(0,2)+", \n" +
     "            punov="+getT(0,3)+", punow="+getT(0,4)+", pdosu="+getT(1,2)+", pdosv="+getT(1,3)+", pdosw="+getT(1,3)+", ptresu="+getT(2,2)+", ptresv="+getT(2,3)+", ptresw="+getT(2,4)+", pcuatrou="+getT(3,2)+", \n" +
-    "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv="+cjuv.getText()+", resvw="+cjvw.getText()+", \n" +
-    "            reswu="+cjwu.getText()+", proresuno="+cjproresalta.getText()+", materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy="+cjxy.getText()+", resyz="+cjyz.getText()+", reszx="+cjzx.getText()+", \n" +
-    "            proresdos="+cjproresbaja.getText()+", materialconductorbaja="+comboMaterialBaja.getSelectedItem()+", iu="+cjiu.getText()+", iv="+cjiv.getText()+", iw="+cjiw.getText()+", promedioi="+cjpromedioi.getText()+", iogarantizado="+cjiogarantizado.getText()+", \n" +
+    "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv="+cjuv.getDouble()+", resvw="+cjvw.getDouble()+", \n" +
+    "            reswu="+cjwu.getDouble()+", proresuno="+cjproresalta.getText()+", materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy="+cjxy.getDouble()+", resyz="+cjyz.getDouble()+", reszx="+cjzx.getDouble()+", \n" +
+    "            proresdos="+cjproresbaja.getText()+", materialconductorbaja="+comboMaterialBaja.getSelectedItem()+", iu="+cjiu.getDouble()+", iv="+cjiv.getDouble()+", iw="+cjiw.getDouble()+", promedioi="+cjpromedioi.getText()+", iogarantizado="+cjiogarantizado.getText()+", \n" +
     "            pomedido="+cjpomedido.getText()+", pogarantizado="+cjpogarantizado.getText()+", vcc="+cjvcc.getText()+", pcu="+cjpcumedido.getText()+", pcua85="+cjpcua85.getText()+", pcugarantizado="+cjpcugarantizado.getText()+", i2r="+cji2r.getText()+", \n" +
     "            i2ra85="+cji2ra85.getText()+", impedancia="+cjimpedancia.getText()+", impedancia85="+cjimpedancia85.getText()+", impedanciagarantizada="+cjimpedanciagarantizado.getText()+", reg="+cjreg.getText()+", \n" +
-    "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color="+cjcolor.getText()+", espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
+    "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color='"+cjcolor.getText()+"', espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
     "            largoradiador="+cjlargoelemento.getText()+", altoradiador="+cjaltoelemento.getText()+", observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
-    "            fechaderegistro='"+new java.util.Date()+"', idusuario"+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
+    "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , idusuario"+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
         }
         if(conex.GUARDAR(GUARDAR)){
             modelo.Metodos.M("PROTOCOLO REGISTRADO", "bien.png");
+            limpiar();
+            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
         }
+    }
+    
+    void abrirProtocolo(){
+        conex.conectar();
+        ResultSet rs = conex.CONSULTAR("SELECT * FROM protocolos INNER JOIN transformador t USING(idtransformador) INNER JOIN entrada e ON t.identrada=e.identrada INNER JOIN cliente c ON c.idcliente=e.idcliente WHERE idprotocolo="+IDTRAFO);
+        try {
+            if(rs.next()){
+                ACTUALIZANDO = true;
+                cjprotocolo.setText(rs.getString("codigo"));
+                cjcliente.setText(rs.getString("nombrecliente"));
+                cjlote.setText(rs.getString("lote"));
+                cjempresa.setText(rs.getString("numeroempresa"));
+                cjmarca.setText(rs.getString("marca"));
+                cjkva.setText(rs.getString("kvasalida"));
+                comboFase.setSelectedItem(rs.getString("fase"));
+                cjano.setText(rs.getString("ano"));
+                cjvp.setText(rs.getString("tps"));
+                cjvs.setText(rs.getString("tss"));
+                cjtensionBT.setText(String.valueOf(rs.getInt("tss")*2));
+                cjTensionBT2.setText(rs.getString("tss"));
+                comboServicio.setSelectedItem(rs.getString("serviciosalida"));
+                ESTADO_TRAFO = rs.getString("estadoservicio");
+                cjmasa.setText(rs.getString("peso"));
+                cjaceite.setText(rs.getString("aceite"));
+                CargarTablas();
+                habilitarCampos(rs.getString("fase").equals("3"));
+                cjcliente.setCaretPosition(0);
+                comboFrecuencia.setSelectedItem(rs.getString("frecuencia"));
+                comboRefrigeracion.setSelectedItem(rs.getString("refrigeracion"));
+                cjtensionSerie.setText(rs.getString("tensionserie"));
+                cjnba.setText(rs.getString("nba"));
+                cjcalentamientodevanado.setText(rs.getString("calentamientodevanado"));
+                comboClaseAislamiento.setSelectedItem(rs.getString("claseaislamiento"));
+                cjaltdiseno.setText(rs.getString("alturadiseno"));
+                cji1.setText(""+rs.getDouble("i1"));
+                cji2.setText(rs.getString("i2"));
+                comboDerivacion.setSelectedItem(rs.getString("derivacionprimaria"));
+                cjtemperatura.setText(rs.getString("temperaturadeensayo"));
+                conmutador.setSelectedItem(rs.getString("conmutador"));
+                comboAceite.setSelectedItem(rs.getString("liquidoaislante"));
+                comboReferenciaAceite.setSelectedItem(rs.getString("referenciadeaceite"));
+                cjRuptura.setText(rs.getString("tensionderuptura"));
+                cjmetodo.setText(rs.getString("metodo"));
+                cjtiemporalt.setText(rs.getString("tiemporalt"));
+                comboTensionPrueba.setSelectedItem(rs.getString("tensiondeprueba"));
+                cjATcontraBT.setText(rs.getString("atcontrabt"));
+                cjATcontraTierra.setText(rs.getString("atcontratierra"));
+                cjBTcontraTierra.setText(rs.getString("btcontratierra"));
+                comboGrupoConexion.setSelectedItem(rs.getString("grupodeconexion"));
+                comboPolaridad.setSelectedItem(rs.getString("polaridad"));
+                tablaUno.setValueAt(rs.getDouble("punou"), 0, 2);tablaUno.setValueAt(rs.getDouble("punov"), 0, 3);tablaUno.setValueAt(rs.getDouble("punow"), 0, 4);
+                tablaUno.setValueAt(rs.getDouble("pdosu"), 1, 2);tablaUno.setValueAt(rs.getDouble("pdosv"), 1, 3);tablaUno.setValueAt(rs.getDouble("pdosw"), 1, 4);
+                tablaUno.setValueAt(rs.getDouble("ptresu"), 2, 2);tablaUno.setValueAt(rs.getDouble("ptresv"), 2, 3);tablaUno.setValueAt(rs.getDouble("ptresw"), 2, 4);
+                tablaUno.setValueAt(rs.getDouble("pcuatrou"), 3, 2);tablaUno.setValueAt(rs.getDouble("pcuatrov"), 3, 3);tablaUno.setValueAt(rs.getDouble("pcuatrow"), 3, 4);
+                tablaUno.setValueAt(rs.getDouble("pcincou"), 4, 2);tablaUno.setValueAt(rs.getDouble("pcincov"), 4, 3);tablaUno.setValueAt(rs.getDouble("pcincow"), 4, 4);
+                cjuv.setText(rs.getString("resuv"));
+                cjvw.setText(rs.getString("resvw"));
+                cjwu.setText(rs.getString("reswu"));
+                cjproresalta.setText(rs.getString("proresuno"));
+                comboMaterialAlta.setSelectedItem(rs.getString("materialconductoralta"));
+                cjxy.setText(""+rs.getDouble("resxy"));
+                cjyz.setText(""+rs.getDouble("resyz"));
+                cjzx.setText(""+rs.getDouble("reszx"));
+                cjproresbaja.setText(""+rs.getDouble("proresdos"));
+                comboMaterialBaja.setSelectedItem(rs.getString("materialconductorbaja"));
+                cjtensionBT.setText(rs.getString("tss"));
+                cjiu.setText(""+rs.getDouble("iu"));
+                cjiv.setText(""+rs.getDouble("iv"));
+                cjiw.setText(""+rs.getDouble("iw"));
+                cjpromedioi.setText(""+rs.getDouble("promedioi"));
+                cjiogarantizado.setText(rs.getString("iogarantizado"));
+                cjpomedido.setText(rs.getString("pomedido"));
+                cjpogarantizado.setText(""+rs.getDouble("pogarantizado"));
+                cjvcc.setText(rs.getString("vcc"));
+                cjpcumedido.setText(rs.getString("pcu"));
+                cjpcua85.setText(""+rs.getDouble("pcua85"));
+                cjpcugarantizado.setText(rs.getString("pcugarantizado"));
+                cji2r.setText(""+rs.getDouble("i2r"));
+                cji2ra85.setText(""+rs.getDouble("i2ra85"));
+                cjimpedancia.setText(""+rs.getDouble("impedancia"));
+                cjimpedancia85.setText(""+rs.getDouble("impedancia85"));
+                cjimpedanciagarantizado.setText(""+rs.getDouble("impedanciagarantizada"));
+                cjreg.setText(rs.getString("reg"));
+                cjef.setText(""+rs.getDouble("ef"));
+                cjobservaciones.setText(rs.getString("observaciones"));
+                cjfechasalida.setDate(rs.getDate("fechalaboratorio"));
+                cjlargo.setText(rs.getString("largotanque"));
+                cjancho.setText(rs.getString("anchotanque"));
+                cjalto.setText(rs.getString("altotanque"));
+                cjcolor.setText(rs.getString("color"));
+                cjespesor.setText(rs.getString("espesor"));
+                cjelementos.setText(rs.getString("radiadores"));
+                cjlargoelemento.setText(rs.getString("largoradiador"));
+                cjaltoelemento.setText(rs.getString("altoradiador"));
+                jTabbedPane1.setSelectedIndex(0);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    void limpiar(){
+        System.out.println(jTabbedPane1.getComponentCount());
+        Component c = jTabbedPane1.getComponentAt(0);
+        JPanel p = (JPanel) c;
+        for (Component com : p.getComponents()) {
+            if(com instanceof JPanel){
+                JPanel panel = (JPanel) com;
+                for (Component txt : panel.getComponents()) {
+                    if(txt instanceof JTextField){
+                        ((JTextField) txt).setText("");
+                    }
+                }
+            }
+        }
+        cjcalentamientodevanado.setText("65");cjtemperatura.setText("30");cjRuptura.setText("40");
+        cjmetodo.setText("ASTM 877");cjBTcontraATyTierra.setText("10");cjATcontraBTyTierra.setText("34.5");
+        cjtiempoaplicado.setText("60");cjFrecuenciaInducida.setText("414");cjtiempoInducido.setText("17");
+        cjespesor.setText("110");
+    }
+    
+    void cargarProtocolos(){
+        modeloTabla = new CustomTableModel(
+                new Object[][]{}, 
+                modelo.PROTOCOLO.getColumnNames(), 
+                tablaProtocolos, 
+                modelo.PROTOCOLO.getColumnClass(), 
+                modelo.PROTOCOLO.getColumnEditables());
+        modelo.PROTOCOLO.cargarProtocolos(modeloTabla);
+        
+        tablaProtocolos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tablaProtocolos.setCellSelectionEnabled(true);
+        tablaProtocolos.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "selectNextColumnCell");
+        
+        ajustarColumna.adjustColumns();            
+        tablaProtocolos.getColumnModel().getColumn(0).setCellRenderer(new JButtonIntoJTable.BotonEnColumna());                  
+        
+        rowSorter = new TableRowSorter(modeloTabla);
+        tablaProtocolos.setRowSorter(rowSorter); 
+    }
+    
+    void buscarProtocolo(){
+        RowFilter<TableModel, Object> serie = RowFilter.regexFilter(cjbuscarPorSerie.getText().toUpperCase(), 3);
+        RowFilter<TableModel, Object> cliente = RowFilter.regexFilter(cjBuscarPorCliente.getText().toUpperCase(), 2);
+        RowFilter<TableModel, Object> lote = RowFilter.regexFilter(cjBuscarPorLote.getText(), 9);
+        RowFilter<TableModel, Object> marca = RowFilter.regexFilter(cjBuscarPorMarca.getText().toUpperCase(), 5);        
+        List<RowFilter<TableModel, Object>> filters = new ArrayList<>();
+        filters.add(serie);
+        filters.add(cliente);
+        filters.add(lote);
+        filters.add(marca);        
+        compoundRowFilter = RowFilter.andFilter(filters);
+        rowSorter.setRowFilter(compoundRowFilter);
     }
        
     
@@ -369,6 +558,9 @@ public class PROTOS extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menuProtocolos = new javax.swing.JPopupMenu();
+        subMenuAbrirProtocolo = new javax.swing.JMenuItem();
+        subMenuEliminar = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -548,15 +740,56 @@ public class PROTOS extends javax.swing.JFrame {
         cjlote = new CompuChiqui.JTextFieldPopup();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
+        jToolBar2 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JToolBar.Separator();
+        jButton2 = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         cjfechasalida = new com.toedter.calendar.JDateChooser();
+        jPanel14 = new javax.swing.JPanel();
+        jToolBar1 = new javax.swing.JToolBar();
+        jLabel81 = new javax.swing.JLabel();
+        cjbuscarPorSerie = new CompuChiqui.JTextFieldPopup();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        jLabel82 = new javax.swing.JLabel();
+        cjBuscarPorCliente = new CompuChiqui.JTextFieldPopup();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        jLabel83 = new javax.swing.JLabel();
+        cjBuscarPorLote = new CompuChiqui.JTextFieldPopup();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
+        jLabel84 = new javax.swing.JLabel();
+        cjBuscarPorMarca = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnGenerarExcel = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaProtocolos = new javax.swing.JTable();
+        jProgressBar1 = new javax.swing.JProgressBar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         subMenuItemRecalcular = new javax.swing.JMenuItem();
 
+        subMenuAbrirProtocolo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/ver.png"))); // NOI18N
+        subMenuAbrirProtocolo.setText("Abrir");
+        subMenuAbrirProtocolo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuAbrirProtocoloActionPerformed(evt);
+            }
+        });
+        menuProtocolos.add(subMenuAbrirProtocolo);
+
+        subMenuEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Borrar.png"))); // NOI18N
+        subMenuEliminar.setText("Eliminar");
+        subMenuEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuEliminarActionPerformed(evt);
+            }
+        });
+        menuProtocolos.add(subMenuEliminar);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane1.setFont(new java.awt.Font("Enter Sansman", 0, 11)); // NOI18N
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informacion General", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel2.setLayout(new java.awt.GridLayout(22, 2, 0, 2));
@@ -579,7 +812,6 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel2.add(jLabel80);
 
         cjserie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjserie.setText("2014110679");
         cjserie.setCampodetexto(cjATcontraBT);
         cjserie.setPreferredSize(new java.awt.Dimension(100, 20));
         cjserie.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -912,7 +1144,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(cjxy);
 
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel37.setText("W-U OHM:");
+        jLabel37.setText("V-W OHM:");
         jPanel6.add(jLabel37);
 
         cjwu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -936,7 +1168,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel6.add(cjyz);
 
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel39.setText("V-W OHM:");
+        jLabel39.setText("W-U OHM:");
         jPanel6.add(jLabel39);
 
         cjvw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1312,6 +1544,7 @@ public class PROTOS extends javax.swing.JFrame {
         jPanel12.add(jLabel74);
 
         cjespesor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjespesor.setText("110");
         cjespesor.setCampodetexto(cjelementos);
         cjespesor.setPreferredSize(new java.awt.Dimension(100, 20));
         jPanel12.add(cjespesor);
@@ -1425,6 +1658,8 @@ public class PROTOS extends javax.swing.JFrame {
 
         jLabel34.setText("Lote:");
 
+        jToolBar2.setFloatable(false);
+
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Guardar.png"))); // NOI18N
         jButton1.setToolTipText("Guardar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -1432,6 +1667,17 @@ public class PROTOS extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jToolBar2.add(jButton1);
+        jToolBar2.add(jSeparator5);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/nuevodocumento.png"))); // NOI18N
+        jButton2.setToolTipText("Nuevo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jButton2);
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -1440,16 +1686,15 @@ public class PROTOS extends javax.swing.JFrame {
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel33)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cjcliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jLabel34, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel34)
+                        .addGap(30, 30, 30)
                         .addComponent(cjlote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -1467,7 +1712,7 @@ public class PROTOS extends javax.swing.JFrame {
                     .addComponent(cjlote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel34))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -1533,43 +1778,156 @@ public class PROTOS extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(6, 6, 6)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                            .addComponent(jPanel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jPanel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Resultados y Ensayos", jPanel1);
+
+        jToolBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jToolBar1.setFloatable(false);
+
+        jLabel81.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel81.setText("Serie:");
+        jToolBar1.add(jLabel81);
+
+        cjbuscarPorSerie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjbuscarPorSerieKeyReleased(evt);
+            }
+        });
+        jToolBar1.add(cjbuscarPorSerie);
+        jToolBar1.add(jSeparator2);
+
+        jLabel82.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel82.setText("Cliente:");
+        jToolBar1.add(jLabel82);
+
+        cjBuscarPorCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjBuscarPorClienteKeyReleased(evt);
+            }
+        });
+        jToolBar1.add(cjBuscarPorCliente);
+        jToolBar1.add(jSeparator3);
+
+        jLabel83.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel83.setText("Lote:");
+        jToolBar1.add(jLabel83);
+
+        cjBuscarPorLote.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjBuscarPorLoteKeyReleased(evt);
+            }
+        });
+        jToolBar1.add(cjBuscarPorLote);
+        jToolBar1.add(jSeparator4);
+
+        jLabel84.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel84.setText("Marca:");
+        jToolBar1.add(jLabel84);
+
+        cjBuscarPorMarca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjBuscarPorMarcaKeyReleased(evt);
+            }
+        });
+        jToolBar1.add(cjBuscarPorMarca);
+        jToolBar1.add(jSeparator1);
+
+        btnGenerarExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/excel.png"))); // NOI18N
+        btnGenerarExcel.setFocusable(false);
+        btnGenerarExcel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnGenerarExcel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnGenerarExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarExcelActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnGenerarExcel);
+
+        tablaProtocolos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "PROTOCOLO N°", "CLIENTE", "SERIE", "N° EMPRESA", "MARCA", "POTENCIA", "FASE", "TENSION", "LOTE", "REMISION", "DESPACHO"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tablaProtocolos.setGridColor(new java.awt.Color(227, 227, 227));
+        tablaProtocolos.setRowHeight(25);
+        tablaProtocolos.getTableHeader().setReorderingAllowed(false);
+        tablaProtocolos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProtocolosMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tablaProtocolos);
+
+        jProgressBar1.setStringPainted(true);
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1259, Short.MAX_VALUE)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Protocolos", jPanel14);
 
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
@@ -1742,7 +2100,7 @@ public class PROTOS extends javax.swing.JFrame {
 
     private void comboServicioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboServicioItemStateChanged
         if(evt.getStateChange() == ItemEvent.DESELECTED){
-            if("MANTENIMIENTO".equals(comboServicio.getSelectedItem().toString())){
+            if(!ACTUALIZANDO && "MANTENIMIENTO".equals(comboServicio.getSelectedItem().toString())){
                 while(true){
                     int n = JOptionPane.showOptionDialog(this, "SELECCIONE EL ESTADO DEL TRANSFORMADOR", "Seleccione una opcion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, modelo.Metodos.getIcon("advertencia.png"), new Object[]{"ORIGINAL","REPARADO"}, "ORIGINAL");
                     if(n>=0){
@@ -1750,13 +2108,66 @@ public class PROTOS extends javax.swing.JFrame {
                         break;
                     }
                 }
+            }else{
+                ESTADO_TRAFO = comboServicio.getSelectedItem().toString();
             }
         }
     }//GEN-LAST:event_comboServicioItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        guardar();
+        guardarProtocolo();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnGenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarExcelActionPerformed
+        modelo.Metodos.generarExcel(tablaProtocolos, jProgressBar1, btnGenerarExcel);
+    }//GEN-LAST:event_btnGenerarExcelActionPerformed
+
+    private void cjbuscarPorSerieKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjbuscarPorSerieKeyReleased
+        buscarProtocolo();
+    }//GEN-LAST:event_cjbuscarPorSerieKeyReleased
+
+    private void tablaProtocolosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProtocolosMouseClicked
+        if(SwingUtilities.isRightMouseButton(evt)){
+            tablaProtocolos.setRowSelectionInterval(tablaProtocolos.rowAtPoint( evt.getPoint() ), tablaProtocolos.rowAtPoint( evt.getPoint() ));
+            tablaProtocolos.setColumnSelectionInterval(tablaProtocolos.columnAtPoint(evt.getPoint()), tablaProtocolos.columnAtPoint(evt.getPoint()));           
+            menuProtocolos.show(tablaProtocolos, evt.getPoint().x, evt.getPoint().y); 
+            IDTRAFO = (int) tablaProtocolos.getValueAt(tablaProtocolos.getSelectedRow(), 0);
+            IDBUSQUEDA = tablaProtocolos.columnAtPoint(evt.getPoint());
+        }
+        if(evt.getClickCount()==2){
+            IDTRAFO = (int) tablaProtocolos.getValueAt(tablaProtocolos.getSelectedRow(), 0);
+            abrirProtocolo();
+        }
+    }//GEN-LAST:event_tablaProtocolosMouseClicked
+
+    private void cjBuscarPorClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBuscarPorClienteKeyReleased
+        buscarProtocolo();
+    }//GEN-LAST:event_cjBuscarPorClienteKeyReleased
+        
+    private void cjBuscarPorMarcaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBuscarPorMarcaKeyReleased
+        buscarProtocolo();
+    }//GEN-LAST:event_cjBuscarPorMarcaKeyReleased
+
+    private void cjBuscarPorLoteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBuscarPorLoteKeyReleased
+        buscarProtocolo();
+    }//GEN-LAST:event_cjBuscarPorLoteKeyReleased
+
+    private void subMenuAbrirProtocoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuAbrirProtocoloActionPerformed
+        abrirProtocolo();
+    }//GEN-LAST:event_subMenuAbrirProtocoloActionPerformed
+
+    private void subMenuEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuEliminarActionPerformed
+        if(JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el protocolo "+tablaProtocolos.getValueAt(tablaProtocolos.getSelectedRow(), 1)+"?")==JOptionPane.YES_OPTION){
+            if(conex.GUARDAR("DELETE FROM protocolos WHERE idprotocolo="+IDTRAFO)){
+                modeloTabla.removeRow(tablaProtocolos.getSelectedRow());
+                //modelo.Metodos.M("EL PROTOCOLO HA SIDO ELIMINADO", "bien.png");                
+            }
+        }        
+    }//GEN-LAST:event_subMenuEliminarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        limpiar();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1787,11 +2198,15 @@ public class PROTOS extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarExcel;
     private CompuChiqui.JTextFieldPopup cjATcontraBT;
     private CompuChiqui.JTextFieldPopup cjATcontraBTyTierra;
     private CompuChiqui.JTextFieldPopup cjATcontraTierra;
     private CompuChiqui.JTextFieldPopup cjBTcontraATyTierra;
     private CompuChiqui.JTextFieldPopup cjBTcontraTierra;
+    private CompuChiqui.JTextFieldPopup cjBuscarPorCliente;
+    private CompuChiqui.JTextFieldPopup cjBuscarPorLote;
+    private javax.swing.JTextField cjBuscarPorMarca;
     private CompuChiqui.JTextFieldPopup cjFrecuenciaInducida;
     private CompuChiqui.JTextFieldPopup cjRuptura;
     private CompuChiqui.JTextFieldPopup cjTensionBT2;
@@ -1801,6 +2216,7 @@ public class PROTOS extends javax.swing.JFrame {
     private CompuChiqui.JTextFieldPopup cjaltoelemento;
     private CompuChiqui.JTextFieldPopup cjancho;
     private CompuChiqui.JTextFieldPopup cjano;
+    private CompuChiqui.JTextFieldPopup cjbuscarPorSerie;
     private CompuChiqui.JTextFieldPopup cjcalentamientodevanado;
     private CompuChiqui.JTextFieldPopup cjcliente;
     private CompuChiqui.JTextFieldPopup cjcolor;
@@ -1870,6 +2286,7 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboTensionPrueba;
     private javax.swing.JComboBox<String> conmutador;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1949,6 +2366,10 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel79;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
+    private javax.swing.JLabel jLabel81;
+    private javax.swing.JLabel jLabel82;
+    private javax.swing.JLabel jLabel83;
+    private javax.swing.JLabel jLabel84;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -1958,6 +2379,7 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1966,12 +2388,25 @@ public class PROTOS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JPopupMenu menuProtocolos;
+    private javax.swing.JMenuItem subMenuAbrirProtocolo;
+    private javax.swing.JMenuItem subMenuEliminar;
     private javax.swing.JMenuItem subMenuItemRecalcular;
     private javax.swing.JTable tablaDos;
+    private javax.swing.JTable tablaProtocolos;
     private javax.swing.JTable tablaUno;
     // End of variables declaration//GEN-END:variables
 

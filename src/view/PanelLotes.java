@@ -24,9 +24,7 @@ import modelo.Metodos;
 public class PanelLotes extends javax.swing.JPanel {
 
     CustomTableModel modeloTabla;
-    TableRowSorter rowSorter;
-    
-    private int idUsuario = 1;
+    TableRowSorter rowSorter;    
     
     TableColumnAdjuster ajustarColumna;
     
@@ -480,11 +478,4 @@ public class PanelLotes extends javax.swing.JPanel {
     public javax.swing.JTable tablaLotes;
     // End of variables declaration//GEN-END:variables
 
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
 }
