@@ -3,7 +3,12 @@ package Dialogos;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.ConexionBD;
 
 public class Login extends javax.swing.JDialog {
@@ -15,6 +20,18 @@ public class Login extends javax.swing.JDialog {
     public Login(java.awt.Frame parent, boolean modal){
         super(parent, modal);
         initComponents();               
+        
+        final ConexionBD conexion = new ConexionBD();
+        conexion.conectar();
+        try {
+            ResultSet rs = conexion.CONSULTAR("SELECT nombreusuario, pass FROM usuario WHERE pc='"+Inet4Address.getLocalHost().getHostName()+"' ");        
+            if(rs.next()){
+                cjusuario.setText(rs.getString("nombreusuario"));
+                cjpass.setText(rs.getString("pass"));
+            }
+        } catch (UnknownHostException | SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         btnEntrar.addActionListener((ActionEvent e) ->{
             btnEntrar.setEnabled(false);

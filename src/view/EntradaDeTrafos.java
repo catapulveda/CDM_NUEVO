@@ -921,7 +921,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     ACTUALIZA_LOTE += " '" +idConductor+ "' , ";
                     ACTUALIZA_LOTE += " '" +sesion.getIdUsuario()+ "' , ";
                     ACTUALIZA_LOTE += " '" +idEntradaAlmacen+ "' , ";
-                    ACTUALIZA_LOTE += " '" +Inet4Address.getLocalHost().getHostName().equals("ALMACEN")+ "' , ";
+                    ACTUALIZA_LOTE += " '" +Inet4Address.getLocalHost().getHostName()+ "' , ";
                     ACTUALIZA_LOTE += " '" +lote+ "' , ";
                     ACTUALIZA_LOTE += " '" +contrato+ "' , ";
                     ACTUALIZA_LOTE += " '" +op+ "' , ";

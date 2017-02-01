@@ -25,7 +25,8 @@ public class Despacho {
             "FECHA CREACION",
             "CLIENTE",
             "ESTADO",
-            "DESCRIPCION"
+            "DESCRIPCION",
+            "PREPARADOR"
         };
     }
     
@@ -36,6 +37,7 @@ public class Despacho {
             false,//
             false,//            
             false,//
+            false,
             false
         };
     }
@@ -47,7 +49,8 @@ public class Despacho {
             String.class,//"FECHA",
             String.class,//"CLIENT",            
             Boolean.class,//"ESTADO
-            String.class//DESCRIPCION
+            String.class,//DESCRIPCION
+            String.class//CREADOR
         };
     }
     
@@ -55,7 +58,7 @@ public class Despacho {
         modelo.ConexionBD con = new ConexionBD();
         try {            
             con.conectar();
-            ResultSet rs = con.CONSULTAR("SELECT * FROM despacho d INNER JOIN cliente c ON d.idcliente=c.idcliente ORDER BY d.idcliente, d.iddespacho ASC");
+            ResultSet rs = con.CONSULTAR("SELECT * FROM despacho d INNER JOIN cliente c ON d.idcliente=c.idcliente INNER JOIN usuario u USING(idusuario) ORDER BY d.idcliente, d.iddespacho ASC");
             while(rs.next()){
                 modelo.addRow(new Object[]{
                     rs.getInt("iddespacho"),
@@ -63,7 +66,8 @@ public class Despacho {
                     new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fecha_despacho")),
                     rs.getString("nombrecliente"),
                     rs.getBoolean("estado_despacho"),
-                    rs.getString("descripcion_despacho")
+                    rs.getString("descripcion_despacho"),
+                    rs.getString("nombreusuario")
                 });
             }
         } catch (Exception e) {

@@ -872,8 +872,8 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
                 GUARDA_REMISION += " ) ";
             }
 
-            if (conexion.GUARDAR(GUARDA_REMISION)) {
-                if (checkremisionnueva.isSelected()) {
+            if (conexion.GUARDAR(GUARDA_REMISION)){
+                if (checkremisionnueva.isSelected()){
                     checkremisionnueva.setSelected(false);
                     lista.clear();
                 }
@@ -922,7 +922,7 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
             if (!areadeTexto.getSelectedText().isEmpty()) {
                 areadeTexto.replaceSelection(areadeTexto.getSelectedText().toUpperCase());
             }
-        } catch (Exception e) {
+        } catch(Exception e){
             modelo.Metodos.M("ERROR AL CONVERTIR A MAYUSCULAS: " + e, "error.png");
         }
     }//GEN-LAST:event_SubMenuConvertirAMayusculasActionPerformed

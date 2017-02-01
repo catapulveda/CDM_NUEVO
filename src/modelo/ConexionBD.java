@@ -16,7 +16,7 @@ public class ConexionBD {
     
     private static Connection conexion;
     private static Statement statement;
-    //private static String url = "localhost:5432", BD = "CDM2", user = "postgres", pass = "cdm";
+//    private static String url = "localhost:5432", BD = "CDM2", user = "postgres", pass = "cdm";
     private static String url = "PRODUCCION:5432", BD = "CDM2", user = "postgres", pass = "cdm";
 
     public ConexionBD() {

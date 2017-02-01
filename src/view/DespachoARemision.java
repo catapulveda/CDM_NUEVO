@@ -239,7 +239,7 @@ public class DespachoARemision extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnRefrescar3 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        btnRefrescar4 = new javax.swing.JButton();
+        btnDevolver = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnImprimirRemision = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -296,17 +296,17 @@ public class DespachoARemision extends javax.swing.JFrame {
         jToolBar1.add(btnRefrescar3);
         jToolBar1.add(jSeparator2);
 
-        btnRefrescar4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/izquierda.png"))); // NOI18N
-        btnRefrescar4.setToolTipText("Devolver a planta");
-        btnRefrescar4.setFocusable(false);
-        btnRefrescar4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnRefrescar4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnRefrescar4.addActionListener(new java.awt.event.ActionListener() {
+        btnDevolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/izquierda.png"))); // NOI18N
+        btnDevolver.setToolTipText("Devolver a planta");
+        btnDevolver.setFocusable(false);
+        btnDevolver.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDevolver.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDevolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefrescar4ActionPerformed(evt);
+                btnDevolverActionPerformed(evt);
             }
         });
-        jToolBar1.add(btnRefrescar4);
+        jToolBar1.add(btnDevolver);
         jToolBar1.add(jSeparator3);
 
         btnImprimirRemision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/imprimir.png"))); // NOI18N
@@ -375,22 +375,24 @@ public class DespachoARemision extends javax.swing.JFrame {
         modelo.Metodos.generarExcel(tabla, jProgressBar1, btnRefrescar3);
     }//GEN-LAST:event_btnRefrescar3ActionPerformed
 
-    private void btnRefrescar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescar4ActionPerformed
+    private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverActionPerformed
         try {
             int filas[] = tabla.getSelectedRows();
             for (int i = filas.length - 1; i >= 0; i--){
-                String sql = " UPDATE transformador SET iddespacho=0 , idremision=0, estado='EN PLANTA' ";
-                sql += " WHERE iddespacho="+getIDDESPACHO()+" AND item="+modeloTabla.getValueAt(filas[i], 0)+" AND ";
-                sql += " numeroserie='"+modeloTabla.getValueAt(filas[i], 5)+"' ";
+                String sql = " UPDATE transformador SET iddespacho=null, idremision=null, estado='EN PLANTA' ";
+                sql += " WHERE iddespacho="+getIDDESPACHO()+" AND item="+tabla.getValueAt(filas[i], 0)+" AND ";
+                sql += " numeroserie='"+tabla.getValueAt(filas[i], 5)+"' ";
                 if(new ConexionBD().GUARDAR(sql)){
-                    modeloTabla.removeRow(filas[i]);
+//                    modeloTabla.removeRow(filas[i]);
                 }
             }
+            cjBuscar.setText("");
+            cargarTabla();
         } catch(Exception e){
             Logger.getLogger(DespachoARemision.class.getName()).log(Level.SEVERE, null, e);
             Metodos.ERROR(e, "ERROR AL INTENTAR DEVOLVER LOS TRANSFORMADORES SELECCIONADOS A PLANTA.");
         }
-    }//GEN-LAST:event_btnRefrescar4ActionPerformed
+    }//GEN-LAST:event_btnDevolverActionPerformed
 
     private void comboServicioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboServicioItemStateChanged
         if(evt.getStateChange() == ItemEvent.DESELECTED){
@@ -527,9 +529,9 @@ public class DespachoARemision extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnDevolver;
     public javax.swing.JButton btnImprimirRemision;
     public javax.swing.JButton btnRefrescar3;
-    public javax.swing.JButton btnRefrescar4;
     public CompuChiqui.JTextFieldPopup cjBuscar;
     public javax.swing.JComboBox<String> comboServicio;
     private javax.swing.JLabel jLabel1;
