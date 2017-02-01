@@ -191,8 +191,10 @@ public class Principal extends javax.swing.JFrame {
 //        jPanel1.setLayout (new JScollPanelAjustable.WrapLayout());
         
         btnLotes.addActionListener((ActionEvent e)->{
-            setExtendedState(ICONIFIED);
+//            setExtendedState(ICONIFIED);
             Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
+            login.setFrame(new view.MENU_NUEVO());
+            login.setTitle("CONTROL DE TRASFORMADORES");
             login.setVisible(true);
         });
         
@@ -319,9 +321,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProtocoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProtocoloActionPerformed
-        view.PROTOS proto = new view.PROTOS();
-        proto.setVisible(true);
-        hide();
+      
+        Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
+        login.setFrame(new view.PROTOS());
+        login.setTitle("PROTOCOLO DE TRANSFORMADORES");
+        login.setVisible(true);
     }//GEN-LAST:event_btnProtocoloActionPerformed
     
     public static void main(String args[]){     

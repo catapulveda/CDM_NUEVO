@@ -459,7 +459,7 @@ public class DespachoARemision extends javax.swing.JFrame {
         }
         
         if(MOSTRAR){
-            this.setExtendedState(ICONIFIED);
+//            this.setExtendedState(ICONIFIED);
             int SERVICIOS = 0;
             for (int i = 0; i < comboServicio.getItemCount() ; i++){
                 

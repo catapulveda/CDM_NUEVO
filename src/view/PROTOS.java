@@ -222,10 +222,12 @@ public class PROTOS extends javax.swing.JFrame{
                 public void tableChanged(TableModelEvent e) {
                     if(e.getType() == TableModelEvent.UPDATE){
                         if(e.getColumn()>1){
-                            if(alertas==null || alertas.getState()==java.lang.Thread.State.TERMINATED){
-                                alertas = new Hilofases(e.getFirstRow(), e.getColumn());
-                                alertas.start();
-                            }
+                            if(comboFase.getSelectedIndex()==0 && e.getColumn()==2 || comboFase.getSelectedIndex()==1 && e.getColumn()>2){
+                                if( alertas==null || alertas.getState()==java.lang.Thread.State.TERMINATED){
+                                    alertas = new Hilofases(e.getFirstRow(), e.getColumn());
+                                    alertas.start();
+                                }
+                            }                            
                         }
                     }
                 }
@@ -412,9 +414,7 @@ public class PROTOS extends javax.swing.JFrame{
     "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
         }
         if(conex.GUARDAR(GUARDAR)){
-            modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");            
-            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
-            ACTUALIZANDO = false;
+            modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");                        
             (new Thread(){
                 @Override
                 public void run(){
@@ -423,7 +423,7 @@ public class PROTOS extends javax.swing.JFrame{
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/gif.gif")));
                         JasperReport reporte = (JasperReport) JRLoader.loadObject(new URL(this.getClass().getResource("/REPORTES/PROTOCOLO.jasper").toString()));
                         Map<String, Object> p = new HashMap<String, Object>();
-                        p.put("IDPROTOCOLO", IDPROTOCOLO);
+                        p.put("IDPROTOCOLO", (ACTUALIZANDO)?IDPROTOCOLO:modelo.Metodos.getUltimoID("protocolos", "idprotocolo"));
                         p.put("BTcontraAT", cjBTcontraATyTierra.getText());
                         p.put("ATcontraBT", cjATcontraBTyTierra.getText());
                         JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());                        
@@ -433,6 +433,7 @@ public class PROTOS extends javax.swing.JFrame{
                         limpiar();
                     }catch(JRException | MalformedURLException ex){
                         Logger.getLogger(EntradaDeTrafos.class.getName()).log(Level.SEVERE, null, ex);
+                        modelo.Metodos.M("ERROR AL GENERAR EL PROTOCOLO", "error.png");
                     }finally{
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/guardar.png")));
                         btnGuardar.setEnabled(true);
@@ -511,7 +512,7 @@ public class PROTOS extends javax.swing.JFrame{
                 cjiv.setText(""+rs.getDouble("iv"));
                 cjiw.setText(""+rs.getDouble("iw"));
                 cjpromedioi.setText(""+rs.getDouble("promedioi"));
-                cjiogarantizado.setText(rs.getString("iogarantizado"));
+                cjiogarantizado.setText(""+rs.getDouble("iogarantizado"));
                 cjpomedido.setText(rs.getString("pomedido"));
                 cjpogarantizado.setText(""+rs.getDouble("pogarantizado"));
                 cjvcc.setText(rs.getString("vcc"));
@@ -560,6 +561,8 @@ public class PROTOS extends javax.swing.JFrame{
         cjmetodo.setText("ASTM 877");cjBTcontraATyTierra.setText("10");cjATcontraBTyTierra.setText("34.5");
         cjtiempoaplicado.setText("60");cjFrecuenciaInducida.setText("414");cjtiempoInducido.setText("17");
         cjespesor.setText("110");cjobservaciones.setText("");
+        cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", !ACTUALIZANDO)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
+        ACTUALIZANDO = false;
     }
     
     void cargarProtocolos(){
@@ -1688,6 +1691,11 @@ public class PROTOS extends javax.swing.JFrame{
 
         cjobservaciones.setColumns(20);
         cjobservaciones.setRows(5);
+        cjobservaciones.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjobservacionesKeyReleased(evt);
+            }
+        });
         jScrollPane3.setViewportView(cjobservaciones);
 
         cjcliente.setEditable(false);
@@ -2070,7 +2078,7 @@ public class PROTOS extends javax.swing.JFrame{
         HallarTensionSerie();
         HallarConexionYPolaridad();
         HallarCorrientes();
-        CargarTablas();
+//        CargarTablas();
         HallarPromedioCorrientes();
         HallarPromedioResistencias();
         I2R();
@@ -2222,6 +2230,12 @@ public class PROTOS extends javax.swing.JFrame{
             CargarTablas();
         }
     }//GEN-LAST:event_conmutadorItemStateChanged
+
+    private void cjobservacionesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjobservacionesKeyReleased
+        if(evt.getKeyChar()==10){
+            cjfechasalida.grabFocus();
+        }
+    }//GEN-LAST:event_cjobservacionesKeyReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

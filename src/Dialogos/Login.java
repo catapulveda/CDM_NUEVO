@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import modelo.ConexionBD;
 
 public class Login extends javax.swing.JDialog {
@@ -16,6 +17,8 @@ public class Login extends javax.swing.JDialog {
     Point inicial;
     private String EQUIPO = "";
     boolean RECORDAR = false;
+    private JFrame frame;
+    private String title;
     
     public Login(java.awt.Frame parent, boolean modal){
         super(parent, modal);
@@ -51,11 +54,11 @@ public class Login extends javax.swing.JDialog {
             ResultSet rs = conexion.CONSULTAR("SELECT * FROM usuario WHERE nombreusuario='"+usuario+"' AND pass='"+pass+"' ");
             if(rs.next()){
                 modelo.Sesion sesion = modelo.Sesion.getConfigurador(rs.getString("nombreusuario"), rs.getInt("idusuario"));
-                view.MENU_NUEVO menu = new view.MENU_NUEVO();
-                menu.setTitle("SOFTWARE CDM TRANSFORMADORES - Usuario: "+rs.getString("nombreusuario"));
+                frame = getFrame();
+                frame.setTitle(getTitle()+" - "+rs.getString("nombreusuario"));
                 ((view.Principal)getOwner()).dispose();
                 dispose();
-                menu.setVisible(true);
+                frame.setVisible(true);
             }
             conexion.CERRAR();
         }catch(Exception e){
@@ -233,4 +236,20 @@ public class Login extends javax.swing.JDialog {
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
