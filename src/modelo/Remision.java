@@ -107,7 +107,7 @@ public class Remision {
                     });
                 }
             } catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar la lista de gastos.\n"+e, "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Despacho.class.getResource("/recursos/images/error.png")));
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar la lista de remisiones.\n"+e, "Error", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Despacho.class.getResource("/recursos/images/error.png")));
             Logger.getLogger(Despacho.class.getName()).log(Level.SEVERE, null, e);
         }finally{
             con.CERRAR();

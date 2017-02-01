@@ -515,9 +515,11 @@ public class PrepararDespacho extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarDespachoActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        if(jCheckBox1.isSelected()){
-            for (int i = 0; i < tablaTrafos.getRowCount(); i++) {               
-                tablaTrafos.setValueAt(true, i, 4);
+        if(jCheckBox1.isSelected()){            
+            for (int i = 0; i < tablaTrafos.getRowCount(); i++) {
+                if(null!=tablaTrafos.getValueAt(i, 1)){
+                    tablaTrafos.setValueAt(true, i, 4);
+                }                
             }
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
