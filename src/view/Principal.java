@@ -40,9 +40,9 @@ public class Principal extends javax.swing.JFrame {
     
     static final ConexionBD conexion = new ConexionBD();
     
+    
     public Principal(){
-        initComponents();                      
-        
+        initComponents();                
             //REGISTRA LAS ENTRADAS O LOTES
 //        ResultSet rs1 = modelo.Conexion2.CONSULTAR("SELECT * FROM entrada e, conductor c WHERE e.conductor=c.nombre_conductor ORDER BY e.identrada");
 //        try {
@@ -328,22 +328,36 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProtocoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProtocoloActionPerformed
-      
-        Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
-        login.setFrame(new view.PROTOS());
-        login.setTitle("PROTOCOLO DE TRANSFORMADORES");
-        login.setVisible(true);
+        (new Thread(){
+            @Override
+            public void run(){
+                btnProtocolo.setEnabled(false);
+                view.PROTOS proto = new view.PROTOS();
+                proto.setTitle("PROTOCOLO DE TRANSFORMADORES");
+                proto.setVisible(true);
+                dispose();
+            }
+        }).start();          
     }//GEN-LAST:event_btnProtocoloActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
+        Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
+        login.setVisible(true);
+        modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
+        setTitle("Bienvenido "+sesion.getNombre());
     }//GEN-LAST:event_formWindowOpened
 
     private void btnLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLotesActionPerformed
-        Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
-        login.setFrame(new view.MENU_NUEVO());
-        login.setTitle("CONTROL DE TRASFORMADORES");
-        login.setVisible(true);
+        (new Thread(){
+            @Override
+            public void run(){
+                btnLotes.setEnabled(false);
+                view.MENU_NUEVO menu = new view.MENU_NUEVO();
+                menu.setTitle("CONTROL DE TRASFORMADORES");
+                menu.setVisible(true);
+                dispose();
+            }
+        }).start();        
     }//GEN-LAST:event_btnLotesActionPerformed
     
     public static void main(String args[]){     

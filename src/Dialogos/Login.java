@@ -17,8 +17,6 @@ public class Login extends javax.swing.JDialog {
     Point inicial;
     private String EQUIPO = "";
     boolean RECORDAR = false;
-    private JFrame frame;
-    private String title;
     
     public Login(java.awt.Frame parent, boolean modal){
         super(parent, modal);
@@ -41,7 +39,7 @@ public class Login extends javax.swing.JDialog {
             entrar();
         });
         btnSalir.addActionListener((ActionEvent e) ->{
-            dispose();
+            System.exit(0);
         });
         
     }
@@ -54,11 +52,11 @@ public class Login extends javax.swing.JDialog {
             ResultSet rs = conexion.CONSULTAR("SELECT * FROM usuario WHERE nombreusuario='"+usuario+"' AND pass='"+pass+"' ");
             if(rs.next()){
                 modelo.Sesion sesion = modelo.Sesion.getConfigurador(rs.getString("nombreusuario"), rs.getInt("idusuario"));
-                frame = getFrame();
-                frame.setTitle(getTitle()+" - "+rs.getString("nombreusuario"));
-                ((view.Principal)getOwner()).dispose();
+//                frame = getFrame();
+//                frame.setTitle(getTitle()+" - "+rs.getString("nombreusuario"));
+//                ((view.Principal)getOwner()).dispose();
                 dispose();
-                frame.setVisible(true);
+//                frame.setVisible(true);
             }
             conexion.CERRAR();
         }catch(Exception e){
@@ -83,10 +81,10 @@ public class Login extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Iniciar sesion");
         setAlwaysOnTop(true);
-        setUndecorated(true);
+        setBackground(new java.awt.Color(255, 255, 255));
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 formMouseDragged(evt);
@@ -198,31 +196,32 @@ public class Login extends javax.swing.JDialog {
     }
 
    
-    public static void main(String args[]) {               
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Login dialog = new Login(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {               
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                Login dialog = new Login(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
@@ -237,19 +236,4 @@ public class Login extends javax.swing.JDialog {
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }
