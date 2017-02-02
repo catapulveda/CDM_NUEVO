@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PROTOCOLO" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="eb75b2e1-959a-4fb9-b1e1-471136a585b3">
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="342"/>
-	<property name="ireport.y" value="1104"/>
+	<property name="ireport.x" value="26"/>
+	<property name="ireport.y" value="528"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
@@ -181,6 +181,12 @@ WHERE idprotocolo=$P{IDPROTOCOLO}]]>
 	</variable>
 	<detail>
 		<band height="770" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="3" y="230" width="568" height="15" uuid="7c1f790c-e44a-4dc2-8b7e-d83e815c6e01"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
 			<rectangle>
 				<reportElement style="table_TH" x="5" y="304" width="564" height="11" uuid="64a6660d-f420-45bc-88da-d3280c9e7ca7"/>
 				<graphicElement>
@@ -240,12 +246,6 @@ WHERE idprotocolo=$P{IDPROTOCOLO}]]>
 			</rectangle>
 			<rectangle radius="5">
 				<reportElement x="3" y="250" width="568" height="22" uuid="1de68c1c-6572-418f-8411-79930f360fef"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle radius="5">
-				<reportElement x="3" y="230" width="568" height="15" uuid="7c1f790c-e44a-4dc2-8b7e-d83e815c6e01"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>

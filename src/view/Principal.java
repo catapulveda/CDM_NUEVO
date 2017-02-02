@@ -12,7 +12,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import modelo.ConexionBD;
 import modelo.Metodos;
@@ -37,8 +41,8 @@ public class Principal extends javax.swing.JFrame {
     static final ConexionBD conexion = new ConexionBD();
     
     public Principal(){
-        initComponents();
-                
+        initComponents();                      
+        
             //REGISTRA LAS ENTRADAS O LOTES
 //        ResultSet rs1 = modelo.Conexion2.CONSULTAR("SELECT * FROM entrada e, conductor c WHERE e.conductor=c.nombre_conductor ORDER BY e.identrada");
 //        try {
@@ -190,13 +194,6 @@ public class Principal extends javax.swing.JFrame {
         
 //        jPanel1.setLayout (new JScollPanelAjustable.WrapLayout());
         
-        btnLotes.addActionListener((ActionEvent e)->{
-//            setExtendedState(ICONIFIED);
-            Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
-            login.setFrame(new view.MENU_NUEVO());
-            login.setTitle("CONTROL DE TRASFORMADORES");
-            login.setVisible(true);
-        });
         
 //        if (SystemTray.isSupported()){
 //            try {
@@ -239,14 +236,17 @@ public class Principal extends javax.swing.JFrame {
 //                    }
 //                }).start();                
 //            }
-//        });
+//        });          
     }
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanelImage1 = new CompuChiqui.JPanelImage();
+        jPanel1 = new javax.swing.JPanel();
         btnLotes = new javax.swing.JButton();
         btnProtocolo = new javax.swing.JButton();
         btnProduccion = new javax.swing.JButton();
@@ -254,13 +254,36 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu principal");
         setIconImage(new ImageIcon(getClass().getResource("/recursos/images/logo.png")).getImage());
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        jPanelImage1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanelImage1.setImagen_ImageIcon(new ImageIcon(getClass().getResource("/recursos/images/logo.png")));
+
+        javax.swing.GroupLayout jPanelImage1Layout = new javax.swing.GroupLayout(jPanelImage1);
+        jPanelImage1.setLayout(jPanelImage1Layout);
+        jPanelImage1Layout.setHorizontalGroup(
+            jPanelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 202, Short.MAX_VALUE)
+        );
+        jPanelImage1Layout.setVerticalGroup(
+            jPanelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+
+        jPanel1.setLayout(new java.awt.GridLayout(3, 1, 0, 5));
 
         btnLotes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/lotes.png"))); // NOI18N
         btnLotes.setBorderPainted(false);
         btnLotes.setPreferredSize(new java.awt.Dimension(130, 130));
+        btnLotes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLotesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnLotes);
 
         btnProtocolo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/protocolo.png"))); // NOI18N
         btnProtocolo.setBorderPainted(false);
@@ -270,34 +293,12 @@ public class Principal extends javax.swing.JFrame {
                 btnProtocoloActionPerformed(evt);
             }
         });
+        jPanel1.add(btnProtocolo);
 
         btnProduccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calendario.png"))); // NOI18N
         btnProduccion.setBorderPainted(false);
         btnProduccion.setPreferredSize(new java.awt.Dimension(130, 130));
-
-        javax.swing.GroupLayout jPanelImage1Layout = new javax.swing.GroupLayout(jPanelImage1);
-        jPanelImage1.setLayout(jPanelImage1Layout);
-        jPanelImage1Layout.setHorizontalGroup(
-            jPanelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelImage1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnLotes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnProtocolo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanelImage1Layout.setVerticalGroup(
-            jPanelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelImage1Layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addGroup(jPanelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnProtocolo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLotes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(138, Short.MAX_VALUE))
-        );
+        jPanel1.add(btnProduccion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -305,6 +306,8 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanelImage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -312,8 +315,12 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelImage1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(133, 133, 133))
         );
 
         pack();
@@ -327,6 +334,17 @@ public class Principal extends javax.swing.JFrame {
         login.setTitle("PROTOCOLO DE TRANSFORMADORES");
         login.setVisible(true);
     }//GEN-LAST:event_btnProtocoloActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLotesActionPerformed
+        Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
+        login.setFrame(new view.MENU_NUEVO());
+        login.setTitle("CONTROL DE TRASFORMADORES");
+        login.setVisible(true);
+    }//GEN-LAST:event_btnLotesActionPerformed
     
     public static void main(String args[]){     
         
@@ -350,6 +368,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnLotes;
     private javax.swing.JButton btnProduccion;
     private javax.swing.JButton btnProtocolo;
+    private javax.swing.JPanel jPanel1;
     private CompuChiqui.JPanelImage jPanelImage1;
     // End of variables declaration//GEN-END:variables
 }

@@ -418,7 +418,7 @@ public class PROTOS extends javax.swing.JFrame{
             (new Thread(){
                 @Override
                 public void run(){
-                    try{
+                    try{                        
                         btnGuardar.setEnabled(false);
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/gif.gif")));
                         JasperReport reporte = (JasperReport) JRLoader.loadObject(new URL(this.getClass().getResource("/REPORTES/PROTOCOLO.jasper").toString()));
@@ -426,9 +426,11 @@ public class PROTOS extends javax.swing.JFrame{
                         p.put("IDPROTOCOLO", (ACTUALIZANDO)?IDPROTOCOLO:modelo.Metodos.getUltimoID("protocolos", "idprotocolo"));
                         p.put("BTcontraAT", cjBTcontraATyTierra.getText());
                         p.put("ATcontraBT", cjATcontraBTyTierra.getText());
-                        JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());                        
-                        JasperViewer.viewReport(jasperprint, false);                        
-                        JasperViewer visor = new JasperViewer(jasperprint, false);
+                        JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());
+                        if(mostrarProtocolo.isSelected()){
+                            JasperViewer.viewReport(jasperprint, false);
+                            JasperViewer visor = new JasperViewer(jasperprint, false);
+                        }
                         JasperExportManager.exportReportToPdfFile( jasperprint, System.getProperties().getProperty("user.dir")+"\\PROTOCOLOS PDF\\"+cjprotocolo.getText()+"_"+cjcliente.getText()+".pdf");
                         limpiar();
                     }catch(JRException | MalformedURLException ex){
@@ -562,7 +564,7 @@ public class PROTOS extends javax.swing.JFrame{
         cjtiempoaplicado.setText("60");cjFrecuenciaInducida.setText("414");cjtiempoInducido.setText("17");
         cjespesor.setText("110");cjobservaciones.setText("");
         cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", !ACTUALIZANDO)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
-        ACTUALIZANDO = false;
+        ACTUALIZANDO = false;btnGuardar.setEnabled(true);
     }
     
     void cargarProtocolos(){
@@ -814,6 +816,7 @@ public class PROTOS extends javax.swing.JFrame{
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         subMenuItemRecalcular = new javax.swing.JMenuItem();
+        mostrarProtocolo = new javax.swing.JCheckBoxMenuItem();
 
         subMenuAbrirProtocolo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/ver.png"))); // NOI18N
         subMenuAbrirProtocolo.setText("Abrir");
@@ -1053,14 +1056,14 @@ public class PROTOS extends javax.swing.JFrame{
         jLabel20.setText("Aceite:");
         jPanel3.add(jLabel20);
 
-        comboAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MINERAL", "VEGETAL\t" }));
+        comboAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MINERAL", "VEGETAL", "REGENERADO" }));
         jPanel3.add(comboAceite);
 
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel21.setText("Referencia:");
         jPanel3.add(jLabel21);
 
-        comboReferenciaAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HYVOLT", "LUB TROIL TIPO II", "FR3" }));
+        comboReferenciaAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HYVOLT", "LUB TROIL TIPO II", "FR3", "EPM" }));
         jPanel3.add(comboReferenciaAceite);
 
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -2000,6 +2003,11 @@ public class PROTOS extends javax.swing.JFrame{
         });
         jMenu2.add(subMenuItemRecalcular);
 
+        mostrarProtocolo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        mostrarProtocolo.setSelected(true);
+        mostrarProtocolo.setText("Mostrar protocolo al imprimir");
+        jMenu2.add(mostrarProtocolo);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -2470,6 +2478,7 @@ public class PROTOS extends javax.swing.JFrame{
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JPopupMenu menuProtocolos;
+    private javax.swing.JCheckBoxMenuItem mostrarProtocolo;
     private javax.swing.JMenuItem subMenuAbrirProtocolo;
     private javax.swing.JMenuItem subMenuEliminar;
     private javax.swing.JMenuItem subMenuItemRecalcular;

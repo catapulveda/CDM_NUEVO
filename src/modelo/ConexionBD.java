@@ -14,10 +14,10 @@ import java.util.logging.Logger;
  */
 public class ConexionBD {   
     
-    private static Connection conexion;
-    private static Statement statement;
-//    private static String url = "localhost:5432", BD = "CDM2", user = "postgres", pass = "cdm";
-    private static String url = "PRODUCCION:5432", BD = "CDM2", user = "postgres", pass = "cdm";
+    private Connection conexion;
+    private Statement statement;
+    private String IP = "PRODUCCION", PUERTO = "5432", BD = "CDM2", USER = "postgres", PASS = "cdm";   
+    //private String IP = "PRODUCCION", PUERTO = "5432", BD = "CDM2", USER = "postgres", PASS = "cdm";   
 
     public ConexionBD() {
         
@@ -26,7 +26,7 @@ public class ConexionBD {
     public Connection conectar(){
         try {
             Class.forName("org.postgresql.Driver");
-            conexion = DriverManager.getConnection("jdbc:postgresql://"+url+"/"+BD, user, pass);
+            conexion = DriverManager.getConnection("jdbc:postgresql://"+IP+":"+PUERTO+"/"+BD, USER, PASS);
             statement = conexion.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);            
         } catch (Exception ex){
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,9 +77,61 @@ public class ConexionBD {
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-        
 
-    
+    public Connection getConexion() {
+        return conexion;
+    }
+
+    public void setConexion(Connection conexion) {
+        this.conexion = conexion;
+    }
+
+    public Statement getStatement() {
+        return statement;
+    }
+
+    public void setStatement(Statement statement) {
+        this.statement = statement;
+    }
+
+    public String getIP() {
+        return IP;
+    }
+
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public String getPUERTO() {
+        return PUERTO;
+    }
+
+    public void setPUERTO(String PUERTO) {
+        this.PUERTO = PUERTO;
+    }
+
+    public String getBD() {
+        return BD;
+    }
+
+    public void setBD(String BD) {
+        this.BD = BD;
+    }
+
+    public String getUSER() {
+        return USER;
+    }
+
+    public void setUSER(String USER) {
+        this.USER = USER;
+    }
+
+    public String getPASS() {
+        return PASS;
+    }
+
+    public void setPASS(String PASS) {
+        this.PASS = PASS;
+    }
+
 }

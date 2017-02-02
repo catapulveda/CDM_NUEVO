@@ -376,22 +376,32 @@ public class DespachoARemision extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefrescar3ActionPerformed
 
     private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverActionPerformed
-        try {
-            int filas[] = tabla.getSelectedRows();
-            for (int i = filas.length - 1; i >= 0; i--){
-                String sql = " UPDATE transformador SET iddespacho=null, idremision=null, estado='EN PLANTA' ";
-                sql += " WHERE iddespacho="+getIDDESPACHO()+" AND item="+tabla.getValueAt(filas[i], 0)+" AND ";
-                sql += " numeroserie='"+tabla.getValueAt(filas[i], 5)+"' ";
-                if(new ConexionBD().GUARDAR(sql)){
-//                    modeloTabla.removeRow(filas[i]);
+        (new Thread(){
+            @Override
+            public void run(){
+                try {
+                    btnDevolver.setEnabled(false);
+                    btnDevolver.setIcon(modelo.Metodos.getIcon("gif.gif"));
+                    int filas[] = tabla.getSelectedRows();
+                    for (int i = filas.length - 1; i >= 0; i--){
+                        String sql = " UPDATE transformador SET iddespacho=null, idremision=null, estado='EN PLANTA' ";
+                        sql += " WHERE iddespacho="+getIDDESPACHO()+" AND item="+tabla.getValueAt(filas[i], 0)+" AND ";
+                        sql += " numeroserie='"+tabla.getValueAt(filas[i], 5)+"' ";
+                        if(new ConexionBD().GUARDAR(sql)){
+        //                    modeloTabla.removeRow(filas[i]);
+                        }
+                    }
+                    cjBuscar.setText("");
+                    cargarTabla();
+                } catch(Exception e){
+                    Logger.getLogger(DespachoARemision.class.getName()).log(Level.SEVERE, null, e);
+                    Metodos.ERROR(e, "ERROR AL INTENTAR DEVOLVER LOS TRANSFORMADORES SELECCIONADOS A PLANTA.");
+                }finally{
+                    btnDevolver.setEnabled(true);
+                    btnDevolver.setIcon(modelo.Metodos.getIcon("izquierda.png"));
                 }
             }
-            cjBuscar.setText("");
-            cargarTabla();
-        } catch(Exception e){
-            Logger.getLogger(DespachoARemision.class.getName()).log(Level.SEVERE, null, e);
-            Metodos.ERROR(e, "ERROR AL INTENTAR DEVOLVER LOS TRANSFORMADORES SELECCIONADOS A PLANTA.");
-        }
+        }).start();        
     }//GEN-LAST:event_btnDevolverActionPerformed
 
     private void comboServicioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboServicioItemStateChanged

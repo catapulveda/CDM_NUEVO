@@ -58,6 +58,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuItemRecalcularActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mostrarProtocolo">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+M"/>
+                </Property>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Mostrar protocolo al imprimir"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -658,9 +667,10 @@
                 <Component class="javax.swing.JComboBox" name="comboAceite">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="2">
+                      <StringArray count="3">
                         <StringItem index="0" value="MINERAL"/>
-                        <StringItem index="1" value="VEGETAL&#x9;"/>
+                        <StringItem index="1" value="VEGETAL"/>
+                        <StringItem index="2" value="REGENERADO"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -677,10 +687,11 @@
                 <Component class="javax.swing.JComboBox" name="comboReferenciaAceite">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
+                      <StringArray count="4">
                         <StringItem index="0" value="HYVOLT"/>
                         <StringItem index="1" value="LUB TROIL TIPO II"/>
                         <StringItem index="2" value="FR3"/>
+                        <StringItem index="3" value="EPM"/>
                       </StringArray>
                     </Property>
                   </Properties>
