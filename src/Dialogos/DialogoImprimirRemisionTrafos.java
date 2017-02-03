@@ -392,8 +392,8 @@ import net.sf.jasperreports.view.JasperViewer;
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         
-        (new Thread(){
-            public void run(){
+//        (new Thread(){
+//            public void run(){
                 try{
                     btnImprimir.setIcon(new ImageIcon(getClass().getResource("/recursos/images/gif.gif")));
                     btnImprimir.setEnabled(false);
@@ -459,8 +459,8 @@ import net.sf.jasperreports.view.JasperViewer;
                     btnImprimir.setEnabled(true);
                     hide();
                 }
-            }
-        }).start();
+//            }
+//        }).start();
         
     }//GEN-LAST:event_btnImprimirActionPerformed
 

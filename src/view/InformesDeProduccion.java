@@ -15,6 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
 
@@ -24,7 +25,9 @@ public class InformesDeProduccion extends javax.swing.JFrame {
     TableColumnAdjuster ajustarColumna;
     ConexionBD conexion = new ConexionBD();
     
-    List<RowFilter<TableModel, Object>> filters = new ArrayList<>();
+    List<RowFilter<TableModel, Object>> filtros = new ArrayList<>();
+    TableRowSorter rowSorter;
+    RowFilter<TableModel, Object>  compoundRowFilter;
     
     public InformesDeProduccion(){
         initComponents();
@@ -71,6 +74,8 @@ public class InformesDeProduccion extends javax.swing.JFrame {
                     rs.getString("lote")
                 });
             }
+            rowSorter = new TableRowSorter(modeloTabla);
+            tablaDatos.setRowSorter(rowSorter);
             ajustarColumna.adjustColumns();
         } catch (SQLException ex) {
             Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,10 +97,13 @@ public class InformesDeProduccion extends javax.swing.JFrame {
         cjfechainicio = new com.toedter.calendar.JDateChooser();
         cjfechafin = new com.toedter.calendar.JDateChooser();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnExcel = new javax.swing.JButton();
+        barraProgreso = new javax.swing.JProgressBar();
         jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         subMenuFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/buscar.png"))); // NOI18N
         subMenuFiltrar.setText("jMenuItem1");
@@ -150,6 +158,19 @@ public class InformesDeProduccion extends javax.swing.JFrame {
         jToolBar1.add(cjfechafin);
         jToolBar1.add(jSeparator1);
 
+        btnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/excel.png"))); // NOI18N
+        btnExcel.setFocusable(false);
+        btnExcel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnExcel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcelActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnExcel);
+
+        barraProgreso.setStringPainted(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -158,7 +179,8 @@ public class InformesDeProduccion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(barraProgreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -167,7 +189,9 @@ public class InformesDeProduccion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(barraProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -189,7 +213,17 @@ public class InformesDeProduccion extends javax.swing.JFrame {
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Editar");
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/basura.png"))); // NOI18N
+        jMenuItem1.setText("Remover filtros");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -202,7 +236,7 @@ public class InformesDeProduccion extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
         );
 
         pack();
@@ -232,8 +266,20 @@ public class InformesDeProduccion extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaDatosMouseClicked
 
     private void subMenuFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuFiltrarActionPerformed
-        
+        filtros.add(RowFilter.regexFilter(tablaDatos.getValueAt(tablaDatos.getSelectedRow(), tablaDatos.getSelectedColumn()).toString(), tablaDatos.getSelectedColumn()));
+        compoundRowFilter = RowFilter.andFilter(filtros);
+        rowSorter.setRowFilter(compoundRowFilter);
     }//GEN-LAST:event_subMenuFiltrarActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        filtros.clear();
+        compoundRowFilter = RowFilter.andFilter(filtros);
+        rowSorter.setRowFilter(compoundRowFilter);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
+        modelo.Metodos.generarExcel(tablaDatos, barraProgreso, btnExcel);
+    }//GEN-LAST:event_btnExcelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,12 +308,15 @@ public class InformesDeProduccion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barraProgreso;
+    private javax.swing.JButton btnExcel;
     private com.toedter.calendar.JDateChooser cjfechafin;
     private com.toedter.calendar.JDateChooser cjfechainicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

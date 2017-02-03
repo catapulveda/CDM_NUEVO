@@ -310,7 +310,7 @@ public class PanelRemisiones extends javax.swing.JPanel {
                 modelo.Metodos.M("SOLO EL PERSONAL DE ALMACEN PUEDE ELIMINAR REMISIONES", "advertencia.png");
             }
         }catch(Exception e){
-            modelo.Metodos.M("OCURRIO UN ERROR AL INTENTAR ELIMINAR LA REMISION: \n"+e, "error.png");
+            modelo.Metodos.ERROR(e, "OCURRIO UN ERROR AL INTENTAR ELIMINAR LA REMISION");
         }
     }//GEN-LAST:event_submenuItemEliminarRemisionActionPerformed
 
@@ -335,10 +335,10 @@ public class PanelRemisiones extends javax.swing.JPanel {
             if(tablaRemisiones.getSelectedRows().length==1){
                 tablaRemisiones.setRowSelectionInterval(tablaRemisiones.rowAtPoint( evt.getPoint() ), tablaRemisiones.rowAtPoint( evt.getPoint() ));
                 tablaRemisiones.setColumnSelectionInterval(0, tablaRemisiones.getColumnCount()-1);
-            }                        
-            SubMenuEliminarRemision.show(tablaRemisiones, evt.getPoint().x, evt.getPoint().y); 
+            }                                    
             ID_REMISION = (int) tablaRemisiones.getValueAt(tablaRemisiones.getSelectedRow(), 0);
             submenuItemEliminarRemision.setText("Eliminar Remision ("+tablaRemisiones.getSelectedRows().length+")");
+            SubMenuEliminarRemision.show(tablaRemisiones, evt.getPoint().x, evt.getPoint().y); 
         }
         if(evt.getClickCount()==2 && SwingUtilities.isLeftMouseButton(evt)){
             int fila = tablaRemisiones.getSelectedRow();
@@ -367,7 +367,7 @@ public class PanelRemisiones extends javax.swing.JPanel {
                         }                                                                                
                     }else if(rs.getString("tipo_remision").equals("SIN RETORNO")){
                         remisiones.setTIPO("SIN RETORNO");
-                        if(rs.getString("empresa_remision").equals("CDM")){
+                        if(rs.getString("empresa_remision").equals("CDM")||rs.getString("empresa_remision").equals("MEDIDORES")){
                             remisiones.setREPORTE("REMISIONCDM");
                             remisiones.setCONSECUTIVO_EMPRESA("cdmsinretorno");
                         }else if(rs.getString("empresa_remision").equals("CONSORCIO")){

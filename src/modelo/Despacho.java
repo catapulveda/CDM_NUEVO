@@ -63,7 +63,7 @@ public class Despacho {
                 modelo.addRow(new Object[]{
                     rs.getInt("iddespacho"),
                     rs.getString("nodespacho"),
-                    new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fecha_despacho")),
+                    new SimpleDateFormat("EEE, d MMM yyyy hh:mm aa").format(rs.getTimestamp("fecha_despacho")),
                     rs.getString("nombrecliente"),
                     rs.getBoolean("estado_despacho"),
                     rs.getString("descripcion_despacho"),

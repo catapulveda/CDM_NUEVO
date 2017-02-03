@@ -242,6 +242,7 @@ public class DespachoARemision extends javax.swing.JFrame {
         btnDevolver = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnImprimirRemision = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JToolBar.Separator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jToolBar2 = new javax.swing.JToolBar();
@@ -320,6 +321,7 @@ public class DespachoARemision extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnImprimirRemision);
+        jToolBar1.add(jSeparator5);
 
         tabla.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -489,7 +491,7 @@ public class DespachoARemision extends javax.swing.JFrame {
                     
                     dirt.setSERVICIO(SERVICIO);
                     
-                    String sql = "SELECT COUNT(*), d.nodespacho FROM transformador t INNER JOIN despacho d USING(iddespacho) WHERE t.iddespacho=251 AND ";
+                    String sql = "SELECT COUNT(*), d.nodespacho FROM transformador t INNER JOIN despacho d USING(iddespacho) WHERE t.iddespacho="+getIDDESPACHO()+" AND ";
                     sql += (SERVICIO.equals("REPARACION"))?"(serviciosalida='REPARACION' OR serviciosalida='MANTENIMIENTO')":"serviciosalida='"+SERVICIO+"' ";
                     sql += " GROUP BY d.iddespacho ";
                     conexion.conectar();
@@ -553,6 +555,7 @@ public class DespachoARemision extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblFilasSeleccionadas;
