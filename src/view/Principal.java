@@ -38,8 +38,7 @@ public class Principal extends javax.swing.JFrame {
     private Image image =new ImageIcon(getClass().getResource("/recursos/images/logo.png")).getImage() ;
     private final TrayIcon trayIcon = new TrayIcon(image, "CDM SOFTWARE", popup);
     
-    static final ConexionBD conexion = new ConexionBD();
-    
+    static final ConexionBD conexion = new ConexionBD();    
     
     public Principal(){
         initComponents();                
@@ -333,7 +332,8 @@ public class Principal extends javax.swing.JFrame {
             public void run(){
                 btnProtocolo.setEnabled(false);
                 view.PROTOS proto = new view.PROTOS();
-                proto.setTitle("PROTOCOLO DE TRANSFORMADORES");
+                modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
+                proto.setTitle("PROTOCOLO DE TRANSFORMADORES - Usuario: "+sesion.getNombre());
                 proto.setVisible(true);
                 dispose();
             }
@@ -353,7 +353,8 @@ public class Principal extends javax.swing.JFrame {
             public void run(){
                 btnLotes.setEnabled(false);
                 view.MENU_NUEVO menu = new view.MENU_NUEVO();
-                menu.setTitle("CONTROL DE TRASFORMADORES");
+                modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
+                menu.setTitle("CONTROL DE TRASFORMADORES - Usuario: "+sesion.getNombre());
                 menu.setVisible(true);
                 dispose();
             }

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EntradaDeTransformadores" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="1e815148-a7a8-4fe7-bcd9-f939cce00a8d">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="198"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF" radius="0">
 		<box>
 			<topPen lineWidth="0.25" lineColor="#000000"/>
@@ -683,7 +683,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:columnGroup width="772" uuid="b44edf52-cf49-4cce-98b6-87798e68ffd1">
-						<jr:columnHeader style="table_TH_Table2" height="19" rowSpan="1">
+						<jr:columnHeader style="table_TH" height="19" rowSpan="1">
 							<staticText>
 								<reportElement x="11" y="0" width="761" height="19" uuid="180c4b2d-7e7f-4db5-b19b-416fbb0c2ae5"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -693,7 +693,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:column width="33" uuid="ae5e0259-56d6-4fff-94c8-61947d5574cc">
-							<jr:detailCell style="table_CH_Table2" height="18" rowSpan="1">
+							<jr:detailCell style="table_CH" height="18" rowSpan="1">
 								<textField>
 									<reportElement x="0" y="0" width="33" height="18" uuid="688ff69f-4c73-4da3-a8b2-f33d9c44c89b"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -704,7 +704,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 							</jr:detailCell>
 						</jr:column>
 						<jr:column width="739" uuid="85046eda-9213-4a9e-8c8f-0e51fa590af8">
-							<jr:detailCell style="table_CH_Table2" height="18" rowSpan="1">
+							<jr:detailCell style="table_CH" height="18" rowSpan="1">
 								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="729" height="18" uuid="def1442d-6a71-482b-9607-70d7efbbb076"/>
 									<textElement textAlignment="Left" verticalAlignment="Middle">

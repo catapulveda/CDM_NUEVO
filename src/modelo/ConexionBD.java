@@ -61,7 +61,7 @@ public class ConexionBD {
         }catch (SQLException ex){
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("NO SE EJECUTÓ EL QUERY -> "+sql);
-            Metodos.ERROR(ex, "NO SE PUDO EJECUTAR EL QUERY CORRECTAMENTE");            
+            Metodos.ERROR(ex, "NO SE PUDO EJECUTAR EL QUERY CORRECTAMENTE\n"+sql);            
         }finally{
             CERRAR();
         }

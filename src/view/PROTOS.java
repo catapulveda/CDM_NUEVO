@@ -7,7 +7,6 @@ import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +32,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -362,62 +360,62 @@ public class PROTOS extends javax.swing.JFrame{
     Object getT(int r, int col){return tablaUno.getValueAt(r, col);}
     
     void guardarProtocolo(){
-        String GUARDAR = null;
-        if(!ACTUALIZANDO){
-            GUARDAR = "INSERT INTO public.protocolos(\n" +
-    "            idtransformador, codigo, frecuencia, refrigeracion, \n" +
-    "            tensionserie, nba, calentamientodevanado, claseaislamiento, alturadiseno, \n" +
-    "            derivacionprimaria, i1, i2, temperaturadeensayo, conmutador, \n" +
-    "            liquidoaislante, referenciadeaceite, tensionderuptura, metodo, \n" +
-    "            tiemporalt, tensiondeprueba, atcontrabt, \n" +
-    "            atcontratierra, btcontratierra, grupodeconexion, polaridad, punou, \n" +
-    "            punov, punow, pdosu, pdosv, pdosw, ptresu, ptresv, ptresw, pcuatrou, \n" +
-    "            pcuatrov, pcuatrow, pcincou, pcincov, pcincow, resuv, resvw, \n" +
-    "            reswu, proresuno, materialconductoralta, resxy, resyz, reszx, \n" +
-    "            proresdos, materialconductorbaja, iu, iv, iw, promedioi, iogarantizado, \n" +
-    "            pomedido, pogarantizado, vcc, pcu, pcua85, pcugarantizado, i2r, \n" +
-    "            i2ra85, impedancia, impedancia85, impedanciagarantizada, reg, \n" +
-    "            ef, largotanque, anchotanque, altotanque, color, espesor, radiadores, \n" +
-    "            largoradiador, altoradiador, observaciones, fechalaboratorio, \n" +
-    "            fechaderegistro, estadoservicio, idusuario)\n" +
-    "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', "+comboFrecuencia.getSelectedItem()+", '"+comboRefrigeracion.getSelectedItem()+"', \n" +
-    "            '"+cjtensionSerie.getText()+"', '"+cjnba.getText()+"', '"+cjcalentamientodevanado.getText()+"', '"+comboClaseAislamiento.getSelectedItem()+"', '"+cjaltdiseno.getText()+"', \n" +
-    "            '"+comboDerivacion.getSelectedItem()+"', "+cji1.getText()+", "+cji2.getText()+", "+cjtemperatura.getText()+", "+conmutador.getSelectedItem()+", \n" +
-    "            '"+comboAceite.getSelectedItem()+"', '"+comboReferenciaAceite.getSelectedItem()+"', '"+cjRuptura.getText()+"', '"+cjmetodo.getText()+"', \n" +
-    "            "+cjtiemporalt.getText()+", '"+comboTensionPrueba.getSelectedItem()+"', "+cjATcontraBT.getText()+", \n" +
-    "            "+cjATcontraTierra.getText()+", "+cjBTcontraTierra.getText()+", '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
-    "            "+getT(0,3)+", "+getT(0,4)+", "+getT(1,2)+", "+getT(1,3)+", "+getT(1,4)+", "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+", "+getT(3,2)+", \n" +
-    "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", "+cjuv.getDouble()+", "+cjvw.getDouble()+", \n" +
-    "            "+cjwu.getDouble()+", "+cjproresalta.getText()+", '"+comboMaterialAlta.getSelectedItem()+"', "+cjxy.getDouble()+", "+cjyz.getDouble()+", "+cjzx.getDouble()+", \n" +
-    "            "+cjproresbaja.getText()+", '"+comboMaterialBaja.getSelectedItem()+"', "+cjiu.getDouble()+", "+cjiv.getDouble()+", "+cjiw.getDouble()+", "+cjpromedioi.getText()+", "+cjiogarantizado.getText()+", \n" +
-    "            "+cjpomedido.getText()+", "+cjpogarantizado.getText()+", "+cjvcc.getText()+", "+cjpcumedido.getText()+", "+cjpcua85.getText()+", "+cjpcugarantizado.getText()+", "+cji2r.getText()+", \n" +
-    "            "+cji2ra85.getText()+", "+cjimpedancia.getText()+", "+cjimpedancia85.getText()+", "+cjimpedanciagarantizado.getText()+", "+cjreg.getText()+", \n" +
-    "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", '"+cjcolor.getText()+"', "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
-    "            "+cjlargoelemento.getText()+", "+cjaltoelemento.getText()+", '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
-    "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , "+sesion.getIdUsuario()+")";
-        }else{
-            GUARDAR = "UPDATE public.protocolos SET\n" +
-    "            frecuencia="+comboFrecuencia.getSelectedItem()+", refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
-    "            tensionserie='"+cjtensionSerie.getText()+"', nba='"+cjnba.getText()+"', calentamientodevanado='"+cjcalentamientodevanado.getText()+"', claseaislamiento='"+comboClaseAislamiento.getSelectedItem()+"', alturadiseno='"+cjaltdiseno.getText()+"', \n" +
-    "            derivacionprimaria='"+comboDerivacion.getSelectedItem()+"', i1="+cji1.getText()+", i2="+cji2.getText()+", temperaturadeensayo="+cjtemperatura.getText()+", conmutador="+conmutador.getSelectedItem()+", \n" +
-    "            liquidoaislante='"+comboAceite.getSelectedItem()+"', referenciadeaceite='"+comboReferenciaAceite.getSelectedItem()+"', tensionderuptura='"+cjRuptura.getText()+"', metodo='"+cjmetodo.getText()+"', \n" +
-    "            tiemporalt="+cjtiemporalt.getText()+", tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt="+cjATcontraBT.getText()+", \n" +
-    "            atcontratierra="+cjATcontraTierra.getText()+", btcontratierra="+cjBTcontraTierra.getText()+", grupodeconexion='"+comboGrupoConexion.getSelectedItem()+"', polaridad='"+comboPolaridad.getSelectedItem()+"', punou="+getT(0,2)+", \n" +
-    "            punov="+getT(0,3)+", punow="+getT(0,4)+", pdosu="+getT(1,2)+", pdosv="+getT(1,3)+", pdosw="+getT(1,4)+", ptresu="+getT(2,2)+", ptresv="+getT(2,3)+", ptresw="+getT(2,4)+", pcuatrou="+getT(3,2)+", \n" +
-    "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv="+cjuv.getDouble()+", resvw="+cjvw.getDouble()+", \n" +
-    "            reswu="+cjwu.getDouble()+", proresuno="+cjproresalta.getText()+", materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy="+cjxy.getDouble()+", resyz="+cjyz.getDouble()+", reszx="+cjzx.getDouble()+", \n" +
-    "            proresdos="+cjproresbaja.getText()+", materialconductorbaja='"+comboMaterialBaja.getSelectedItem()+"', iu="+cjiu.getDouble()+", iv="+cjiv.getDouble()+", iw="+cjiw.getDouble()+", promedioi="+cjpromedioi.getText()+", iogarantizado="+cjiogarantizado.getText()+", \n" +
-    "            pomedido="+cjpomedido.getText()+", pogarantizado="+cjpogarantizado.getText()+", vcc="+cjvcc.getText()+", pcu="+cjpcumedido.getText()+", pcua85="+cjpcua85.getText()+", pcugarantizado="+cjpcugarantizado.getText()+", i2r="+cji2r.getText()+", \n" +
-    "            i2ra85="+cji2ra85.getText()+", impedancia="+cjimpedancia.getText()+", impedancia85="+cjimpedancia85.getText()+", impedanciagarantizada="+cjimpedanciagarantizado.getText()+", reg="+cjreg.getText()+", \n" +
-    "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color='"+cjcolor.getText()+"', espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
-    "            largoradiador="+cjlargoelemento.getText()+", altoradiador="+cjaltoelemento.getText()+", observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
-    "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
-        }
-        if(conex.GUARDAR(GUARDAR)){
-            modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");                        
-            (new Thread(){
-                @Override
-                public void run(){
+        (new Thread(){
+            @Override
+            public void run(){
+                String GUARDAR = null;
+                if(!ACTUALIZANDO){
+                    GUARDAR = "INSERT INTO public.protocolos(\n" +
+            "            idtransformador, codigo, frecuencia, refrigeracion, \n" +
+            "            tensionserie, nba, calentamientodevanado, claseaislamiento, alturadiseno, \n" +
+            "            derivacionprimaria, i1, i2, temperaturadeensayo, conmutador, \n" +
+            "            liquidoaislante, referenciadeaceite, tensionderuptura, metodo, \n" +
+            "            tiemporalt, tensiondeprueba, atcontrabt, \n" +
+            "            atcontratierra, btcontratierra, grupodeconexion, polaridad, punou, \n" +
+            "            punov, punow, pdosu, pdosv, pdosw, ptresu, ptresv, ptresw, pcuatrou, \n" +
+            "            pcuatrov, pcuatrow, pcincou, pcincov, pcincow, resuv, resvw, \n" +
+            "            reswu, proresuno, materialconductoralta, resxy, resyz, reszx, \n" +
+            "            proresdos, materialconductorbaja, iu, iv, iw, promedioi, iogarantizado, \n" +
+            "            pomedido, pogarantizado, vcc, pcu, pcua85, pcugarantizado, i2r, \n" +
+            "            i2ra85, impedancia, impedancia85, impedanciagarantizada, reg, \n" +
+            "            ef, largotanque, anchotanque, altotanque, color, espesor, radiadores, \n" +
+            "            largoradiador, altoradiador, observaciones, fechalaboratorio, \n" +
+            "            fechaderegistro, estadoservicio, idusuario)\n" +
+            "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', "+comboFrecuencia.getSelectedItem()+", '"+comboRefrigeracion.getSelectedItem()+"', \n" +
+            "            '"+cjtensionSerie.getText()+"', '"+cjnba.getText()+"', '"+cjcalentamientodevanado.getText()+"', '"+comboClaseAislamiento.getSelectedItem()+"', '"+cjaltdiseno.getText()+"', \n" +
+            "            '"+comboDerivacion.getSelectedItem()+"', "+cji1.getText()+", "+cji2.getText()+", "+cjtemperatura.getText()+", "+conmutador.getSelectedItem()+", \n" +
+            "            '"+comboAceite.getSelectedItem()+"', '"+comboReferenciaAceite.getSelectedItem()+"', '"+cjRuptura.getText()+"', '"+cjmetodo.getText()+"', \n" +
+            "            "+cjtiemporalt.getText()+", '"+comboTensionPrueba.getSelectedItem()+"', "+cjATcontraBT.getText()+", \n" +
+            "            "+cjATcontraTierra.getText()+", "+cjBTcontraTierra.getText()+", '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
+            "            "+getT(0,3)+", "+getT(0,4)+", "+getT(1,2)+", "+getT(1,3)+", "+getT(1,4)+", "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+", "+getT(3,2)+", \n" +
+            "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", "+cjuv.getDouble()+", "+cjvw.getDouble()+", \n" +
+            "            "+cjwu.getDouble()+", "+cjproresalta.getText()+", '"+comboMaterialAlta.getSelectedItem()+"', "+cjxy.getDouble()+", "+cjyz.getDouble()+", "+cjzx.getDouble()+", \n" +
+            "            "+cjproresbaja.getText()+", '"+comboMaterialBaja.getSelectedItem()+"', "+cjiu.getDouble()+", "+cjiv.getDouble()+", "+cjiw.getDouble()+", "+cjpromedioi.getText()+", "+cjiogarantizado.getText()+", \n" +
+            "            "+cjpomedido.getText()+", "+cjpogarantizado.getText()+", "+cjvcc.getText()+", "+cjpcumedido.getText()+", "+cjpcua85.getText()+", "+cjpcugarantizado.getText()+", "+cji2r.getText()+", \n" +
+            "            "+cji2ra85.getText()+", "+cjimpedancia.getText()+", "+cjimpedancia85.getText()+", "+cjimpedanciagarantizado.getText()+", "+cjreg.getText()+", \n" +
+            "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", '"+cjcolor.getText()+"', "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
+            "            "+cjlargoelemento.getText()+", "+cjaltoelemento.getText()+", '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
+            "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , "+sesion.getIdUsuario()+")";
+                }else{
+                    GUARDAR = "UPDATE public.protocolos SET\n" +
+            "            frecuencia="+comboFrecuencia.getSelectedItem()+", refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
+            "            tensionserie='"+cjtensionSerie.getText()+"', nba='"+cjnba.getText()+"', calentamientodevanado='"+cjcalentamientodevanado.getText()+"', claseaislamiento='"+comboClaseAislamiento.getSelectedItem()+"', alturadiseno='"+cjaltdiseno.getText()+"', \n" +
+            "            derivacionprimaria='"+comboDerivacion.getSelectedItem()+"', i1="+cji1.getText()+", i2="+cji2.getText()+", temperaturadeensayo="+cjtemperatura.getText()+", conmutador="+conmutador.getSelectedItem()+", \n" +
+            "            liquidoaislante='"+comboAceite.getSelectedItem()+"', referenciadeaceite='"+comboReferenciaAceite.getSelectedItem()+"', tensionderuptura='"+cjRuptura.getText()+"', metodo='"+cjmetodo.getText()+"', \n" +
+            "            tiemporalt="+cjtiemporalt.getText()+", tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt="+cjATcontraBT.getText()+", \n" +
+            "            atcontratierra="+cjATcontraTierra.getText()+", btcontratierra="+cjBTcontraTierra.getText()+", grupodeconexion='"+comboGrupoConexion.getSelectedItem()+"', polaridad='"+comboPolaridad.getSelectedItem()+"', punou="+getT(0,2)+", \n" +
+            "            punov="+getT(0,3)+", punow="+getT(0,4)+", pdosu="+getT(1,2)+", pdosv="+getT(1,3)+", pdosw="+getT(1,4)+", ptresu="+getT(2,2)+", ptresv="+getT(2,3)+", ptresw="+getT(2,4)+", pcuatrou="+getT(3,2)+", \n" +
+            "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv="+cjuv.getDouble()+", resvw="+cjvw.getDouble()+", \n" +
+            "            reswu="+cjwu.getDouble()+", proresuno="+cjproresalta.getText()+", materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy="+cjxy.getDouble()+", resyz="+cjyz.getDouble()+", reszx="+cjzx.getDouble()+", \n" +
+            "            proresdos="+cjproresbaja.getText()+", materialconductorbaja='"+comboMaterialBaja.getSelectedItem()+"', iu="+cjiu.getDouble()+", iv="+cjiv.getDouble()+", iw="+cjiw.getDouble()+", promedioi="+cjpromedioi.getText()+", iogarantizado="+cjiogarantizado.getText()+", \n" +
+            "            pomedido="+cjpomedido.getText()+", pogarantizado="+cjpogarantizado.getText()+", vcc="+cjvcc.getText()+", pcu="+cjpcumedido.getText()+", pcua85="+cjpcua85.getText()+", pcugarantizado="+cjpcugarantizado.getText()+", i2r="+cji2r.getText()+", \n" +
+            "            i2ra85="+cji2ra85.getText()+", impedancia="+cjimpedancia.getText()+", impedancia85="+cjimpedancia85.getText()+", impedanciagarantizada="+cjimpedanciagarantizado.getText()+", reg="+cjreg.getText()+", \n" +
+            "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color='"+cjcolor.getText()+"', espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
+            "            largoradiador="+cjlargoelemento.getText()+", altoradiador="+cjaltoelemento.getText()+", observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
+            "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
+                }
+                if(conex.GUARDAR(GUARDAR)){
+                    modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");
                     try{                        
                         btnGuardar.setEnabled(false);
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/gif.gif")));
@@ -429,20 +427,20 @@ public class PROTOS extends javax.swing.JFrame{
                         JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());
                         if(mostrarProtocolo.isSelected()){
                             JasperViewer.viewReport(jasperprint, false);
-                            JasperViewer visor = new JasperViewer(jasperprint, false);
                         }
+                        ACTUALIZANDO = false;
                         JasperExportManager.exportReportToPdfFile( jasperprint, System.getProperties().getProperty("user.dir")+"\\PROTOCOLOS PDF\\"+cjprotocolo.getText()+"_"+cjcliente.getText()+".pdf");
-                        limpiar();
-                    }catch(JRException | MalformedURLException ex){
+                        limpiar();                        
+                    }catch(Exception ex){
                         Logger.getLogger(EntradaDeTrafos.class.getName()).log(Level.SEVERE, null, ex);
-                        modelo.Metodos.M("ERROR AL GENERAR EL PROTOCOLO", "error.png");
+                        modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL PROTOCOLO");
                     }finally{
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/guardar.png")));
                         btnGuardar.setEnabled(true);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
     
     void abrirProtocolo(){
@@ -549,10 +547,10 @@ public class PROTOS extends javax.swing.JFrame{
         System.out.println(jTabbedPane1.getComponentCount());
         Component c = jTabbedPane1.getComponentAt(0);
         JPanel p = (JPanel) c;
-        for (Component com : p.getComponents()) {
+        for (Component com : p.getComponents()){
             if(com instanceof JPanel){
                 JPanel panel = (JPanel) com;
-                for (Component txt : panel.getComponents()) {
+                for (Component txt : panel.getComponents()){
                     if(txt instanceof JTextField){
                         ((JTextField) txt).setText("");
                     }
@@ -562,9 +560,12 @@ public class PROTOS extends javax.swing.JFrame{
         cjcalentamientodevanado.setText("65");cjtemperatura.setText("30");cjRuptura.setText("40");
         cjmetodo.setText("ASTM 877");cjBTcontraATyTierra.setText("10");cjATcontraBTyTierra.setText("34.5");
         cjtiempoaplicado.setText("60");cjFrecuenciaInducida.setText("414");cjtiempoInducido.setText("17");
-        cjespesor.setText("110");cjobservaciones.setText("");
-        cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", !ACTUALIZANDO)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
-        ACTUALIZANDO = false;btnGuardar.setEnabled(true);
+        cjespesor.setText("110");cjobservaciones.setText("");        
+        btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/Guardar.png")));
+        btnGuardar.setEnabled(true);
+        if(ACTUALIZANDO==false){
+            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
+        }
     }
     
     void cargarProtocolos(){
@@ -1189,7 +1190,6 @@ public class PROTOS extends javax.swing.JFrame{
         cjxy.setAbajo(cjyz);
         cjxy.setCampodetexto(null);
         cjxy.setPreferredSize(new java.awt.Dimension(100, 20));
-        cjxy.setValidar(true);
         cjxy.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 cjxyKeyReleased(evt);
