@@ -43,7 +43,7 @@ public class InformesDeProduccion extends javax.swing.JFrame {
                 new String[]{"ITEM","ORDEN","Nº SERIE","FECHA RECEPCION","FECHA ENTREGADO","CLIENTE","FASE","KVA","SERVICIO","LOTE"}, 
                 tablaDatos, 
                 new Class[]{Integer.class,String.class,String.class,String.class,String.class,String.class,Integer.class,Double.class,String.class,String.class}, 
-                new Boolean[]{false,false,false,false,false,false,false,false,false,false});
+                new Boolean[]{true,false,false,false,false,false,false,false,false,false});
         tablaDatos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tablaDatos.setCellSelectionEnabled(true);
         tablaDatos.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "selectNextColumnCell");
@@ -58,7 +58,7 @@ public class InformesDeProduccion extends javax.swing.JFrame {
                                         "INNER JOIN entrada e USING(identrada)\n" +
                                         "INNER JOIN cliente c USING(idcliente)\n" +
                                         "WHERE p.fechalaboratorio::date BETWEEN 'Tue Jan 03 11:05:37 COT 2017' AND 'Fri Feb 03 11:05:40 COT 2017' \n" +
-                                        "ORDER BY p.fechalaboratoriO, t.numeroserie ASC");
+                                        "ORDER BY p.fechalaboratorio, t.numeroserie ASC");
         try {
             while(rs.next()){
                 modeloTabla.addRow(new Object[]{

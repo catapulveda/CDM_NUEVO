@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConsorcioRetono" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6569b73d-ad90-4959-abb8-76b9832009dd">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="5"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -336,13 +336,13 @@
 				</textElement>
 				<text><![CDATA[Placa Vehiculo:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="437" y="2" width="133" height="32" uuid="43cf5f38-946d-4d2f-a46c-3e8f3e4a21ea"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+			<textField>
+				<reportElement x="437" y="2" width="133" height="32" uuid="10ce9d9e-4786-4bd6-a74d-1f443b07cdb2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[REMISION RETORNO]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[($F{tipo_remision}.equals("CON RETORNO"))?"REMISION RETORNO":"REMISION"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>

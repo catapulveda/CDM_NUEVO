@@ -951,7 +951,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     int cantidadGuardar = 0;
 //                        barraProgresoEntrada.setMaximum(modelo.getRowCount());
                     for (int i = 0; i < modeloTabla.getRowCount(); i++){
-
+                        tablaTrafos.setRowSelectionInterval(i, i);
+                        tablaTrafos.setColumnSelectionInterval(3, 3);
                         if(modeloTabla.getValueAt(i, 3).equals("")){
                             JOptionPane.showMessageDialog(this, "EL ITEM "+modeloTabla.getValueAt(i, 3)+" NO TIENE NUMERO DE SERIE, POR LO TANTO NO SE GUARDARA EN LA BASE DE DATOS.\nSI NO TIENE NUMERO DE SERIE ASIGENELO EL VALOR '0' Y HAGA CLICK NUEVAMENTE EN EL BOTON GUARDAR.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));                                
                         }else{
@@ -1002,7 +1003,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                                 GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//TIPO. TRAFO. ENTRA.
                                 GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//TIPO. TRAFO. SALI.
                                 GUARDAR += " 'EN PLANTA' , ";//ESTADO
-                                GUARDAR += " '"+IDENTRADA+"' ) ,\n ";//ID ENTRADA
+                                GUARDAR += " '"+IDENTRADA+"' ),\n";//ID ENTRADA
 //                                GUARDAR += " '0' , ";//ID DESPACHO
 //                                GUARDAR += " '0' ) ,\n";//ID SALIDA
                             }
@@ -1089,10 +1090,9 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     }//GEN-LAST:event_cjBuscarSerieKeyReleased
 
     private void comboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboClienteItemStateChanged
-        if(YACARGO){
+        if(YACARGO || !LOTE_ABIERTO){
             if(evt.getStateChange() == ItemEvent.SELECTED){            
-                modelo.Ciudad.cargarComboCiudadesPorCliente(((Cliente)comboCliente.getModel().getSelectedItem()).getIdCliente(),comboCiudad);
-                JOptionPane.showMessageDialog(null, evt.getStateChange());
+                modelo.Ciudad.cargarComboCiudadesPorCliente(((Cliente)comboCliente.getModel().getSelectedItem()).getIdCliente(),comboCiudad);                
             }
         }        
     }//GEN-LAST:event_comboClienteItemStateChanged

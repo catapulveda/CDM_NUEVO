@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Remisiones" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6569b73d-ad90-4959-abb8-76b9832009dd">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF" radius="0">
@@ -193,7 +193,7 @@ WHERE t.idremision=$P{IDREMISION_TABLA}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Franklin Gothic Medium" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Autopista a San Antonio Km. 3 Lomitas.]]></text>
+				<text><![CDATA[Autopista a San Antonio Cra 7 No. 10-196]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="113" y="50" width="260" height="11" uuid="2987ad2b-af5e-4bf1-a489-ba3e1085d4e2"/>
@@ -235,7 +235,7 @@ WHERE t.idremision=$P{IDREMISION_TABLA}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Franklin Gothic Medium" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NIT: 900.342.895-7]]></text>
+				<text><![CDATA[NIT: 800.026.124-1]]></text>
 			</staticText>
 			<line>
 				<reportElement x="481" y="25" width="91" height="1" uuid="3feecaab-b62c-4af5-ac88-3aa2b3ddbca9"/>
@@ -549,7 +549,7 @@ WHERE t.idremision=$P{IDREMISION_TABLA}]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["RMPO-04-10-01 | V. 05 | 30/10/2015 | Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["RMPO-04-10-01 | V. 06 | 03/02/2017 | Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="531" y="44" width="40" height="10" uuid="b6d108ea-7023-49cc-ae81-bade150c5f9b"/>
@@ -586,13 +586,6 @@ WHERE t.idremision=$P{IDREMISION_TABLA}]]>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="237" y="34" width="334" height="10" uuid="29639334-1813-4390-ade2-a2a98091724f"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="7" isBold="false"/>
-				</textElement>
-				<text><![CDATA[RMPO-04-10-01 | V. 05 | 30/10/2015]]></text>
-			</staticText>
 		</band>
 	</lastPageFooter>
 </jasperReport>

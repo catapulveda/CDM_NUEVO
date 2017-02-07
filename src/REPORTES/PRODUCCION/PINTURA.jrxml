@@ -621,7 +621,7 @@ TRANSFORMADORES]]></text>
 				<textElement textAlignment="Right" markup="none">
 					<font fontName="Enter Sansman" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())+"    RMPA-02-18-01 | V.04 | 22/12/2015"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())+"    RMPA-02-18-01 | V.05 | 03/02/2017"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="64" height="14" uuid="a900a69f-4479-4c62-8df4-a748d06605e2"/>

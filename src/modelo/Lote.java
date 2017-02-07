@@ -128,7 +128,7 @@ public class Lote {
                         rs.getString("op"), 
                         rs.getString("centrodecostos"),                        
                         new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fecharegistrado")),
-                        new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fechaactualizado")),
+                        (null!=rs.getDate("fechaactualizado"))?new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fechaactualizado")):"SIN ACTUALIZAR",
                         rs.getDate("fechaliberado"),
                         rs.getBoolean("estado"), 
                         rs.getString("nombreusuario")

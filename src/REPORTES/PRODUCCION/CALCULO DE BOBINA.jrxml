@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRODUCCION" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5eddb234-9a72-47fc-a18b-8bb1971b6e2f">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="309"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -563,11 +563,11 @@ REALIZADO]]></text>
 	<pageFooter>
 		<band height="19" splitType="Stretch">
 			<textField>
-				<reportElement x="105" y="12" width="467" height="7" uuid="637d521a-0c34-435b-86ad-2edf8b9ccc68"/>
+				<reportElement x="0" y="12" width="572" height="7" uuid="637d521a-0c34-435b-86ad-2edf8b9ccc68"/>
 				<textElement textAlignment="Right" markup="none">
 					<font fontName="Enter Sansman" size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())+"    RMPP-02-03-01 | V.07 | 22/12/2015"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())+"    RMPP-02-03-01 | V.08 | 03/02/2017"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="64" height="14" uuid="a900a69f-4479-4c62-8df4-a748d06605e2"/>

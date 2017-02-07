@@ -2,6 +2,7 @@ package view;
 
 import Dialogos.DialogoTrafosRepetidos;
 import JTableAutoResizeColumn.TableColumnAdjuster;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.HeadlessException;
@@ -26,6 +27,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -380,7 +382,7 @@ public class PROTOS extends javax.swing.JFrame{
             "            i2ra85, impedancia, impedancia85, impedanciagarantizada, reg, \n" +
             "            ef, largotanque, anchotanque, altotanque, color, espesor, radiadores, \n" +
             "            largoradiador, altoradiador, observaciones, fechalaboratorio, \n" +
-            "            fechaderegistro, estadoservicio, idusuario)\n" +
+            "            fechaderegistro, estadoservicio, garantia, idusuario)\n" +
             "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', "+comboFrecuencia.getSelectedItem()+", '"+comboRefrigeracion.getSelectedItem()+"', \n" +
             "            '"+cjtensionSerie.getText()+"', '"+cjnba.getText()+"', '"+cjcalentamientodevanado.getText()+"', '"+comboClaseAislamiento.getSelectedItem()+"', '"+cjaltdiseno.getText()+"', \n" +
             "            '"+comboDerivacion.getSelectedItem()+"', "+cji1.getText()+", "+cji2.getText()+", "+cjtemperatura.getText()+", "+conmutador.getSelectedItem()+", \n" +
@@ -395,7 +397,7 @@ public class PROTOS extends javax.swing.JFrame{
             "            "+cji2ra85.getText()+", "+cjimpedancia.getText()+", "+cjimpedancia85.getText()+", "+cjimpedanciagarantizado.getText()+", "+cjreg.getText()+", \n" +
             "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", '"+cjcolor.getText()+"', "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
             "            "+cjlargoelemento.getText()+", "+cjaltoelemento.getText()+", '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
-            "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , "+sesion.getIdUsuario()+")";
+            "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , '"+checkGarantia.isSelected()+"' , "+sesion.getIdUsuario()+")";
                 }else{
                     GUARDAR = "UPDATE public.protocolos SET\n" +
             "            frecuencia="+comboFrecuencia.getSelectedItem()+", refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
@@ -412,7 +414,7 @@ public class PROTOS extends javax.swing.JFrame{
             "            i2ra85="+cji2ra85.getText()+", impedancia="+cjimpedancia.getText()+", impedancia85="+cjimpedancia85.getText()+", impedanciagarantizada="+cjimpedanciagarantizado.getText()+", reg="+cjreg.getText()+", \n" +
             "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color='"+cjcolor.getText()+"', espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
             "            largoradiador="+cjlargoelemento.getText()+", altoradiador="+cjaltoelemento.getText()+", observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
-            "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
+            "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , garantia='"+checkGarantia.isSelected()+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
                 }
                 if(conex.GUARDAR(GUARDAR)){
                     modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");
@@ -562,7 +564,7 @@ public class PROTOS extends javax.swing.JFrame{
         cjtiempoaplicado.setText("60");cjFrecuenciaInducida.setText("414");cjtiempoInducido.setText("17");
         cjespesor.setText("110");cjobservaciones.setText("");        
         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/Guardar.png")));
-        btnGuardar.setEnabled(true);
+        btnGuardar.setEnabled(true);checkGarantia.setSelected(false);
         if(ACTUALIZANDO==false){
             cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
         }
@@ -790,6 +792,8 @@ public class PROTOS extends javax.swing.JFrame{
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jToolBar2 = new javax.swing.JToolBar();
+        checkGarantia = new javax.swing.JCheckBox();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
         btnGuardar = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
         jButton2 = new javax.swing.JButton();
@@ -916,7 +920,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel2.add(cjano);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Volt. Primario:");
+        jLabel9.setText("Volt. Primario(V):");
         jPanel2.add(jLabel9);
 
         cjvp.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -924,7 +928,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel2.add(cjvp);
 
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel10.setText("Volt. Secund.:");
+        jLabel10.setText("Volt. Secund.(V):");
         jPanel2.add(jLabel10);
 
         cjvs.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -944,7 +948,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel2.add(comboServicio);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Frecuencia:");
+        jLabel2.setText("Frecuencia(Hz):");
         jPanel2.add(jLabel2);
 
         comboFrecuencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "60", "50" }));
@@ -1064,7 +1068,7 @@ public class PROTOS extends javax.swing.JFrame{
         jLabel21.setText("Referencia:");
         jPanel3.add(jLabel21);
 
-        comboReferenciaAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HYVOLT", "LUB TROIL TIPO II", "FR3", "EPM" }));
+        comboReferenciaAceite.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HYVOLT", "LUB TROIL TIPO II", "FR3", "EPM", "INHIBIDO TIPO II" }));
         jPanel3.add(comboReferenciaAceite);
 
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1106,7 +1110,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel4.add(comboTensionPrueba);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("AT contra BT:");
+        jLabel26.setText("AT contra BT(GΩ):");
         jPanel4.add(jLabel26);
 
         cjATcontraBT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1118,7 +1122,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel4.add(cjATcontraBT);
 
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel27.setText("AT contra Tierra:");
+        jLabel27.setText("AT contra Tierra(GΩ):");
         jPanel4.add(jLabel27);
 
         cjATcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1130,7 +1134,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel4.add(cjATcontraTierra);
 
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel28.setText("BT contra Tierra:");
+        jLabel28.setText("BT contra Tierra(GΩ):");
         jPanel4.add(jLabel28);
 
         cjBTcontraTierra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1167,7 +1171,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel6.setLayout(new java.awt.GridLayout(5, 4, 0, 2));
 
         jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel35.setText("U-V OHM:");
+        jLabel35.setText("U-V(Ω):");
         jPanel6.add(jLabel35);
 
         cjuv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1183,7 +1187,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel6.add(cjuv);
 
         jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel36.setText("X-Y:");
+        jLabel36.setText("X-Y(mΩ):");
         jPanel6.add(jLabel36);
 
         cjxy.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1198,7 +1202,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel6.add(cjxy);
 
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel37.setText("V-W OHM:");
+        jLabel37.setText("V-W(Ω):");
         jPanel6.add(jLabel37);
 
         cjwu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1210,7 +1214,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel6.add(cjwu);
 
         jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel38.setText("Y-Z:");
+        jLabel38.setText("Y-Z(mΩ):");
         jPanel6.add(jLabel38);
 
         cjyz.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1222,7 +1226,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel6.add(cjyz);
 
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel39.setText("W-U OHM:");
+        jLabel39.setText("W-U(Ω):");
         jPanel6.add(jLabel39);
 
         cjvw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1233,7 +1237,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel6.add(cjvw);
 
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel40.setText("Z-X:");
+        jLabel40.setText("Z-X(mΩ):");
         jPanel6.add(jLabel40);
 
         cjzx.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1347,7 +1351,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel8.add(cjTensionBT2);
 
         jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel52.setText("Iu:");
+        jLabel52.setText("Iu(Amp):");
         jPanel8.add(jLabel52);
 
         cjiu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1363,7 +1367,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel8.add(cjiu);
 
         jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel53.setText("Iv:");
+        jLabel53.setText("Iv(Amp):");
         jPanel8.add(jLabel53);
 
         cjiv.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1375,7 +1379,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel8.add(cjiv);
 
         jLabel54.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel54.setText("Iw:");
+        jLabel54.setText("Iw(Amp):");
         jPanel8.add(jLabel54);
 
         cjiw.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1409,9 +1413,13 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel8.add(jLabel57);
 
         cjpomedido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjpomedido.setCampodetexto(cjvcc);
+        cjpomedido.setCampodetexto(null);
         cjpomedido.setPreferredSize(new java.awt.Dimension(100, 20));
-        cjpomedido.setValidar(true);
+        cjpomedido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cjpomedidoKeyReleased(evt);
+            }
+        });
         jPanel8.add(cjpomedido);
 
         jLabel58.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1428,7 +1436,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel9.setLayout(new java.awt.GridLayout(9, 2, 0, 2));
 
         jLabel59.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel59.setText("Vcc:");
+        jLabel59.setText("Vcc(V):");
         jPanel9.add(jLabel59);
 
         cjvcc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1438,22 +1446,21 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel9.add(cjvcc);
 
         jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel60.setText("Pcu Medido:");
+        jLabel60.setText("Pcu Medido(W):");
         jPanel9.add(jLabel60);
 
         cjpcumedido.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        cjpcumedido.setCampodetexto(cjobservaciones);
+        cjpcumedido.setCampodetexto(null);
         cjpcumedido.setPreferredSize(new java.awt.Dimension(100, 20));
-        cjpcumedido.setValidar(true);
         cjpcumedido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                cjpcumedidoKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cjpcumedidoKeyTyped(evt);
             }
         });
         jPanel9.add(cjpcumedido);
 
         jLabel61.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel61.setText("Pcu a 85°:");
+        jLabel61.setText("Pcu a 85°(W):");
         jPanel9.add(jLabel61);
 
         cjpcua85.setForeground(new java.awt.Color(0, 102, 255));
@@ -1471,7 +1478,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel9.add(cjpcugarantizado);
 
         jLabel63.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel63.setText("I2r:");
+        jLabel63.setText("I2r(W):");
         jPanel9.add(jLabel63);
 
         cji2r.setForeground(new java.awt.Color(0, 102, 255));
@@ -1480,7 +1487,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel9.add(cji2r);
 
         jLabel64.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel64.setText("I2r a 85°:");
+        jLabel64.setText("I2r a 85°(W):");
         jPanel9.add(jLabel64);
 
         cji2ra85.setForeground(new java.awt.Color(0, 102, 255));
@@ -1558,7 +1565,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel12.add(cjaceite);
 
         jLabel70.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel70.setText("Largo:");
+        jLabel70.setText("Largo(mm):");
         jPanel12.add(jLabel70);
 
         cjlargo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1567,7 +1574,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel12.add(cjlargo);
 
         jLabel71.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel71.setText("Ancho:");
+        jLabel71.setText("Ancho(mm):");
         jPanel12.add(jLabel71);
 
         cjancho.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1576,7 +1583,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel12.add(cjancho);
 
         jLabel72.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel72.setText("Alto:");
+        jLabel72.setText("Alto(mm):");
         jPanel12.add(jLabel72);
 
         cjalto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1594,7 +1601,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel12.add(cjcolor);
 
         jLabel74.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel74.setText("Espesor:");
+        jLabel74.setText("Espesor(µ):");
         jPanel12.add(jLabel74);
 
         cjespesor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1613,7 +1620,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel12.add(cjelementos);
 
         jLabel76.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel76.setText("Largo Elemento:");
+        jLabel76.setText("Largo Elemento(mm):");
         jPanel12.add(jLabel76);
 
         cjlargoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1622,7 +1629,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel12.add(cjlargoelemento);
 
         jLabel77.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel77.setText("Ancho Elemento:");
+        jLabel77.setText("Ancho Elemento(mm):");
         jPanel12.add(jLabel77);
 
         cjaltoelemento.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1718,6 +1725,13 @@ public class PROTOS extends javax.swing.JFrame{
         jLabel34.setText("Lote:");
 
         jToolBar2.setFloatable(false);
+
+        checkGarantia.setText("Garantia");
+        checkGarantia.setFocusable(false);
+        checkGarantia.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        checkGarantia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(checkGarantia);
+        jToolBar2.add(jSeparator6);
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Guardar.png"))); // NOI18N
         btnGuardar.setToolTipText("Guardar");
@@ -2156,12 +2170,6 @@ public class PROTOS extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_cjiuKeyPressed
 
-    private void cjpcumedidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpcumedidoKeyPressed
-        if(evt.getKeyCode()==10){
-            subMenuItemRecalcular.doClick();
-        }
-    }//GEN-LAST:event_cjpcumedidoKeyPressed
-
     private void comboServicioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboServicioItemStateChanged
         if(evt.getStateChange() == ItemEvent.DESELECTED){
             if(!ACTUALIZANDO && "MANTENIMIENTO".equals(comboServicio.getSelectedItem().toString())){
@@ -2245,6 +2253,29 @@ public class PROTOS extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_cjobservacionesKeyReleased
 
+    private void cjpomedidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpomedidoKeyReleased
+        if(evt.getKeyCode()== 10){
+            if(cjpomedido.getDouble() > cjpogarantizado.getDouble()){
+                modelo.Metodos.M(""+evt.getKeyCode(), "advertencia.png");
+            }else{
+                cjvcc.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_cjpomedidoKeyReleased
+
+    private void cjpcumedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpcumedidoKeyTyped
+        if(evt.getKeyChar()==10){
+            if(cjpcumedido.getDouble() < cji2r.getDouble()){
+                modelo.Metodos.M("Las perdidas en el cobre son menores a las I²R.!", "advertencia.png");
+                cjpcumedido.setBorder(new LineBorder(new Color(209,72,54), 2));
+                cji2r.setBorder(new LineBorder(new Color(209,72,54), 2));
+            }else{
+                cjobservaciones.grabFocus();
+                subMenuItemRecalcular.doClick();                
+            }
+        }
+    }//GEN-LAST:event_cjpcumedidoKeyTyped
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2276,6 +2307,7 @@ public class PROTOS extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarExcel;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox checkGarantia;
     private CompuChiqui.JTextFieldPopup cjATcontraBT;
     private CompuChiqui.JTextFieldPopup cjATcontraBTyTierra;
     private CompuChiqui.JTextFieldPopup cjATcontraTierra;
@@ -2474,6 +2506,7 @@ public class PROTOS extends javax.swing.JFrame{
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;

@@ -227,6 +227,7 @@ public class MENU_NUEVO extends javax.swing.JFrame{
         rp.setTIPO("CON RETORNO");
         rp.setREPORTE("CONSORCIO_HERRAMIENTAS");
         rp.mostrarConsecutivoActual();
+        rp.comboempresa.setSelectedItem("CONSORCIO");
         rp.cargarTablaHerramientas();
         rp.setVisible(true);
     }//GEN-LAST:event_conRetornoConsorcioActionPerformed

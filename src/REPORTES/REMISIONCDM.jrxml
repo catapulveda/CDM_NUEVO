@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REMISIONCDM" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6569b73d-ad90-4959-abb8-76b9832009dd">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="183"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF" radius="0">
 		<box>
@@ -169,7 +169,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Franklin Gothic Medium" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Autopista a San Antonio Km. 3 Lomitas.]]></text>
+				<text><![CDATA[Autopista a San Antonio Cra 7 No. 10-196]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="150" y="49" width="260" height="11" uuid="2987ad2b-af5e-4bf1-a489-ba3e1085d4e2"/>
@@ -211,7 +211,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Franklin Gothic Medium" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NIT: 900.342.895-7]]></text>
+				<text><![CDATA[NIT: 800.026.124-1]]></text>
 			</staticText>
 			<line>
 				<reportElement x="481" y="25" width="91" height="1" uuid="3feecaab-b62c-4af5-ac88-3aa2b3ddbca9"/>
@@ -270,28 +270,21 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
+		<band height="11" splitType="Stretch">
 			<textField>
-				<reportElement x="265" y="10" width="298" height="10" uuid="355b460e-3cdf-45df-b009-a414da6034f9"/>
+				<reportElement x="265" y="1" width="298" height="10" uuid="355b460e-3cdf-45df-b009-a414da6034f9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["RMPO-04-10-01 | V. 06 | 03/02/2017 Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="532" y="10" width="40" height="10" uuid="aabe3992-c684-4365-83c6-e95e4a6ae946"/>
+				<reportElement x="532" y="1" width="40" height="10" uuid="aabe3992-c684-4365-83c6-e95e4a6ae946"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="265" y="0" width="307" height="10" uuid="82627062-25d8-45c8-a49e-ec57bb6efdb2"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="7" isBold="false"/>
-				</textElement>
-				<text><![CDATA[RMPO-04-10-01 | V. 05 | 30/10/2015]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="572" height="1" uuid="07b8dbe9-23a7-44d0-a92c-66bbb733e8ad"/>
 				<graphicElement>
@@ -301,7 +294,7 @@
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="54">
+		<band height="44">
 			<line>
 				<reportElement x="0" y="15" width="180" height="1" uuid="edc1b42d-fdd2-4fd8-8d59-36865341273a"/>
 				<graphicElement>
@@ -342,14 +335,14 @@
 				<text><![CDATA[AUTORIZADO POR:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="314" y="44" width="250" height="10" uuid="046528f5-8d8f-4eef-86ca-c935de66b8d7"/>
+				<reportElement x="314" y="34" width="250" height="10" uuid="046528f5-8d8f-4eef-86ca-c935de66b8d7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["RMPO-04-10-01 | V. 06 | 03/02/2017 Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="531" y="44" width="40" height="10" uuid="b6d108ea-7023-49cc-ae81-bade150c5f9b"/>
+				<reportElement x="531" y="34" width="41" height="10" uuid="b6d108ea-7023-49cc-ae81-bade150c5f9b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
@@ -377,19 +370,12 @@
 				<textFieldExpression><![CDATA[$F{cliente_remision}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="44" width="356" height="10" uuid="20643ed2-6f3a-49b7-8818-68df17cfae7c"/>
+				<reportElement x="0" y="34" width="356" height="10" uuid="20643ed2-6f3a-49b7-8818-68df17cfae7c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="324" y="34" width="247" height="10" uuid="570c9ad2-a99a-4e53-98a7-d58461712091"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-					<font fontName="Arial" size="7" isBold="false"/>
-				</textElement>
-				<text><![CDATA[RMPO-04-10-01 | V. 05 | 30/10/2015]]></text>
-			</staticText>
 		</band>
 	</lastPageFooter>
 </jasperReport>
