@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRODUCCION" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5eddb234-9a72-47fc-a18b-8bb1971b6e2f">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="40"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -125,22 +125,25 @@
 				WHEN ano>=1996 AND fase=1 THEN (SELECT pc FROM monofasicodespuesde1996 WHERE kva=t.kvaentrada) 
 				WHEN ano>=1996 AND fase=3 THEN (SELECT pc FROM trifasicodespuesde1996 WHERE kva=t.kvaentrada) 
 			END 
-	END AS pc 
+	END AS pc, p.pomedido, p.pcu 
 FROM entrada e 
 LEFT JOIN transformador t USING(identrada) 
+LEFT JOIN protocolos p USING(idtransformador)
 WHERE identrada=$P{IDENTRADA} ORDER BY $P!{ORDERBY}]]>
 		</queryString>
 		<field name="idcliente" class="java.lang.Integer"/>
 		<field name="numeroempresa" class="java.lang.String"/>
 		<field name="numeroserie" class="java.lang.String"/>
 		<field name="marca" class="java.lang.String"/>
-		<field name="kvaentrada" class="java.lang.Double"/>
+		<field name="kvaentrada" class="java.lang.String"/>
 		<field name="fase" class="java.lang.Integer"/>
 		<field name="servicioentrada" class="java.lang.String"/>
 		<field name="ano" class="java.lang.Integer"/>
 		<field name="observacionentrada" class="java.lang.String"/>
-		<field name="po" class="java.lang.Double"/>
-		<field name="pc" class="java.lang.Double"/>
+		<field name="po" class="java.lang.String"/>
+		<field name="pc" class="java.lang.String"/>
+		<field name="pomedido" class="java.lang.String"/>
+		<field name="pcu" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="IDENTRADA" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="ORDEN" class="java.lang.Boolean">
@@ -428,7 +431,15 @@ WHERE identrada=$P{IDENTRADA}]]>
 								<text><![CDATA[Po MEDIDO]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="13" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="13" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="36" height="13" uuid="279eb6c6-d2c3-4538-956a-2cac339c8b73"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{pomedido}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="36" uuid="d442e737-0f2b-4609-bfd8-05545dbe31ea">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
@@ -460,7 +471,15 @@ WHERE identrada=$P{IDENTRADA}]]>
 								<text><![CDATA[Pcu MEDIDA]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="13" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="13" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="36" height="13" uuid="57c88bf2-e052-42ec-871a-b9be16a22561"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{pcu}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="36" uuid="5ecf134a-e1e5-4eb1-9ea6-156754a48fb6">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
