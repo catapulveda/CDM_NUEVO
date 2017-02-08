@@ -359,7 +359,7 @@ public class PROTOS extends javax.swing.JFrame{
         cjcolor.setText((cjcliente.getText().equals("EMPRESAS PUBLICAS DE MEDELLIN S.A E.S.P"))?"VERDE":"GRIS");
     }
     
-    Object getT(int r, int col){return tablaUno.getValueAt(r, col);}
+    Object getT(int r, int col){return "'"+tablaUno.getValueAt(r, col)+"'";}
     
     void guardarProtocolo(){
         (new Thread(){
@@ -383,37 +383,37 @@ public class PROTOS extends javax.swing.JFrame{
             "            ef, largotanque, anchotanque, altotanque, color, espesor, radiadores, \n" +
             "            largoradiador, altoradiador, observaciones, fechalaboratorio, \n" +
             "            fechaderegistro, estadoservicio, garantia, idusuario)\n" +
-            "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', "+comboFrecuencia.getSelectedItem()+", '"+comboRefrigeracion.getSelectedItem()+"', \n" +
+            "    VALUES ("+IDTRAFO+", '"+cjprotocolo.getText()+"', '"+comboFrecuencia.getSelectedItem()+"', '"+comboRefrigeracion.getSelectedItem()+"', \n" +
             "            '"+cjtensionSerie.getText()+"', '"+cjnba.getText()+"', '"+cjcalentamientodevanado.getText()+"', '"+comboClaseAislamiento.getSelectedItem()+"', '"+cjaltdiseno.getText()+"', \n" +
-            "            '"+comboDerivacion.getSelectedItem()+"', "+cji1.getText()+", "+cji2.getText()+", "+cjtemperatura.getText()+", "+conmutador.getSelectedItem()+", \n" +
+            "            '"+comboDerivacion.getSelectedItem()+"', '"+cji1.getText()+"', '"+cji2.getText()+"', '"+cjtemperatura.getText()+"', '"+conmutador.getSelectedItem()+"', \n" +
             "            '"+comboAceite.getSelectedItem()+"', '"+comboReferenciaAceite.getSelectedItem()+"', '"+cjRuptura.getText()+"', '"+cjmetodo.getText()+"', \n" +
-            "            "+cjtiemporalt.getText()+", '"+comboTensionPrueba.getSelectedItem()+"', "+cjATcontraBT.getText()+", \n" +
-            "            "+cjATcontraTierra.getText()+", "+cjBTcontraTierra.getText()+", '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
+            "            '"+cjtiemporalt.getText()+"', '"+comboTensionPrueba.getSelectedItem()+"', '"+cjATcontraBT.getText()+"', \n" +
+            "            '"+cjATcontraTierra.getText()+"', '"+cjBTcontraTierra.getText()+"', '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
             "            "+getT(0,3)+", "+getT(0,4)+", "+getT(1,2)+", "+getT(1,3)+", "+getT(1,4)+", "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+", "+getT(3,2)+", \n" +
-            "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", "+cjuv.getDouble()+", "+cjvw.getDouble()+", \n" +
-            "            "+cjwu.getDouble()+", "+cjproresalta.getText()+", '"+comboMaterialAlta.getSelectedItem()+"', "+cjxy.getDouble()+", "+cjyz.getDouble()+", "+cjzx.getDouble()+", \n" +
-            "            "+cjproresbaja.getText()+", '"+comboMaterialBaja.getSelectedItem()+"', "+cjiu.getDouble()+", "+cjiv.getDouble()+", "+cjiw.getDouble()+", "+cjpromedioi.getText()+", "+cjiogarantizado.getText()+", \n" +
-            "            "+cjpomedido.getText()+", "+cjpogarantizado.getText()+", "+cjvcc.getText()+", "+cjpcumedido.getText()+", "+cjpcua85.getText()+", "+cjpcugarantizado.getText()+", "+cji2r.getText()+", \n" +
-            "            "+cji2ra85.getText()+", "+cjimpedancia.getText()+", "+cjimpedancia85.getText()+", "+cjimpedanciagarantizado.getText()+", "+cjreg.getText()+", \n" +
-            "            "+cjef.getText()+", "+cjlargo.getText()+", "+cjancho.getText()+", "+cjalto.getText()+", '"+cjcolor.getText()+"', "+cjespesor.getText()+", "+cjelementos.getText()+", \n" +
-            "            "+cjlargoelemento.getText()+", "+cjaltoelemento.getText()+", '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
+            "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", '"+cjuv.getDouble()+"', '"+cjvw.getDouble()+"', \n" +
+            "            '"+cjwu.getDouble()+"', '"+cjproresalta.getText()+"', '"+comboMaterialAlta.getSelectedItem()+"', '"+cjxy.getDouble()+"', '"+cjyz.getDouble()+"', '"+cjzx.getDouble()+"', \n" +
+            "            '"+cjproresbaja.getText()+"', '"+comboMaterialBaja.getSelectedItem()+"', '"+cjiu.getDouble()+"', '"+cjiv.getDouble()+"', '"+cjiw.getDouble()+"', '"+cjpromedioi.getText()+"', '"+cjiogarantizado.getText()+"', \n" +
+            "            '"+cjpomedido.getText()+"', '"+cjpogarantizado.getText()+"', '"+cjvcc.getText()+"', '"+cjpcumedido.getText()+"', '"+cjpcua85.getText()+"', '"+cjpcugarantizado.getText()+"', '"+cji2r.getText()+"', \n" +
+            "            '"+cji2ra85.getText()+"', '"+cjimpedancia.getText()+"', '"+cjimpedancia85.getText()+"', '"+cjimpedanciagarantizado.getText()+"', '"+cjreg.getText()+"', \n" +
+            "            '"+cjef.getText()+"', '"+cjlargo.getText()+"', '"+cjancho.getText()+"', '"+cjalto.getText()+"', '"+cjcolor.getText()+"', '"+cjespesor.getText()+"', '"+cjelementos.getText()+"', \n" +
+            "            '"+cjlargoelemento.getText()+"', '"+cjaltoelemento.getText()+"', '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
             "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , '"+checkGarantia.isSelected()+"' , "+sesion.getIdUsuario()+")";
                 }else{
                     GUARDAR = "UPDATE public.protocolos SET\n" +
-            "            frecuencia="+comboFrecuencia.getSelectedItem()+", refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
+            "            frecuencia='"+comboFrecuencia.getSelectedItem()+"', refrigeracion='"+comboRefrigeracion.getSelectedItem()+"', \n" +
             "            tensionserie='"+cjtensionSerie.getText()+"', nba='"+cjnba.getText()+"', calentamientodevanado='"+cjcalentamientodevanado.getText()+"', claseaislamiento='"+comboClaseAislamiento.getSelectedItem()+"', alturadiseno='"+cjaltdiseno.getText()+"', \n" +
-            "            derivacionprimaria='"+comboDerivacion.getSelectedItem()+"', i1="+cji1.getText()+", i2="+cji2.getText()+", temperaturadeensayo="+cjtemperatura.getText()+", conmutador="+conmutador.getSelectedItem()+", \n" +
+            "            derivacionprimaria='"+comboDerivacion.getSelectedItem()+"', i1='"+cji1.getText()+"', i2='"+cji2.getText()+"', temperaturadeensayo='"+cjtemperatura.getText()+"', conmutador='"+conmutador.getSelectedItem()+"', \n" +
             "            liquidoaislante='"+comboAceite.getSelectedItem()+"', referenciadeaceite='"+comboReferenciaAceite.getSelectedItem()+"', tensionderuptura='"+cjRuptura.getText()+"', metodo='"+cjmetodo.getText()+"', \n" +
-            "            tiemporalt="+cjtiemporalt.getText()+", tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt="+cjATcontraBT.getText()+", \n" +
-            "            atcontratierra="+cjATcontraTierra.getText()+", btcontratierra="+cjBTcontraTierra.getText()+", grupodeconexion='"+comboGrupoConexion.getSelectedItem()+"', polaridad='"+comboPolaridad.getSelectedItem()+"', punou="+getT(0,2)+", \n" +
+            "            tiemporalt='"+cjtiemporalt.getText()+"', tensiondeprueba='"+comboTensionPrueba.getSelectedItem()+"', atcontrabt='"+cjATcontraBT.getText()+"', \n" +
+            "            atcontratierra='"+cjATcontraTierra.getText()+"', btcontratierra='"+cjBTcontraTierra.getText()+"', grupodeconexion='"+comboGrupoConexion.getSelectedItem()+"', polaridad='"+comboPolaridad.getSelectedItem()+"', punou="+getT(0,2)+", \n" +
             "            punov="+getT(0,3)+", punow="+getT(0,4)+", pdosu="+getT(1,2)+", pdosv="+getT(1,3)+", pdosw="+getT(1,4)+", ptresu="+getT(2,2)+", ptresv="+getT(2,3)+", ptresw="+getT(2,4)+", pcuatrou="+getT(3,2)+", \n" +
-            "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv="+cjuv.getDouble()+", resvw="+cjvw.getDouble()+", \n" +
-            "            reswu="+cjwu.getDouble()+", proresuno="+cjproresalta.getText()+", materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy="+cjxy.getDouble()+", resyz="+cjyz.getDouble()+", reszx="+cjzx.getDouble()+", \n" +
-            "            proresdos="+cjproresbaja.getText()+", materialconductorbaja='"+comboMaterialBaja.getSelectedItem()+"', iu="+cjiu.getDouble()+", iv="+cjiv.getDouble()+", iw="+cjiw.getDouble()+", promedioi="+cjpromedioi.getText()+", iogarantizado="+cjiogarantizado.getText()+", \n" +
-            "            pomedido="+cjpomedido.getText()+", pogarantizado="+cjpogarantizado.getText()+", vcc="+cjvcc.getText()+", pcu="+cjpcumedido.getText()+", pcua85="+cjpcua85.getText()+", pcugarantizado="+cjpcugarantizado.getText()+", i2r="+cji2r.getText()+", \n" +
-            "            i2ra85="+cji2ra85.getText()+", impedancia="+cjimpedancia.getText()+", impedancia85="+cjimpedancia85.getText()+", impedanciagarantizada="+cjimpedanciagarantizado.getText()+", reg="+cjreg.getText()+", \n" +
-            "            ef="+cjef.getText()+", largotanque="+cjlargo.getText()+", anchotanque="+cjancho.getText()+", altotanque="+cjalto.getText()+", color='"+cjcolor.getText()+"', espesor="+cjespesor.getText()+", radiadores="+cjelementos.getText()+", \n" +
-            "            largoradiador="+cjlargoelemento.getText()+", altoradiador="+cjaltoelemento.getText()+", observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
+            "            pcuatrov="+getT(3,3)+", pcuatrow="+getT(3,4)+", pcincou="+getT(4,2)+", pcincov="+getT(4,3)+", pcincow="+getT(4,4)+", resuv='"+cjuv.getDouble()+"', resvw='"+cjvw.getDouble()+"', \n" +
+            "            reswu='"+cjwu.getDouble()+"', proresuno='"+cjproresalta.getText()+"', materialconductoralta='"+comboMaterialAlta.getSelectedItem()+"', resxy='"+cjxy.getDouble()+"', resyz='"+cjyz.getDouble()+"', reszx='"+cjzx.getDouble()+"', \n" +
+            "            proresdos='"+cjproresbaja.getText()+"', materialconductorbaja='"+comboMaterialBaja.getSelectedItem()+"', iu='"+cjiu.getDouble()+"', iv='"+cjiv.getDouble()+"', iw='"+cjiw.getDouble()+"', promedioi='"+cjpromedioi.getText()+"', iogarantizado='"+cjiogarantizado.getText()+"', \n" +
+            "            pomedido='"+cjpomedido.getText()+"', pogarantizado='"+cjpogarantizado.getText()+"', vcc='"+cjvcc.getText()+"', pcu='"+cjpcumedido.getText()+"', pcua85='"+cjpcua85.getText()+"', pcugarantizado='"+cjpcugarantizado.getText()+"', i2r='"+cji2r.getText()+"', \n" +
+            "            i2ra85='"+cji2ra85.getText()+"', impedancia='"+cjimpedancia.getText()+"', impedancia85='"+cjimpedancia85.getText()+"', impedanciagarantizada='"+cjimpedanciagarantizado.getText()+"', reg='"+cjreg.getText()+"', \n" +
+            "            ef='"+cjef.getText()+"', largotanque='"+cjlargo.getText()+"', anchotanque='"+cjancho.getText()+"', altotanque='"+cjalto.getText()+"', color='"+cjcolor.getText()+"', espesor='"+cjespesor.getText()+"', radiadores='"+cjelementos.getText()+"', \n" +
+            "            largoradiador='"+cjlargoelemento.getText()+"', altoradiador='"+cjaltoelemento.getText()+"', observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
             "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , garantia='"+checkGarantia.isSelected()+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
                 }
                 if(conex.GUARDAR(GUARDAR)){
@@ -429,13 +429,18 @@ public class PROTOS extends javax.swing.JFrame{
                         JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());
                         if(mostrarProtocolo.isSelected()){
                             JasperViewer.viewReport(jasperprint, false);
-                        }
-                        ACTUALIZANDO = false;
-                        JasperExportManager.exportReportToPdfFile( jasperprint, System.getProperties().getProperty("user.dir")+"\\PROTOCOLOS PDF\\"+cjprotocolo.getText()+"_"+cjcliente.getText()+".pdf");
+                        }                        
+                        JasperExportManager.exportReportToPdfFile( jasperprint, System.getProperties().getProperty("user.dir")+"\\PROTOCOLOS PDF\\"+cjprotocolo.getText()+"_"+cjcliente.getText()+".pdf");                        
                         limpiar();                        
+                        if(!ACTUALIZANDO){
+                            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
+                        }else{
+                            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", false)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
+                        }
                     }catch(Exception ex){
                         Logger.getLogger(EntradaDeTrafos.class.getName()).log(Level.SEVERE, null, ex);
-                        modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL PROTOCOLO");
+                        modelo.Metodos.escribirFichero(ex);
+                        modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL PROTOCOLO");                        
                     }finally{
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/guardar.png")));
                         btnGuardar.setEnabled(true);
@@ -562,12 +567,9 @@ public class PROTOS extends javax.swing.JFrame{
         cjcalentamientodevanado.setText("65");cjtemperatura.setText("30");cjRuptura.setText("40");
         cjmetodo.setText("ASTM 877");cjBTcontraATyTierra.setText("10");cjATcontraBTyTierra.setText("34.5");
         cjtiempoaplicado.setText("60");cjFrecuenciaInducida.setText("414");cjtiempoInducido.setText("17");
-        cjespesor.setText("110");cjobservaciones.setText("");        
+        cjespesor.setText("110");cjobservaciones.setText("");cjtiemporalt.setText("60");
         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/Guardar.png")));
-        btnGuardar.setEnabled(true);checkGarantia.setSelected(false);
-        if(ACTUALIZANDO==false){
-            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
-        }
+        btnGuardar.setEnabled(true);checkGarantia.setSelected(false);        
     }
     
     void cargarProtocolos(){
@@ -1416,8 +1418,8 @@ public class PROTOS extends javax.swing.JFrame{
         cjpomedido.setCampodetexto(null);
         cjpomedido.setPreferredSize(new java.awt.Dimension(100, 20));
         cjpomedido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                cjpomedidoKeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cjpomedidoKeyTyped(evt);
             }
         });
         jPanel8.add(cjpomedido);
@@ -1440,6 +1442,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel9.add(jLabel59);
 
         cjvcc.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cjvcc.setArriba(cjpomedido);
         cjvcc.setCampodetexto(cjpcumedido);
         cjvcc.setPreferredSize(new java.awt.Dimension(100, 20));
         cjvcc.setValidar(true);
@@ -2244,6 +2247,7 @@ public class PROTOS extends javax.swing.JFrame{
     private void conmutadorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_conmutadorItemStateChanged
         if(evt.getStateChange() == ItemEvent.DESELECTED ){
             CargarTablas();
+            comboDerivacion.setSelectedIndex(conmutador.getSelectedIndex());
         }
     }//GEN-LAST:event_conmutadorItemStateChanged
 
@@ -2253,28 +2257,30 @@ public class PROTOS extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_cjobservacionesKeyReleased
 
-    private void cjpomedidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpomedidoKeyReleased
-        if(evt.getKeyCode()== 10){
-            if(cjpomedido.getDouble() > cjpogarantizado.getDouble()){
-                modelo.Metodos.M(""+evt.getKeyCode(), "advertencia.png");
-            }else{
-                cjvcc.grabFocus();
-            }
-        }
-    }//GEN-LAST:event_cjpomedidoKeyReleased
-
     private void cjpcumedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpcumedidoKeyTyped
         if(evt.getKeyChar()==10){
+            subMenuItemRecalcular.doClick();
             if(cjpcumedido.getDouble() < cji2r.getDouble()){
                 modelo.Metodos.M("Las perdidas en el cobre son menores a las I²R.!", "advertencia.png");
                 cjpcumedido.setBorder(new LineBorder(new Color(209,72,54), 2));
                 cji2r.setBorder(new LineBorder(new Color(209,72,54), 2));
             }else{
-                cjobservaciones.grabFocus();
-                subMenuItemRecalcular.doClick();                
+                cjobservaciones.grabFocus();                
             }
         }
     }//GEN-LAST:event_cjpcumedidoKeyTyped
+
+    private void cjpomedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjpomedidoKeyTyped
+        if(evt.getKeyChar()== 10){
+            if(cjpomedido.getDouble() > cjpogarantizado.getDouble()){
+                modelo.Metodos.M("Las Po Medidas con mayores a las garantizadas.!!", "advertencia.png");
+                cjpogarantizado.setBorder(new LineBorder(new Color(209,72,54), 2));
+                cjpomedido.setBorder(new LineBorder(new Color(209,72,54), 2));
+            }else{
+                cjvcc.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_cjpomedidoKeyTyped
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

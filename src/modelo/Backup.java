@@ -5,12 +5,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import view.Principal;
 
-public class Backup extends Dialogos.Backup{    
+public class Backup extends view.Backup{    
                 
     public Backup(java.awt.Frame owner, boolean modal){
         super(owner, modal);
@@ -25,7 +27,7 @@ public class Backup extends Dialogos.Backup{
                     ConexionBD conex = new ConexionBD();
                     conex.conectar();
                     ProcessBuilder pb;                                  
-                    pb = new ProcessBuilder("C:\\Program Files\\PostgreSQL\\9.5\\bin\\pg_dump.exe", "--host", InetAddress.getByName(conex.getIP()).getHostAddress() , "--port", conex.getPUERTO(), "--username", "postgres", "--role", "postgres", "--no-password", "--format", "custom", "--blobs", "--verbose", "--file", System.getProperty("user.dir")+"//CDM.backup", conex.getBD());
+                    pb = new ProcessBuilder("C:\\Program Files\\PostgreSQL\\"+ConexionBD.getConexion().getMetaData().getDriverMajorVersion()+"."+ConexionBD.getConexion().getMetaData().getDriverMinorVersion()+"\\bin\\pg_dump.exe", "--host", InetAddress.getByName(conex.getIP()).getHostAddress() , "--port", conex.getPUERTO(), "--username", "postgres", "--role", "postgres", "--no-password", "--format", "custom", "--blobs", "--verbose", "--file", System.getProperty("user.dir")+"//BK//"+new SimpleDateFormat("EEE, d MMM yyyy mm_ss aa").format(new Date())+".backup", conex.getBD());
                     pb.environment().put("PGPASSWORD", conex.getPASS());  
                     pb.redirectErrorStream(true);  
                     final Process process = pb.start();        

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class ConexionBD {   
     
-    private Connection conexion;
+    private static Connection conexion;
     private Statement statement;
 //    private String IP = "127.0.0.1", PUERTO = "5432", BD = "CDM2", USER = "postgres", PASS = "cdm";   
     private String IP = "PRODUCCION", PUERTO = "5432", BD = "CDM2", USER = "postgres", PASS = "cdm";   
@@ -78,7 +78,7 @@ public class ConexionBD {
         }
     }
 
-    public Connection getConexion() {
+    public static Connection getConexion() {
         return conexion;
     }
 

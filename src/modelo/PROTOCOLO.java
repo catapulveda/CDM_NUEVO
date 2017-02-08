@@ -77,7 +77,7 @@ public class PROTOCOLO {
                 "LEFT JOIN despacho d USING(iddespacho)\n" +
                 "LEFT JOIN remision r USING(idremision)\n" +
                 "RIGHT JOIN protocolos p ON p.idtransformador=t.idtransformador\n" +
-                "ORDER BY p.fechaderegistro DESC");
+                "ORDER BY p.idprotocolo DESC");
         try {
             while(rs.next()){
                 model.addRow(new Object[]{

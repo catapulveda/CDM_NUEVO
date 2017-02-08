@@ -4,10 +4,12 @@ import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -190,6 +192,34 @@ public class Metodos {
     
     public static Icon getIcon(String icono){
         return new ImageIcon(Metodos.class.getResource("/recursos/images/"+icono));
+    }
+    
+    public static void escribirFichero(Exception e){
+        File archivo = new File("ERORR.txt");
+        BufferedWriter bw = null;
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        if(archivo.exists()) {
+            try {
+                bw = new BufferedWriter(new FileWriter(archivo));
+                bw.write(sw.toString()+"\n\n\n");
+            } catch (IOException ex) {
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                bw = new BufferedWriter(new FileWriter(archivo));
+                bw.write(sw.toString()+"\n\n\n");
+            } catch (IOException ex) {
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        try {
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

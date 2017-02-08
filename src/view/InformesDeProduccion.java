@@ -19,7 +19,7 @@ import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
 
-public class InformesDeProduccion extends javax.swing.JFrame {
+public class InformesDeProduccion extends javax.swing.JFrame{
 
     CustomTableModel modeloTabla;
     TableColumnAdjuster ajustarColumna;
@@ -31,7 +31,6 @@ public class InformesDeProduccion extends javax.swing.JFrame {
     
     public InformesDeProduccion(){
         initComponents();
-        
         ajustarColumna = new TableColumnAdjuster(tablaDatos);
         cargarInterfazTabla();    
         cargarDatosTabla();
@@ -77,8 +76,10 @@ public class InformesDeProduccion extends javax.swing.JFrame {
             rowSorter = new TableRowSorter(modeloTabla);
             tablaDatos.setRowSorter(rowSorter);
             ajustarColumna.adjustColumns();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
+            modelo.Metodos.ERROR(ex, "Error al cargar la tabla.");
             Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.Metodos.escribirFichero(ex);
         }
     }
 

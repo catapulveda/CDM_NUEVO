@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PROTOCOLO" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="eb75b2e1-959a-4fb9-b1e1-471136a585b3">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="26"/>
-	<property name="ireport.y" value="528"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="136"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
@@ -1639,13 +1639,6 @@ WHERE idprotocolo=$P{IDPROTOCOLO}]]>
 				<textFieldExpression><![CDATA[$F{tss}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="324" y="196" width="68" height="12" uuid="dd6d30cd-0a71-424b-afd4-af2793658a68"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{derivacionprimaria}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
 				<reportElement x="324" y="184" width="68" height="12" uuid="056c02b6-6169-4b9b-8967-3bd14acc6637"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
@@ -2062,6 +2055,20 @@ WHERE idprotocolo=$P{IDPROTOCOLO}]]>
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[(($F{fase}==1)?($V{variable2}/$F{tss}.doubleValue()):($V{variable2}*Math.sqrt(3))/$F{tss})*1.005]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="495" y="196" width="68" height="12" uuid="43e6ba88-1491-44e1-b780-00f6ca0982f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{i2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="495" y="184" width="68" height="12" uuid="cbbca62f-d064-4c49-acf8-f721ad20fd87"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{i1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
