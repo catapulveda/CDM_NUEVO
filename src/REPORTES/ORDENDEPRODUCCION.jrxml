@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ENTRADA" pageWidth="612" pageHeight="792" columnWidth="582" leftMargin="15" rightMargin="15" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="48678126-ee83-41a0-afad-52db457c7565">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="185"/>
 	<property name="ireport.y" value="288"/>
 	<style name="table">
 		<box>
@@ -719,7 +719,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[RMPO-01-01-02 | V. 02 | 08/02/2015]]></text>
+				<text><![CDATA[RMPO-01-01-02 | V. 03 | 03/02/2017]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="265" y="92" width="309" height="10" uuid="b3258cff-0efe-44fa-9f78-f5cad682b67e"/>

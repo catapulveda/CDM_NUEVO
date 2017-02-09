@@ -55,7 +55,7 @@ public class InformesDeProduccion extends javax.swing.JFrame{
                                         "INNER JOIN transformador t USING(idtransformador)\n" +
                                         "INNER JOIN entrada e USING(identrada)\n" +
                                         "INNER JOIN cliente c USING(idcliente)\n" +
-                                        "WHERE p.fechalaboratorio::date BETWEEN 'Tue Jan 03 11:05:37 COT 2017' AND 'Fri Feb 03 11:05:40 COT 2017' \n" +
+                                        "WHERE p.fechalaboratorio::date BETWEEN 'Tue Jan 03 11:05:37 COT 2016' AND 'Fri Feb 03 11:05:40 COT 2017' \n" +
                                         "ORDER BY p.fechalaboratorio, t.numeroserie ASC");
         try {
             while(rs.next()){

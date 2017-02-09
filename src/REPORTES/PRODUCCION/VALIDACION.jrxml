@@ -61,7 +61,7 @@
 	</style>
 	<subDataset name="TRAFOS" uuid="914d5b87-7321-416c-900b-70d7933c7371">
 		<parameter name="IDENTRADA" class="java.lang.Integer">
-			<defaultValueExpression><![CDATA[322]]></defaultValueExpression>
+			<defaultValueExpression><![CDATA[339]]></defaultValueExpression>
 		</parameter>
 		<parameter name="ORDEN" class="java.lang.Boolean">
 			<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
@@ -98,52 +98,54 @@
 ( ($P{ORDEN}.equals( true ))?"ORDER BY fase, kvaentrada, marca ":"ORDER BY item ")]]></defaultValueExpression>
 		</parameter>
 		<parameter name="ORDERBY" class="java.lang.String">
-			<defaultValueExpression><![CDATA[$P{ORDEN}.equals( true )?"fase, kvaentrada, marca":"item"]]></defaultValueExpression>
+			<defaultValueExpression><![CDATA[$P{ORDEN}.equals( true )?"fase, kvasalida, marca":"item"]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[SELECT idcliente, numeroempresa, numeroserie, marca, kvaentrada, fase, servicioentrada, ano, observacionentrada, 
-	CASE	WHEN idcliente=5 THEN 
-					CASE 	WHEN fase=1 THEN (SELECT po FROM monofasiconuevo WHERE kva=t.kvaentrada)
-						WHEN fase=3 THEN (SELECT po FROM trifasiconuevo WHERE kva=t.kvaentrada) 
+			<![CDATA[SELECT e.idcliente, t.numeroempresa, t.numeroserie, t.marca, t.kvasalida, t.fase, t.servicioentrada, t.serviciosalida, t.ano, t.observacionentrada, 
+	CASE	WHEN e.idcliente=5 THEN 
+					CASE 	WHEN fase=1 THEN (SELECT po FROM monofasiconuevo WHERE kva=t.kvasalida)
+						WHEN fase=3 THEN (SELECT po FROM trifasiconuevo WHERE kva=t.kvasalida) 
 					END 
 		ELSE 
 			CASE 
-				WHEN ano<1996 AND fase=1 THEN (SELECT po FROM monofasicoantesde1996 WHERE kva=t.kvaentrada) 
-				WHEN ano<1996 AND fase=3 THEN (SELECT po FROM trifasicoantesde1996 WHERE kva=t.kvaentrada) 
-				WHEN ano>=1996 AND fase=1 THEN (SELECT po FROM monofasicodespuesde1996 WHERE kva=t.kvaentrada) 
-				WHEN ano>=1996 AND fase=3 THEN (SELECT po FROM trifasicodespuesde1996 WHERE kva=t.kvaentrada) 
+				WHEN ano<1996 AND fase=1 THEN (SELECT po FROM monofasicoantesde1996 WHERE kva=t.kvasalida) 
+				WHEN ano<1996 AND fase=3 THEN (SELECT po FROM trifasicoantesde1996 WHERE kva=t.kvasalida) 
+				WHEN ano>=1996 AND fase=1 THEN (SELECT po FROM monofasicodespuesde1996 WHERE kva=t.kvasalida) 
+				WHEN ano>=1996 AND fase=3 THEN (SELECT po FROM trifasicodespuesde1996 WHERE kva=t.kvasalida) 
 			END 
 	END AS po, 
 	CASE	WHEN idcliente=5 THEN 
-					CASE 	WHEN fase=1 THEN (SELECT pc FROM monofasiconuevo WHERE kva=t.kvaentrada) 
-						WHEN fase=3 THEN (SELECT pc FROM trifasiconuevo WHERE kva=t.kvaentrada) 
+					CASE 	WHEN fase=1 THEN (SELECT pc FROM monofasiconuevo WHERE kva=t.kvasalida) 
+						WHEN fase=3 THEN (SELECT pc FROM trifasiconuevo WHERE kva=t.kvasalida) 
 					END 
 		ELSE 
 			CASE 
-				WHEN ano<1996 AND fase=1 THEN (SELECT pc FROM monofasicoantesde1996 WHERE kva=t.kvaentrada) 
-				WHEN ano<1996 AND fase=3 THEN (SELECT pc FROM trifasicoantesde1996 WHERE kva=t.kvaentrada) 
-				WHEN ano>=1996 AND fase=1 THEN (SELECT pc FROM monofasicodespuesde1996 WHERE kva=t.kvaentrada) 
-				WHEN ano>=1996 AND fase=3 THEN (SELECT pc FROM trifasicodespuesde1996 WHERE kva=t.kvaentrada) 
+				WHEN ano<1996 AND fase=1 THEN (SELECT pc FROM monofasicoantesde1996 WHERE kva=t.kvasalida) 
+				WHEN ano<1996 AND fase=3 THEN (SELECT pc FROM trifasicoantesde1996 WHERE kva=t.kvasalida) 
+				WHEN ano>=1996 AND fase=1 THEN (SELECT pc FROM monofasicodespuesde1996 WHERE kva=t.kvasalida) 
+				WHEN ano>=1996 AND fase=3 THEN (SELECT pc FROM trifasicodespuesde1996 WHERE kva=t.kvasalida) 
 			END 
-	END AS pc, p.pomedido, p.pcu 
+	END AS pc, p.pomedido, p.pcu, p.fechaderegistro
 FROM entrada e 
-LEFT JOIN transformador t USING(identrada) 
-LEFT JOIN protocolos p USING(idtransformador)
-WHERE identrada=$P{IDENTRADA} ORDER BY $P!{ORDERBY}]]>
+LEFT JOIN transformador t ON e.identrada=t.identrada
+LEFT JOIN protocolos p ON p.idtransformador=t.idtransformador
+WHERE e.identrada=$P{IDENTRADA} ORDER BY $P!{ORDERBY}]]>
 		</queryString>
 		<field name="idcliente" class="java.lang.Integer"/>
 		<field name="numeroempresa" class="java.lang.String"/>
 		<field name="numeroserie" class="java.lang.String"/>
 		<field name="marca" class="java.lang.String"/>
-		<field name="kvaentrada" class="java.lang.String"/>
+		<field name="kvasalida" class="java.lang.Double"/>
 		<field name="fase" class="java.lang.Integer"/>
 		<field name="servicioentrada" class="java.lang.String"/>
+		<field name="serviciosalida" class="java.lang.String"/>
 		<field name="ano" class="java.lang.Integer"/>
 		<field name="observacionentrada" class="java.lang.String"/>
-		<field name="po" class="java.lang.String"/>
-		<field name="pc" class="java.lang.String"/>
-		<field name="pomedido" class="java.lang.String"/>
-		<field name="pcu" class="java.lang.String"/>
+		<field name="po" class="java.lang.Double"/>
+		<field name="pc" class="java.lang.Double"/>
+		<field name="pomedido" class="java.lang.Double"/>
+		<field name="pcu" class="java.lang.Double"/>
+		<field name="fechaderegistro" class="java.sql.Timestamp"/>
 	</subDataset>
 	<parameter name="IDENTRADA" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="ORDEN" class="java.lang.Boolean">
@@ -397,7 +399,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri" size="8"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{kvaentrada}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{kvasalida}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -432,7 +434,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="13" rowSpan="1">
-							<textField>
+							<textField pattern="###0" isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="36" height="13" uuid="279eb6c6-d2c3-4538-956a-2cac339c8b73"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri" size="8"/>
@@ -452,7 +454,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="13" rowSpan="1">
-							<textField>
+							<textField pattern="###0">
 								<reportElement x="0" y="0" width="36" height="13" uuid="f160e3d0-b2c9-4d68-984a-41fe543826ef"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri" size="8"/>
@@ -472,7 +474,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="13" rowSpan="1">
-							<textField>
+							<textField pattern="###0" isBlankWhenNull="true">
 								<reportElement x="0" y="0" width="36" height="13" uuid="57c88bf2-e052-42ec-871a-b9be16a22561"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri" size="8"/>
@@ -492,7 +494,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="13" rowSpan="1">
-							<textField>
+							<textField pattern="###0">
 								<reportElement x="0" y="0" width="36" height="13" uuid="6e4d1887-3dc2-4a88-a6a5-76f6911451ca"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri" size="8"/>
@@ -511,7 +513,15 @@ WHERE identrada=$P{IDENTRADA}]]>
 								<text><![CDATA[FECHA]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="13" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="13" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="48" height="13" uuid="af80fb0d-87dd-4ee8-9eeb-a0cd067c3ab2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri" size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MMM-yyyy").format($F{fechaderegistro})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="48" uuid="b4d1794d-f438-4c2c-bed6-c861d3de9e38">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
@@ -523,7 +533,15 @@ WHERE identrada=$P{IDENTRADA}]]>
 								<text><![CDATA[REGISTRO]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="13" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="13" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="48" height="13" uuid="417ae786-53f6-4152-88a8-2483b416663e"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+									<font fontName="Calibri" size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[($F{fechaderegistro}!=null)?"RMPP-01-01-02":""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="47" uuid="9c08db67-fda8-4578-a245-25ace7e15a98">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
@@ -557,7 +575,15 @@ SOLICITADO]]></text>
 REALIZADO]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="13" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="13" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="13" uuid="a72a3b4d-cb28-4c8e-a25f-cead48484c87"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri" size="8" isStrikeThrough="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{serviciosalida}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="50" uuid="3427b38e-9aaf-408f-8b76-eec42432ff3e">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
@@ -573,7 +599,7 @@ REALIZADO]]></text>
 							<textField>
 								<reportElement x="0" y="0" width="50" height="13" uuid="3b894964-5aa8-4055-a0ef-1784ab092031"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Calibri" isStrikeThrough="false"/>
+									<font fontName="Calibri" size="8" isStrikeThrough="false"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{observacionentrada}]]></textFieldExpression>
 							</textField>
