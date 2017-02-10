@@ -82,7 +82,7 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 						<jr:columnGroup width="142" uuid="f4885ea9-cee0-45b0-8131-b004328b9e8c">
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<jr:groupHeader groupName="SERVICIOS">
-								<jr:cell height="95">
+								<jr:cell height="99" rowSpan="1">
 									<image hAlign="Center" vAlign="Middle">
 										<reportElement x="0" y="0" width="142" height="95" uuid="8d810b66-a8d5-47bc-ab23-121beb260758">
 											<property name="local_mesure_unitheight" value="pixel"/>
@@ -104,6 +104,7 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="30" height="14" uuid="35506045-b29b-457c-a5e6-692798080108"/>
@@ -126,6 +127,7 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="51" height="14" uuid="5650410b-4251-4d4b-985c-16aac34c6739"/>
@@ -146,6 +148,7 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="61" height="14" uuid="f5c53272-978a-4e51-bf10-15f33d6704cc"/>
@@ -160,7 +163,7 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 						<jr:columnGroup width="610" uuid="fdb9abce-c640-486f-acc2-8d8b81555b24">
 							<property name="local_mesure_unitheight" value="pixel"/>
 							<jr:groupHeader groupName="SERVICIOS">
-								<jr:cell height="95">
+								<jr:cell height="99" rowSpan="1">
 									<staticText>
 										<reportElement x="0" y="0" width="610" height="95" uuid="b9048023-1de7-47e6-b11f-ff8afc80dfbf">
 											<property name="local_mesure_unitheight" value="pixel"/>
@@ -188,6 +191,7 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="54" height="14" uuid="fd39ea69-61a5-4aeb-892f-54e7c8e2d0e2"/>
@@ -210,6 +214,7 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="54" height="14" uuid="47e6a14b-26a1-4ad7-9f50-1c67ba6c974f"/>
@@ -232,6 +237,7 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="24" height="14" uuid="0aad264d-29c4-4382-877e-d0c83fdfa070"/>
@@ -254,6 +260,7 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="27" height="14" uuid="4e854b9d-db83-461a-a58d-11d16d5e0a6e"/>
@@ -276,6 +283,7 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="90" height="14" uuid="241059b0-b4a1-4128-8fd9-4685044d3285"/>
@@ -298,6 +306,7 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
+								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="361" height="14" uuid="37d03f61-4b4c-4501-afc7-1d0ee79d6f21"/>
