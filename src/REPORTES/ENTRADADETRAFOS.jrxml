@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EntradaDeTransformadores" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="1e815148-a7a8-4fe7-bcd9-f939cce00a8d">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="198"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF" radius="0">
 		<box>
 			<topPen lineWidth="0.25" lineColor="#000000"/>
@@ -36,10 +36,10 @@
 			<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
 		</parameter>
 		<parameter name="SQLORDEN" class="java.lang.String">
-			<defaultValueExpression><![CDATA[$P{ORDEN_TABLA}?"fase ASC, kvaentrada ASC, marca":"item"]]></defaultValueExpression>
+			<defaultValueExpression><![CDATA[($P{ORDEN_TABLA}.equals( true ))?"fase ASC, kvaentrada ASC, marca":"item"]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[SELECT t.*, r.numero_remision FROM transformador t LEFT JOIN remision r ON t.idremision=r.idremision WHERE t.identrada=$P{IDENTRADA_TRAFOS}  ORDER BY $P{SQLORDEN}]]>
+			<![CDATA[SELECT t.*, r.numero_remision FROM transformador t LEFT JOIN remision r ON t.idremision=r.idremision WHERE t.identrada=$P{IDENTRADA_TRAFOS}  ORDER BY $P!{SQLORDEN}]]>
 		</queryString>
 		<field name="idtransformador" class="java.lang.Integer"/>
 		<field name="item" class="java.lang.Integer"/>
@@ -87,7 +87,9 @@
 		<field name="descripcion" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="IDENTRADA" class="java.lang.Integer"/>
-	<parameter name="ORDEN" class="java.lang.Boolean"/>
+	<parameter name="ORDEN" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[true]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT * FROM entrada e 
 INNER JOIN cliente cli ON e.idcliente=cli.idcliente 
@@ -213,7 +215,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 			<componentElement>
 				<reportElement key="TablaDatos" style="BordesTabla1" stretchType="RelativeToBandHeight" x="4" y="3" width="766" height="22" uuid="8bbfc054-5235-44e0-afa7-23428f284a37"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Trafos" uuid="7ed39912-360f-4415-8d41-4ed04f4dfb01">
+					<datasetRun subDataset="Trafos" uuid="a2c6f2ba-d6ba-4c07-8950-fe576cfb7297">
 						<datasetParameter name="IDENTRADA_TRAFOS">
 							<datasetParameterExpression><![CDATA[$P{IDENTRADA}]]></datasetParameterExpression>
 						</datasetParameter>

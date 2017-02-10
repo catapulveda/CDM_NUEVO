@@ -265,10 +265,10 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     rs.getDouble("kvaentrada"),//"KVA",
                     rs.getInt("fase"),//"FASE",
                     rs.getString("tpe")+"/"+rs.getString("tse")+"/"+rs.getString("tte"),//"TENSION P",
-                    rs.getInt("aat"),//"A.T",
-                    rs.getInt("abt"),//"B.T",
-                    rs.getInt("hat"),//"H.A",
-                    rs.getInt("hbt"),//"H.B",
+                    rs.getString("aat"),//"A.T",
+                    rs.getString("abt"),//"B.T",
+                    rs.getString("hat"),//"H.A",
+                    rs.getString("hbt"),//"H.B",
                     rs.getBoolean("ci"),//"INT",
                     rs.getBoolean("ce"),//"EXT",
                     rs.getString("herraje"),//"HERRAJE",
@@ -366,27 +366,30 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         checkOrdenar = new javax.swing.JCheckBox();
         jScrollPane4 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        comboCliente = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        comboCiudad = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        comboConductor = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
         cjIdEntradaAlmacen = new CompuChiqui.JTextFieldPopup();
+        jLabel7 = new javax.swing.JLabel();
         cjLote = new CompuChiqui.JTextFieldPopup();
+        jLabel8 = new javax.swing.JLabel();
         cjContrato = new CompuChiqui.JTextFieldPopup();
+        jLabel9 = new javax.swing.JLabel();
         cjOp = new CompuChiqui.JTextFieldPopup();
+        jLabel10 = new javax.swing.JLabel();
         cjCentroDeCostos = new CompuChiqui.JTextFieldPopup();
         jLabel1 = new javax.swing.JLabel();
         cjFechaRecepcion = new com.toedter.calendar.JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        cjPlacaVehiculo = new CompuChiqui.JTextFieldPopup();
         jScrollPane2 = new javax.swing.JScrollPane();
         cjObservaciones = new CompuChiqui.JCTextArea();
-        comboCliente = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        comboConductor = new javax.swing.JComboBox<>();
-        comboCiudad = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         btnAgregarFila = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -540,7 +543,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 .addGroup(panelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelTablaLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
                     .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -549,33 +552,19 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablaLayout.createSequentialGroup()
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jSplitPane1.setRightComponent(panelTabla);
 
-        cjIdEntradaAlmacen.setPlaceholder("N° Entrada Almacen");
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new java.awt.GridLayout(20, 1));
 
-        cjLote.setPlaceholder("Lote");
-
-        cjContrato.setPlaceholder("Contrato");
-
-        cjOp.setPlaceholder("Orden De Produccion");
-
-        cjCentroDeCostos.setPlaceholder("Centro de Costos");
-
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
-        jLabel1.setText("Fecha Recepcion:");
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
-        jLabel2.setText("Observaciones:");
-
-        cjObservaciones.setColumns(20);
-        cjObservaciones.setRows(5);
-        cjObservaciones.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jScrollPane2.setViewportView(cjObservaciones);
+        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel3.setText("Cliente:");
+        jPanel1.add(jLabel3);
 
         comboCliente.setMaximumRowCount(20);
         comboCliente.addItemListener(new java.awt.event.ItemListener() {
@@ -583,34 +572,76 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 comboClienteItemStateChanged(evt);
             }
         });
-
-        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
-        jLabel3.setText("Cliente:");
-
-        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
-        jLabel5.setText("ID Entrada:");
-
-        comboConductor.setMaximumRowCount(20);
-
-        comboCiudad.setMaximumRowCount(20);
+        jPanel1.add(comboCliente);
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel4.setText("Ciudad:");
+        jPanel1.add(jLabel4);
+
+        comboCiudad.setMaximumRowCount(20);
+        jPanel1.add(comboCiudad);
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel6.setText("Conductor:");
+        jPanel1.add(jLabel6);
+
+        comboConductor.setMaximumRowCount(20);
+        jPanel1.add(comboConductor);
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel5.setText("ID Entrada:");
+        jPanel1.add(jLabel5);
+
+        cjIdEntradaAlmacen.setPlaceholder("N° Entrada Almacen");
+        jPanel1.add(cjIdEntradaAlmacen);
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel7.setText("Lote:");
+        jPanel1.add(jLabel7);
+
+        cjLote.setPlaceholder("Lote");
+        jPanel1.add(cjLote);
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel8.setText("Contrato:");
+        jPanel1.add(jLabel8);
+
+        cjContrato.setPlaceholder("Contrato");
+        jPanel1.add(cjContrato);
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel9.setText("Orden de Prod.");
+        jPanel1.add(jLabel9);
+
+        cjOp.setPlaceholder("Orden De Produccion");
+        jPanel1.add(cjOp);
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel10.setText("Cent. costos:");
+        jPanel1.add(jLabel10);
+
+        cjCentroDeCostos.setPlaceholder("Centro de Costos");
+        jPanel1.add(cjCentroDeCostos);
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel1.setText("Fecha Recepcion:");
+        jPanel1.add(jLabel1);
+        jPanel1.add(cjFechaRecepcion);
+
+        jLabel11.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel11.setText("Placa Vehiculo:");
+        jPanel1.add(jLabel11);
+
+        cjPlacaVehiculo.setPlaceholder("Placa vehiculo");
+        jPanel1.add(cjPlacaVehiculo);
+
+        cjObservaciones.setColumns(20);
+        cjObservaciones.setRows(5);
+        cjObservaciones.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jScrollPane2.setViewportView(cjObservaciones);
+
+        jLabel2.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        jLabel2.setText("Observaciones:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -619,88 +650,24 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(comboCliente, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboCiudad, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboConductor, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cjIdEntradaAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(cjFechaRecepcion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cjCentroDeCostos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cjOp, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cjContrato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cjLote, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(4, 4, 4))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 4, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboConductor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cjIdEntradaAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cjLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cjContrato, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cjOp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cjCentroDeCostos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cjFechaRecepcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -810,7 +777,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -818,7 +785,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -891,6 +858,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             String lote = cjLote.getText().trim();
             String contrato = cjContrato.getText().trim();
             String op = cjOp.getText().trim();
+            String placa = cjPlacaVehiculo.getText().trim();
             String centrodecostos = cjCentroDeCostos.getText().trim();
             java.util.Date fecharecepcion = cjFechaRecepcion.getDate();
             java.util.Date fechaRegistro = new java.util.Date();
@@ -911,11 +879,12 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     ACTUALIZA_LOTE += " op='" +op+ "' , ";
                     ACTUALIZA_LOTE += " centrodecostos='"+centrodecostos+"' , ";                        
                     ACTUALIZA_LOTE += " fechaactualizado='"+fechaRegistro+"' ,  ";
-                    ACTUALIZA_LOTE += " observacion='"+observaciones+"' ";
+                    ACTUALIZA_LOTE += " observacion='"+observaciones+"' , ";
+                    ACTUALIZA_LOTE += " placavehiculo='"+placa+"' ";
                     ACTUALIZA_LOTE += " WHERE identrada='" + IDENTRADA + "' ";
                 }else{//DE LO CONTRARIO 
                     ACTUALIZA_LOTE = " INSERT INTO entrada (idcliente,idciudad,idconductor,idusuario,identradaalmacen,nombrepc,lote, ";
-                    ACTUALIZA_LOTE += " contrato,op,centrodecostos,fecharecepcion,fecharegistrado,estado,observacion) VALUES \n( ";
+                    ACTUALIZA_LOTE += " contrato,op,centrodecostos,fecharecepcion,fecharegistrado,estado,observacion,placavehiculo) VALUES \n( ";
                     ACTUALIZA_LOTE += " '" +idCliente+ "' , ";
                     ACTUALIZA_LOTE += " '" +idCiudad+ "' , ";
                     ACTUALIZA_LOTE += " '" +idConductor+ "' , ";
@@ -929,7 +898,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     ACTUALIZA_LOTE += " '" +fecharecepcion+ "' , ";
                     ACTUALIZA_LOTE += " '" +fechaRegistro+ "' , ";
                     ACTUALIZA_LOTE += " '" +false+ "' , ";
-                    ACTUALIZA_LOTE += " '" +observaciones+ "' ";
+                    ACTUALIZA_LOTE += " '" +observaciones+ "' , ";
+                    ACTUALIZA_LOTE += " '" +placa+ "' ";
                     ACTUALIZA_LOTE += " ) ";
                 }
 
@@ -1116,6 +1086,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 if(rs.next()){
                     if(!rs.getBoolean("estado")){
                         modelo.Metodos.M("EL PERSONAL DE ALMACEN AUN NO A TERMINADO DE VERIFICAR ESTE LOTE\n", "advertencia.png");
+                        return;
                     }
                     JasperReport reporte = (JasperReport) JRLoader.loadObject(new URL(this.getClass().getResource("/REPORTES/ENTRADADETRAFOS.jasper").toString()));
                     Map<String, Object> p = new HashMap<String, Object>();
@@ -1316,11 +1287,13 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     public CompuChiqui.JTextFieldPopup cjLote;
     public CompuChiqui.JCTextArea cjObservaciones;
     public CompuChiqui.JTextFieldPopup cjOp;
+    public CompuChiqui.JTextFieldPopup cjPlacaVehiculo;
     public javax.swing.JComboBox<Ciudad> comboCiudad;
     public javax.swing.JComboBox<Cliente> comboCliente;
     public javax.swing.JComboBox<Conductor> comboConductor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1331,6 +1304,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

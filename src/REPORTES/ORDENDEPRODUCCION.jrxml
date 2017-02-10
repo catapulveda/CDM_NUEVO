@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ENTRADA" pageWidth="612" pageHeight="792" columnWidth="582" leftMargin="15" rightMargin="15" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="48678126-ee83-41a0-afad-52db457c7565">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="185"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="101"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -14,14 +14,17 @@
 			<bottomPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#FFFFFF">
+	<style name="DETALLE" mode="Opaque" backcolor="#FFFFFF">
 		<box>
-			<topPen lineWidth="0.0" lineColor="#000000"/>
-			<bottomPen lineWidth="0.0" lineColor="#000000"/>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.25"/>
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
 		</box>
 		<conditionalStyle>
 			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
-			<style backcolor="#F0F8FF"/>
+			<style backcolor="#EFF7FF"/>
 		</conditionalStyle>
 	</style>
 	<subDataset name="REPARADOS" uuid="28361f0f-8bf4-47fe-b2fc-ae5cb744f718">
@@ -320,7 +323,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 									<text><![CDATA[TOTAL:]]></text>
 								</staticText>
 							</jr:columnFooter>
-							<jr:detailCell style="table_CH" height="13" rowSpan="1">
+							<jr:detailCell style="DETALLE" height="13" rowSpan="1">
 								<box>
 									<leftPen lineWidth="0.25"/>
 								</box>
@@ -370,7 +373,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 									<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
 								</textField>
 							</jr:columnFooter>
-							<jr:detailCell style="table_CH" height="13" rowSpan="1">
+							<jr:detailCell style="DETALLE" height="13" rowSpan="1">
 								<textField>
 									<reportElement x="0" y="0" width="543" height="13" uuid="34878e0f-ff70-4887-bc33-06424fbdefeb"/>
 									<box>
@@ -444,7 +447,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 									<text><![CDATA[TOTAL:]]></text>
 								</staticText>
 							</jr:columnFooter>
-							<jr:detailCell style="table_CH" height="13" rowSpan="1">
+							<jr:detailCell style="DETALLE" height="13" rowSpan="1">
 								<box>
 									<leftPen lineWidth="0.25"/>
 								</box>
@@ -494,7 +497,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 									<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
 								</textField>
 							</jr:columnFooter>
-							<jr:detailCell style="table_CH" height="13" rowSpan="1">
+							<jr:detailCell style="DETALLE" height="13" rowSpan="1">
 								<textField>
 									<reportElement x="0" y="0" width="543" height="13" uuid="b85749a6-12e7-4414-8386-c10f68646d17"/>
 									<box>
@@ -568,7 +571,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 									<text><![CDATA[TOTAL:]]></text>
 								</staticText>
 							</jr:columnFooter>
-							<jr:detailCell style="table_CH" height="13" rowSpan="1">
+							<jr:detailCell style="DETALLE" height="13" rowSpan="1">
 								<box>
 									<leftPen lineWidth="0.25"/>
 								</box>
@@ -618,7 +621,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 									<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
 								</textField>
 							</jr:columnFooter>
-							<jr:detailCell style="table_CH" height="13" rowSpan="1">
+							<jr:detailCell style="DETALLE" height="13" rowSpan="1">
 								<textField>
 									<reportElement x="0" y="0" width="543" height="13" uuid="699ab701-4538-49af-9858-68e3564d29fd"/>
 									<box>

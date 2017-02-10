@@ -4,6 +4,8 @@ import CopyPasteJTable.ExcelAdapter;
 import JTableAutoResizeColumn.TableColumnAdjuster;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -369,18 +371,26 @@ public class PanelLotes extends javax.swing.JPanel {
     }//GEN-LAST:event_subMenuAbrirLoteActionPerformed
 
     private void subMenuDarPorTerminadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuDarPorTerminadoActionPerformed
-        
-            String idEntrada = tablaLotes.getValueAt(tablaLotes.getSelectedRow(), 0).toString();
-            boolean estado = Boolean.parseBoolean(tablaLotes.getValueAt(tablaLotes.getSelectedRow(), 13).toString());
-            if(estado){
-                JOptionPane.showMessageDialog(this, "EL LOTE YA SE ENCUENTRA VERIFICADO.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
-            }else{
-                if(JOptionPane.showConfirmDialog(this, "¿Confirma que desea dar por terminado el lote?")==JOptionPane.YES_OPTION){
-                    if(new ConexionBD().GUARDAR("UPDATE entrada SET estado='TRUE' , fechaliberado='"+new java.util.Date()+"' WHERE identrada='"+idEntrada+"' ")){
-                        btnCargarLotes.doClick();
+        try {
+            if(Inet4Address.getLocalHost().getHostName().equals("ALMACEN") || Inet4Address.getLocalHost().getHostName().equals("AUXPLANTA")){
+                String idEntrada = tablaLotes.getValueAt(tablaLotes.getSelectedRow(), 0).toString();
+                boolean estado = Boolean.parseBoolean(tablaLotes.getValueAt(tablaLotes.getSelectedRow(), 13).toString());
+                if(estado){
+                    JOptionPane.showMessageDialog(this, "EL LOTE YA SE ENCUENTRA VERIFICADO.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
+                }else{
+                    if(JOptionPane.showConfirmDialog(this, "¿Confirma que desea dar por terminado el lote?")==JOptionPane.YES_OPTION){
+                        if(new ConexionBD().GUARDAR("UPDATE entrada SET estado='TRUE' , fechaliberado='"+new java.util.Date()+"' WHERE identrada='"+idEntrada+"' ")){
+                            btnCargarLotes.doClick();
+                        }
                     }
                 }
-            }                    
+            }else{
+                modelo.Metodos.M("SOLO EL PERSONAL DE ALMACEN PUEDE DAR POR TERMINADO EL LOTE.","advertencia.png");
+            }
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(PanelLotes.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.Metodos.ERROR(ex, "ERROR AL VERIFICAR EL NOMBRE DEL EQUIPO.");
+        }
     }//GEN-LAST:event_subMenuDarPorTerminadoActionPerformed
 
     private void subMenuPrepararDespachoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPrepararDespachoActionPerformed
