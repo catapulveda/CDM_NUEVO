@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INFORME ANUAL" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0d5dc2c6-f0be-49ba-a61a-6f7dbd9a52d9">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="1363"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CDM"/>
 	<style name="COLUMNA" mode="Opaque" backcolor="#BFE1FF">
@@ -27,13 +27,19 @@
 		</conditionalStyle>
 	</style>
 	<subDataset name="DATOS" uuid="1ffdd677-1bd8-4497-95b8-464179f7c90a">
+		<parameter name="INICIO_T" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+		</parameter>
+		<parameter name="FIN_T" class="java.util.Date" isForPrompting="false">
+			<defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+		</parameter>
 		<queryString>
 			<![CDATA[SELECT e.op, t.numeroserie, e.fecharecepcion, p.fechalaboratorio, c.nombrecliente, 
 t.fase, t.kvasalida, t.serviciosalida, e.lote FROM protocolos p
 INNER JOIN transformador t USING(idtransformador)
 INNER JOIN entrada e USING(identrada)
 INNER JOIN cliente c USING(idcliente)
-WHERE p.fechalaboratorio::date BETWEEN 'Tue Jan 03 11:05:37 COT 2016' AND 'Fri Feb 03 11:05:40 COT 2017' 
+WHERE p.fechalaboratorio::date BETWEEN $P{INICIO_T} AND $P{FIN_T}
 ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 		</queryString>
 		<field name="op" class="java.lang.String"/>
@@ -55,6 +61,8 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 			<groupExpression><![CDATA[$F{serviciosalida}]]></groupExpression>
 		</group>
 	</subDataset>
+	<parameter name="INICIO" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="FIN" class="java.util.Date" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[SELECT 1]]>
 	</queryString>
@@ -63,8 +71,14 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 		<band height="60" splitType="Stretch">
 			<componentElement>
 				<reportElement key="table 1" x="0" y="0" width="752" height="60" uuid="9a6f960f-6445-4bc1-8e22-31d905d474fc"/>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="DATOS" uuid="c5177ed4-1362-4e7a-bf31-099be915e43b">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="DATOS" uuid="0a4687b1-0c5a-47ab-ac3a-91e17be58a31">
+						<datasetParameter name="INICIO_T">
+							<datasetParameterExpression><![CDATA[$P{INICIO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FIN_T">
+							<datasetParameterExpression><![CDATA[$P{FIN}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:columnGroup width="752" uuid="5b991ad6-7f52-49a8-b47d-7bfd9c8ee58c">
@@ -104,7 +118,6 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="30" height="14" uuid="35506045-b29b-457c-a5e6-692798080108"/>
@@ -127,7 +140,6 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="51" height="14" uuid="5650410b-4251-4d4b-985c-16aac34c6739"/>
@@ -148,7 +160,6 @@ ORDER BY t.serviciosalida, fechalaboratorio, t.numeroserie ASC]]>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="61" height="14" uuid="f5c53272-978a-4e51-bf10-15f33d6704cc"/>
@@ -191,7 +202,6 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="54" height="14" uuid="fd39ea69-61a5-4aeb-892f-54e7c8e2d0e2"/>
@@ -214,7 +224,6 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="54" height="14" uuid="47e6a14b-26a1-4ad7-9f50-1c67ba6c974f"/>
@@ -237,7 +246,6 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="24" height="14" uuid="0aad264d-29c4-4382-877e-d0c83fdfa070"/>
@@ -260,7 +268,6 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="27" height="14" uuid="4e854b9d-db83-461a-a58d-11d16d5e0a6e"/>
@@ -283,7 +290,6 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="90" height="14" uuid="241059b0-b4a1-4128-8fd9-4685044d3285"/>
@@ -306,7 +312,6 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 										</staticText>
 									</jr:cell>
 								</jr:groupHeader>
-								<jr:columnFooter height="30" rowSpan="1"/>
 								<jr:detailCell style="DETALLE" height="14" rowSpan="1">
 									<textField>
 										<reportElement x="0" y="0" width="361" height="14" uuid="37d03f61-4b4c-4501-afc7-1d0ee79d6f21"/>
@@ -321,4 +326,36 @@ INFORME MENSUAL DE PRODUCCION]]></text>
 			</componentElement>
 		</band>
 	</detail>
+	<columnFooter>
+		<band height="20">
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="569" y="10" width="183" height="10" uuid="513299b4-438f-4519-8a40-9215a24446ea"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RMPP-01-01-01 | V. 03 | 11/02/2017"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="633" y="0" width="102" height="10" uuid="cca33187-aba0-45c2-81c5-d397786ad126"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="712" y="0" width="40" height="10" uuid="78e433a5-3108-42e6-9410-dad4f63c1883"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="10" width="283" height="10" uuid="4e1d6181-3716-42e3-9ed9-d315117975eb"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
 </jasperReport>

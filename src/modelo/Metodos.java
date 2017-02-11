@@ -1,6 +1,8 @@
 package modelo;
  
+import java.awt.BorderLayout;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -23,12 +25,25 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.TextAnchor;
 
 /**
  *
@@ -41,6 +56,7 @@ public class Metodos {
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         JOptionPane.showMessageDialog(null, mensaje+"\n"+sw.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        escribirFichero(e);
     }
     
     public static void generarExcel(JTable table, JProgressBar barra, JButton btn){
@@ -220,6 +236,24 @@ public class Metodos {
         } catch (IOException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static void generarGrafica(DefaultCategoryDataset dataSet, String arriba, String abajo, String valores, JPanel panel){
+        JFreeChart chart = ChartFactory.createBarChart3D(arriba, abajo, valores, dataSet, PlotOrientation.VERTICAL,true,true,true);
+        ChartPanel chartPanelPlanesUsuario = new ChartPanel(chart);
+
+        CategoryItemRenderer renderer = chart.getCategoryPlot().getRenderer();
+        renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12,TextAnchor.BOTTOM_CENTER  ));
+        renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        renderer.setBaseItemLabelsVisible(true);
+        renderer.setBaseItemLabelFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+
+        CategoryPlot plot = chart.getCategoryPlot();
+//        plot.setBackgroundImage(getLogo());
+        plot.setBackgroundImageAlignment(JLabel.CENTER);
+
+        panel.removeAll();
+        panel.add(chartPanelPlanesUsuario, BorderLayout.CENTER);
     }
     
 }
