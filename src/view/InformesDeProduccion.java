@@ -55,96 +55,133 @@ public class InformesDeProduccion extends javax.swing.JFrame{
         panelKva.setLayout(new java.awt.BorderLayout());
         panelServicios.setLayout(new java.awt.BorderLayout());
         
-        ajustarColumna = new TableColumnAdjuster(tablaDatos);                
-        
-        cargarInterfazTabla();    
+        ajustarColumna = new TableColumnAdjuster(tablaDatos);
         cargarDatosTabla();
+        
+        setExtendedState(MAXIMIZED_BOTH);
     }
     
-    void cargarInterfazTabla(){       
-        modeloTabla = new CustomTableModel(
+    void cargarDatosTabla(){
+                
+//        (new Thread(){
+//            @Override
+//            public void run(){                
+        
+                modeloTabla = new CustomTableModel(
                 new Object[][]{}, 
                 new String[]{"ITEM","ORDEN","Nº SERIE","FECHA RECEPCION","FECHA ENTREGADO","CLIENTE","FASE","KVA","SERVICIO","LOTE"}, 
                 tablaDatos, 
                 new Class[]{Integer.class,String.class,String.class,String.class,String.class,String.class,Integer.class,Double.class,String.class,String.class}, 
                 new Boolean[]{true,false,false,false,false,false,false,false,false,false});
-        tablaDatos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tablaDatos.setCellSelectionEnabled(true);
-        tablaDatos.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "selectNextColumnCell");
-        tablaDatos.getColumnModel().getColumn(0).setCellRenderer(new JButtonIntoJTable.BotonEnColumna());
-    }
-    
-    void cargarDatosTabla(){
-        cargarInterfazTabla();
-        
-        if(cjfechainicio.getDate()==null||cjfechafin.getDate()==null){
-            return;
-        }
-        
-        tablaDatos.setRowSorter(null);
-        conexion.conectar();
-        ResultSet rs = conexion.CONSULTAR("SELECT e.op, t.numeroserie, e.fecharecepcion, p.fechalaboratorio, c.nombrecliente, \n" +
-                                        "t.fase, t.kvasalida, t.serviciosalida, e.lote FROM protocolos p\n" +
-                                        "INNER JOIN transformador t USING(idtransformador)\n" +
-                                        "INNER JOIN entrada e USING(identrada)\n" +
-                                        "INNER JOIN cliente c USING(idcliente)\n" +
-                                        "WHERE p.fechalaboratorio::date BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' \n" +
-                                        "ORDER BY p.fechalaboratorio, t.numeroserie ASC");
-        try {
-            while(rs.next()){
-                modeloTabla.addRow(new Object[]{
-                    rs.getRow(),
-                    rs.getString("op"),
-                    rs.getString("numeroserie"),
-                    new SimpleDateFormat("dd-MMM-yy").format(rs.getDate("fecharecepcion")),
-                    new SimpleDateFormat("dd-MMM-yy").format(rs.getDate("fechalaboratorio")),
-                    rs.getString("nombrecliente"),
-                    rs.getInt("fase"),
-                    rs.getString("kvasalida"),
-                    rs.getString("serviciosalida"),
-                    rs.getString("lote")
-                });
-            }
-            rowSorter = new TableRowSorter(modeloTabla);
-            tablaDatos.setRowSorter(rowSorter);
-            ajustarColumna.adjustColumns();
-        } catch (Exception ex) {
-            modelo.Metodos.ERROR(ex, "Error al cargar la tabla.");
-            Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                tablaDatos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+                tablaDatos.setCellSelectionEnabled(true);
+                tablaDatos.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "selectNextColumnCell");
+                tablaDatos.getColumnModel().getColumn(0).setCellRenderer(new JButtonIntoJTable.BotonEnColumna());
                 
-        rs = conexion.CONSULTAR("SELECT count(*), extract(year from fechalaboratorio) AS ano, extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth') AS mes \n" +
-                                "FROM protocolos WHERE fechalaboratorio BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' \n" +
-                                "GROUP BY extract(year from fechalaboratorio), extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth')\n" +
-                                "ORDER BY extract(month from fechalaboratorio) ASC");
-        try {
-            dataSetUnidades.clear();
-            while(rs.next()){
-                dataSetUnidades.addValue(rs.getInt("count"), "AÑO: "+rs.getString("ano"), rs.getString("mes"));
-            }            
-            modelo.Metodos.generarGrafica(dataSetUnidades, "UNIDADES REPARADAS", "MES", "CANTIDAD", panelCantidades);
-            validate();
-        } catch (Exception ex) {
-            modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE CANTIDADES.");
-            Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        rs = conexion.CONSULTAR("SELECT sum(t.kvasalida), extract(year from fechalaboratorio) AS ano, extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth') AS mes \n" +
-                                "FROM protocolos p INNER JOIN transformador t USING(idtransformador) WHERE fechalaboratorio BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' \n" +
-                                "GROUP BY extract(year from fechalaboratorio), extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth')\n" +
-                                "ORDER BY extract(month from fechalaboratorio) ASC");
-        try {
-            dataSetKva.clear();
-            while(rs.next()){
-                dataSetKva.addValue(rs.getInt("sum"), "AÑO: "+rs.getString("ano"), rs.getString("mes"));
-            }
-            modelo.Metodos.generarGrafica(dataSetKva, "KVA PRODUCIDOS", "MES", "KVA", panelKva);
-            validate();
-        } catch (Exception ex) {
-            modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE CANTIDADES.");
-            Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+                if(cjfechainicio.getDate()==null||cjfechafin.getDate()==null){
+                    return;
+                }
+
+                tablaDatos.setRowSorter(null);
+                conexion.conectar();
+                ResultSet rs = conexion.CONSULTAR("SELECT e.op, t.numeroserie, e.fecharecepcion, p.fechalaboratorio, c.nombrecliente, \n" +
+                                                "t.fase, t.kvasalida, t.serviciosalida, e.lote FROM protocolos p\n" +
+                                                "INNER JOIN transformador t USING(idtransformador)\n" +
+                                                "INNER JOIN entrada e USING(identrada)\n" +
+                                                "INNER JOIN cliente c USING(idcliente)\n" +
+                                                "WHERE p.fechalaboratorio::date BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' \n" +
+                                                "ORDER BY p.fechalaboratorio, t.numeroserie ASC");
+                try {
+                    while(rs.next()){
+                        modeloTabla.addRow(new Object[]{
+                            rs.getRow(),
+                            rs.getString("op"),
+                            rs.getString("numeroserie"),
+                            new SimpleDateFormat("dd-MMM-yy").format(rs.getDate("fecharecepcion")),
+                            new SimpleDateFormat("dd-MMM-yy").format(rs.getDate("fechalaboratorio")),
+                            rs.getString("nombrecliente"),
+                            rs.getInt("fase"),
+                            rs.getString("kvasalida"),
+                            rs.getString("serviciosalida"),
+                            rs.getString("lote")
+                        });
+                    }
+                    rowSorter = new TableRowSorter(modeloTabla);
+                    tablaDatos.setRowSorter(rowSorter);
+                    ajustarColumna.adjustColumns();
+                } catch (Exception ex) {
+                    modelo.Metodos.ERROR(ex, "Error al cargar la tabla.");
+                    Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /******************************/
+                rs = conexion.CONSULTAR("SELECT count(*), extract(year from fechalaboratorio) AS ano, extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth') AS mes \n" +
+                                        "FROM protocolos WHERE fechalaboratorio BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' \n" +
+                                        "GROUP BY extract(year from fechalaboratorio), extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth')\n" +
+                                        "ORDER BY extract(month from fechalaboratorio) ASC");
+                try {
+                    dataSetUnidades.clear();
+                    while(rs.next()){
+                        dataSetUnidades.addValue(rs.getInt("count"), "AÑO: "+rs.getString("ano"), rs.getString("mes"));
+                    }            
+                    modelo.Metodos.generarGrafica(dataSetUnidades, "UNIDADES REPARADAS", "MES", "CANTIDAD", panelCantidades);
+                    validate();
+                } catch (Exception ex) {
+                    modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE CANTIDADES.");
+                    Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /******************************/
+                rs = conexion.CONSULTAR("SELECT sum(t.kvasalida), extract(year from fechalaboratorio) AS ano, extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth') AS mes \n" +
+                                        "FROM protocolos p INNER JOIN transformador t USING(idtransformador) WHERE fechalaboratorio BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' \n" +
+                                        "GROUP BY extract(year from fechalaboratorio), extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth')\n" +
+                                        "ORDER BY extract(month from fechalaboratorio) ASC");
+                try {
+                    dataSetKva.clear();
+                    while(rs.next()){
+                        dataSetKva.addValue(rs.getInt("sum"), "AÑO: "+rs.getString("ano"), rs.getString("mes"));
+                    }
+                    modelo.Metodos.generarGrafica(dataSetKva, "KVA PRODUCIDOS", "MES", "KVA", panelKva);
+                    validate();
+                } catch (Exception ex) {
+                    modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE KVA TOTALES.");
+                    Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /******************************/
+                rs = conexion.CONSULTAR("SELECT to_char(fechalaboratorio, 'TMMonth') AS mes, extract(year from fechalaboratorio), t.serviciosalida, count(*) FROM protocolos p \n" +
+                                        "INNER JOIN transformador t USING(idtransformador)\n" +
+                                        "WHERE fechalaboratorio BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' "+ 
+                                        "GROUP BY to_char(fechalaboratorio, 'TMMonth'), extract(year from fechalaboratorio), "+ 
+                                        "t.serviciosalida, extract(month from fechalaboratorio) "+
+                                        "ORDER BY extract(month from fechalaboratorio) ASC");
+                try {
+                    dataSetServicios.clear();
+                    while(rs.next()){
+                        dataSetServicios.addValue(rs.getInt("count"), rs.getString("serviciosalida")+" - "+rs.getInt("date_part"), rs.getString("mes"));
+                    }
+                    modelo.Metodos.generarGrafica(dataSetServicios, "SERVICIOS REALIZADOS", "MES", "TOTAL SERVICIOS", panelServicios);
+                    validate();
+                } catch (Exception ex) {
+                    modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE SERVICIOS.");
+                    Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /******************************/
+                rs = conexion.CONSULTAR("SELECT to_char(fechalaboratorio, 'TMMonth') AS mes, extract(year from fechalaboratorio), t.fase, count(*) FROM protocolos p \n" +
+                                        "INNER JOIN transformador t USING(idtransformador)\n" +
+                                        "WHERE fechalaboratorio BETWEEN '"+cjfechainicio.getDate()+"' AND '"+cjfechafin.getDate()+"' "+
+                                        "GROUP BY to_char(fechalaboratorio, 'TMMonth'), extract(year from fechalaboratorio), t.fase, extract(month from fechalaboratorio) \n" +
+                                        "ORDER BY extract(month from fechalaboratorio) ASC");
+                try{
+                    dataSetFases.clear();
+                    while(rs.next()){
+                        dataSetFases.addValue(rs.getInt("count"), (rs.getString("fase").equals("1"))?"MONOFASICO":"TRIFASICO"+" - "+rs.getInt("date_part"), rs.getString("mes"));
+                    }
+                    modelo.Metodos.generarGrafica(dataSetFases, "FASES", "MES", "FASE", panelFases);
+                    validate();
+                }catch (Exception ex){
+                    modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE SERVICIOS.");
+                    Logger.getLogger(InformesDeProduccion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+//            }
+//        }).start();        
     }
 
     @SuppressWarnings("unchecked")
@@ -178,7 +215,6 @@ public class InformesDeProduccion extends javax.swing.JFrame{
         comboMes = new com.toedter.calendar.JMonthChooser();
         jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -425,9 +461,6 @@ public class InformesDeProduccion extends javax.swing.JFrame{
         });
         jToolBar1.add(jButton1);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
         jMenu2.setText("Editar");
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/basura.png"))); // NOI18N
@@ -580,7 +613,6 @@ public class InformesDeProduccion extends javax.swing.JFrame{
     private com.toedter.calendar.JMonthChooser comboMes;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;

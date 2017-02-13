@@ -16,7 +16,7 @@ public class Login extends javax.swing.JDialog {
 
     Point inicial;
     private String EQUIPO = "";
-    boolean RECORDAR = false;
+    boolean NOESTA = false;
     
     public Login(java.awt.Frame parent, boolean modal){
         super(parent, modal);
@@ -25,10 +25,15 @@ public class Login extends javax.swing.JDialog {
         final ConexionBD conexion = new ConexionBD();
         conexion.conectar();
         try {
-            ResultSet rs = conexion.CONSULTAR("SELECT nombreusuario, pass FROM usuario WHERE pc='"+Inet4Address.getLocalHost().getHostName()+"' ");        
+            ResultSet rs = conexion.CONSULTAR("SELECT * FROM usuario WHERE pc='"+Inet4Address.getLocalHost().getHostName()+"' ");        
             if(rs.next()){
-                cjusuario.setText(rs.getString("nombreusuario"));
-                cjpass.setText(rs.getString("pass"));
+                NOESTA = true;
+                if(rs.getBoolean("recordar")){
+                    cjusuario.setText(rs.getString("nombreusuario"));
+                    cjpass.setText(rs.getString("pass"));
+                }
+            }else{
+                NOESTA = false;
             }
         } catch (UnknownHostException | SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,11 +57,17 @@ public class Login extends javax.swing.JDialog {
             ResultSet rs = conexion.CONSULTAR("SELECT * FROM usuario WHERE nombreusuario='"+usuario+"' AND pass='"+pass+"' ");
             if(rs.next()){
                 modelo.Sesion sesion = modelo.Sesion.getConfigurador(rs.getString("nombreusuario"), rs.getInt("idusuario"));
-//                frame = getFrame();
-//                frame.setTitle(getTitle()+" - "+rs.getString("nombreusuario"));
-//                ((view.Principal)getOwner()).dispose();
+                if(checkRecordar.isSelected()){
+                    if(!NOESTA){
+                        if(conexion.GUARDAR("INSERT INTO usuario (nombreusuario,pass,pc,recordar) VALUES ('"+usuario+"','"+pass+"','"+Inet4Address.getLocalHost().getHostName()+"','true') ")){
+                    
+                        }
+                    }                    
+                    if(conexion.GUARDAR("UPDATE usuario SET recordar='true' WHERE nombreusuario='"+usuario+"' AND pass='"+pass+"' ")){
+                        
+                    }
+                }
                 dispose();
-//                frame.setVisible(true);
             }
             conexion.CERRAR();
         }catch(Exception e){
@@ -111,6 +122,11 @@ public class Login extends javax.swing.JDialog {
         checkRecordar.setForeground(new java.awt.Color(85, 85, 85));
         checkRecordar.setText("Recordar en éste equipo");
         checkRecordar.setContentAreaFilled(false);
+        checkRecordar.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkRecordarItemStateChanged(evt);
+            }
+        });
         jToolBar1.add(checkRecordar);
         jToolBar1.add(jSeparator1);
 
@@ -189,12 +205,13 @@ public class Login extends javax.swing.JDialog {
         this.setLocation(this.getLocation().x + evt.getX() - inicial.x, this.getLocation().y + evt.getY() - inicial.y);
     }//GEN-LAST:event_formMouseDragged
 
-    @Override
-    public void paintComponents(Graphics g) {
-        super.paintComponents(g); //To change body of generated methods, choose Tools | Templates.
-        System.out.println("ss");
-    }
-
+    private void checkRecordarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkRecordarItemStateChanged
+        if(evt.getStateChange()==1){//SELECCIONADO
+            
+        }else if(evt.getStateChange()==2){//DESELECCIONADO
+            
+        }
+    }//GEN-LAST:event_checkRecordarItemStateChanged
    
 //    public static void main(String args[]) {               
 //        try {

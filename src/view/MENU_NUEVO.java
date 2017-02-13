@@ -150,6 +150,7 @@ public class MENU_NUEVO extends javax.swing.JFrame{
         });
         jMenu1.add(jMenuItem1);
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/cliente.png"))); // NOI18N
         jMenuItem2.setText("Conductores");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

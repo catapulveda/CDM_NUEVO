@@ -248,7 +248,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnLotes = new javax.swing.JButton();
         btnProtocolo = new javax.swing.JButton();
-        btnProduccion = new javax.swing.JButton();
+        btnInformes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu principal");
@@ -294,10 +294,15 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(btnProtocolo);
 
-        btnProduccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calendario.png"))); // NOI18N
-        btnProduccion.setBorderPainted(false);
-        btnProduccion.setPreferredSize(new java.awt.Dimension(130, 130));
-        jPanel1.add(btnProduccion);
+        btnInformes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calendario.png"))); // NOI18N
+        btnInformes.setBorderPainted(false);
+        btnInformes.setPreferredSize(new java.awt.Dimension(130, 130));
+        btnInformes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInformesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnInformes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -360,6 +365,20 @@ public class Principal extends javax.swing.JFrame {
             }
         }).start();        
     }//GEN-LAST:event_btnLotesActionPerformed
+
+    private void btnInformesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInformesActionPerformed
+        (new Thread(){
+            @Override
+            public void run(){
+                btnInformes.setEnabled(false);
+                view.InformesDeProduccion menu = new view.InformesDeProduccion();
+                modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
+                menu.setTitle("INFORME DE PRODUCCION - Usuario: "+sesion.getNombre());
+                menu.setVisible(true);
+                dispose();
+            }
+        }).start(); 
+    }//GEN-LAST:event_btnInformesActionPerformed
     
     public static void main(String args[]){     
         
@@ -380,8 +399,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnInformes;
     private javax.swing.JButton btnLotes;
-    private javax.swing.JButton btnProduccion;
     private javax.swing.JButton btnProtocolo;
     private javax.swing.JPanel jPanel1;
     private CompuChiqui.JPanelImage jPanelImage1;

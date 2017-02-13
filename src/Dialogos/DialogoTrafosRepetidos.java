@@ -37,7 +37,7 @@ public class DialogoTrafosRepetidos extends javax.swing.JDialog {
 
     public void CargarDatos(ResultSet rs){
         try {            
-            while(rs.next()){                
+            while(rs.next()){
                 ModeloRepetidos.addRow(new Object[]{
                     rs.getInt("idtransformador"),
                     rs.getString("lote"),
@@ -46,7 +46,9 @@ public class DialogoTrafosRepetidos extends javax.swing.JDialog {
                     rs.getString("nombrecliente")                    
                 });
             }
-            new JTableAutoResizeColumn.TableColumnAdjuster(jTable1).adjustColumns();            
+            new JTableAutoResizeColumn.TableColumnAdjuster(jTable1).adjustColumns();
+            jTable1.setRowSelectionInterval(0, 0);
+            jTable1.setColumnSelectionInterval(0, jTable1.getColumnCount()-1);
         } catch (SQLException ex) {
             Logger.getLogger(DialogoTrafosRepetidos.class.getName()).log(Level.SEVERE, null, ex);
         }

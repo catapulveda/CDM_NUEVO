@@ -111,7 +111,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProtocoloActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnProduccion">
+        <Component class="javax.swing.JButton" name="btnInformes">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/recursos/images/calendario.png"/>
@@ -121,6 +121,9 @@
               <Dimension value="[130, 130]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInformesActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

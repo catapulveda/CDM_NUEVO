@@ -33,12 +33,12 @@
 		<queryString>
 			<![CDATA[SELECT e.op, t.numeroempresa, t.numeroserie, t.kvasalida, t.fase, t.tpe, t.tse, t.tte, t.marca, t.serviciosalida, t.tipotrafosalida FROM entrada e 
 INNER JOIN transformador t ON e.identrada=t.identrada
-WHERE t.idremision=$P{IDREMISION_TABLA}]]>
+WHERE t.idremision=$P{IDREMISION_TABLA}  ORDER BY t.fase, t.kvasalida, e.op, t.marca, t.numeroserie ASC]]>
 		</queryString>
 		<field name="op" class="java.lang.String"/>
 		<field name="numeroempresa" class="java.lang.String"/>
 		<field name="numeroserie" class="java.lang.String"/>
-		<field name="kvasalida" class="java.lang.Double"/>
+		<field name="kvasalida" class="java.lang.String"/>
 		<field name="fase" class="java.lang.Integer"/>
 		<field name="tpe" class="java.lang.Integer"/>
 		<field name="tse" class="java.lang.Integer"/>
