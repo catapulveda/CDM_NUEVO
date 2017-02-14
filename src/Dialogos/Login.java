@@ -35,8 +35,9 @@ public class Login extends javax.swing.JDialog {
             }else{
                 NOESTA = false;
             }
-        } catch (UnknownHostException | SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LOS DATOS DE LA SESION.");
         }
         
         btnEntrar.addActionListener((ActionEvent e) ->{

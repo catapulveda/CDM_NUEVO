@@ -1,5 +1,6 @@
 package view;
 
+import Dialogos.BuscarEnDespacho;
 import JTableAutoResizeColumn.TableColumnAdjuster;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
@@ -243,6 +244,7 @@ public class DespachoARemision extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnImprimirRemision = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
+        btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jToolBar2 = new javax.swing.JToolBar();
@@ -322,6 +324,19 @@ public class DespachoARemision extends javax.swing.JFrame {
         });
         jToolBar1.add(btnImprimirRemision);
         jToolBar1.add(jSeparator5);
+
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/buscar.png"))); // NOI18N
+        btnBuscar.setToolTipText("Imprimir Remision");
+        btnBuscar.setEnabled(false);
+        btnBuscar.setFocusable(false);
+        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnBuscar);
 
         tabla.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -509,6 +524,12 @@ public class DespachoARemision extends javax.swing.JFrame {
         cargarTabla();        
     }//GEN-LAST:event_btnImprimirRemisionActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        BuscarEnDespacho buscar = new BuscarEnDespacho(this, false);
+        buscar.setTabla(tabla);
+        buscar.setVisible(true);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -541,6 +562,7 @@ public class DespachoARemision extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnBuscar;
     public javax.swing.JButton btnDevolver;
     public javax.swing.JButton btnImprimirRemision;
     public javax.swing.JButton btnRefrescar3;
@@ -560,7 +582,7 @@ public class DespachoARemision extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblFilasSeleccionadas;
     private javax.swing.JPopupMenu subMenuDevolverAPlanta;
-    private javax.swing.JTable tabla;
+    public javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
     public int getIDDESPACHO() {

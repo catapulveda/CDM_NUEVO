@@ -161,6 +161,9 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         tablaTrafos.getColumnModel().getColumn(4).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getJTextFieldMarcas()));
 //        entradaDeTrafos.tablaTrafos.getColumnModel().getColumn(4).setCellRenderer(new JTextFieldIntoJTable.JTextField_TableCellRenderer());
         
+        //COLUMNA HERRAJE
+        tablaTrafos.getColumnModel().getColumn(14).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getTextFieldHerrajes()));            
+        
         //COLUMNA TENSIONES       
         JTextComponent txt = new JTextField();
         AutoCompleteDecorator.decorate(txt, tensiones, true);
@@ -826,7 +829,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 0,//"H.B",
                 false,//"INT",
                 false,//"EXT",
-                0,//"HERRAJE",
+                "",//"HERRAJE",
                 0,//"AÑO",
                 0,//"PESO",
                 0,//"ACEITE",

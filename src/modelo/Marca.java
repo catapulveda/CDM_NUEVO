@@ -53,7 +53,7 @@ public class Marca {
         JTextField txt = new JTextField();
         conexion.conectar();
         ResultSet rs = conexion.CONSULTAR("SELECT * FROM marca");
-        ArrayList<Object> marcas = new ArrayList<>();              
+        ArrayList<Object> marcas = new ArrayList<>();
         try {
             while(rs.next()){
                 marcas.add(
@@ -71,6 +71,17 @@ public class Marca {
             JOptionPane.showMessageDialog(null, "ERROR AL CARGAR LA LISTA DE MARCAS EN EL AUTOCOMPLETADO\n"+ex);
             Logger.getLogger(Marca.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return txt;
+    }
+    
+    public static JTextField getTextFieldHerrajes(){
+        JTextField txt = new JTextField();
+        ArrayList<Object> herrajes = new ArrayList<>();
+        herrajes.add("AUTO");
+        herrajes.add("NORMAL");
+        TextAutoCompleter cjHerramienta = new TextAutoCompleter(txt, herrajes);
+        cjHerramienta.setCaseSensitive(true);
+        cjHerramienta.setClearOnIncorrect(true);
         return txt;
     }
     

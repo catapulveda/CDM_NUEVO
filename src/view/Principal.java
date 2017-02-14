@@ -346,10 +346,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProtocoloActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
-        login.setVisible(true);
-        modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
-        setTitle("Bienvenido "+sesion.getNombre());
+        JOptionPane.showMessageDialog(null, image);
+        try {
+            Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
+            login.setVisible(true);
+            modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
+            setTitle("Bienvenido "+sesion.getNombre());
+        } catch (Exception e){
+            modelo.Metodos.ERROR(e, "ERROR AL ABRIR EL FORMULARIO PARA EL INICIO DE SESION.");
+        }        
     }//GEN-LAST:event_formWindowOpened
 
     private void btnLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLotesActionPerformed

@@ -98,7 +98,7 @@ public final class DialogoRegistrarDiferencias extends javax.swing.JDialog {
             }
             if(e.getType() == TableModelEvent.UPDATE){
                 if(e.getColumn()==2 && ACTUALIZANDO && !tabladiferencias.getValueAt(e.getFirstRow(), 1).toString().isEmpty()){
-                    if(listadif.contains(Integer.parseInt(tabladiferencias.getValueAt(e.getFirstRow(), 1).toString())) && new ConexionBD().GUARDAR("UPDATE diferenciasentrada SET diferencia_dif='"+tabladiferencias.getValueAt(e.getFirstRow(), 2)+"' WHERE identrada_dif='"+IDENTRADA+"' AND id_dif='"+tabladiferencias.getValueAt(e.getFirstRow(), 1)+"' ")){
+                    if(listadif.contains(Integer.parseInt(tabladiferencias.getValueAt(e.getFirstRow(), 1).toString())) && new ConexionBD().GUARDAR("UPDATE diferenciasentrada SET descripcion='"+tabladiferencias.getValueAt(e.getFirstRow(), 2)+"' WHERE identrada='"+IDENTRADA+"' AND iddiferencia='"+tabladiferencias.getValueAt(e.getFirstRow(), 1)+"' ")){
                         
                     }
                 }
