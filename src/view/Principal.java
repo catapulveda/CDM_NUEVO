@@ -346,7 +346,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProtocoloActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        JOptionPane.showMessageDialog(null, image);
         try {
             Dialogos.Login login = new Dialogos.Login(this, rootPaneCheckingEnabled);
             login.setVisible(true);

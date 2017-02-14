@@ -6,6 +6,7 @@ import JButtonIntoJTable.BotonEnColumna;
 import JTableAutoResizeColumn.TableColumnAdjuster;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import static java.awt.Frame.MAXIMIZED_VERT;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -86,12 +87,12 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
 
     }
 
-    public void AbrirEncabezadoRemision(int idremision) {
+    public void AbrirEncabezadoRemision(ResultSet rs) {
         try {
-            setIDREMISION(idremision);
-            conexion.conectar();
-            ResultSet rs = conexion.CONSULTAR("SELECT * FROM remision WHERE idremision='" + idremision + "' ");
-            if (rs.next()) {
+//            setIDREMISION(idremision);
+//            conexion.conectar();
+//            ResultSet rs = conexion.CONSULTAR("SELECT * FROM remision WHERE idremision='" + idremision + "' ");
+//            if (rs.next()) {
                 NUMERO_REMISION = rs.getString("numero_remision");
                 setTitle("REMISION N° " + NUMERO_REMISION);
                 cjcliente.setText(rs.getString("cliente_remision"));
@@ -108,12 +109,12 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
                 cjnoremision.setText(rs.getString("numero_remision"));
                 areadeTexto.setText(rs.getString("descripcion_remision"));
                 cjfecha.setDate(rs.getDate("fecha_remision"));
-            }
+//            }
         } catch (Exception e) {
             Logger.getLogger(REMISIONESCDM.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR LA REMISION\n" + e + "\n");
         } finally {
-            conexion.CERRAR();
+//            conexion.CERRAR();
         }
     }
 
@@ -429,6 +430,11 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
         checkremisionnueva.setFocusable(false);
         checkremisionnueva.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         checkremisionnueva.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        checkremisionnueva.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkremisionnuevaItemStateChanged(evt);
+            }
+        });
         checkremisionnueva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkremisionnuevaActionPerformed(evt);
@@ -955,15 +961,7 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
     }//GEN-LAST:event_SubMenuConvertirMinusculasActionPerformed
 
     private void checkremisionnuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkremisionnuevaActionPerformed
-        if(!NUMERO_REMISION.isEmpty()){
-            if(checkremisionnueva.isSelected()){
-                cjnoremision.setText(""+Metodos.getConsecutivoRemision(CONSECUTIVO_EMPRESA, false));
-                setACTUALIZANDO(true);
-            }else{
-                cjnoremision.setText(NUMERO_REMISION);
-                setACTUALIZANDO(false);
-            }
-        }        
+        
     }//GEN-LAST:event_checkremisionnuevaActionPerformed
 
     DialogoConfigurarConsecutivosRemision dccr;
@@ -1065,6 +1063,18 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tablaHerramientasKeyTyped
+
+    private void checkremisionnuevaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkremisionnuevaItemStateChanged
+        if(!NUMERO_REMISION.isEmpty()){
+            if(evt.getStateChange() == ItemEvent.SELECTED){
+                cjnoremision.setText(""+Metodos.getConsecutivoRemision(CONSECUTIVO_EMPRESA, false));
+                setACTUALIZANDO(true);
+            }else if(evt.getStateChange() == ItemEvent.DESELECTED){
+                cjnoremision.setText(NUMERO_REMISION);
+                setACTUALIZANDO(false);
+            }
+        }            
+    }//GEN-LAST:event_checkremisionnuevaItemStateChanged
 
     public void Enter(JTextField uno, final JTextField dos) {
         uno.addKeyListener(new KeyListener() {

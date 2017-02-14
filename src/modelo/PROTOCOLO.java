@@ -97,8 +97,9 @@ public class PROTOCOLO {
                     rs.getString("nombreusuario")
                 });
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(PROTOCOLO.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA TABLA DE PROTOCOLOS.");
         }finally{
             conex.CERRAR();
         }

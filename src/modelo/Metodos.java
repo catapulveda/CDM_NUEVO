@@ -126,8 +126,9 @@ public class Metodos {
                 rs.next();
                 ID_REMISION = rs.getInt("last_value");
             }
-        }catch(SQLException ex){
+        }catch(Exception ex){
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL CONSECUTIVO "+empresa);
         }finally{
             conexion.CERRAR();
         }

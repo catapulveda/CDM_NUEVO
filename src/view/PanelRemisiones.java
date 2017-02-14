@@ -344,14 +344,14 @@ public class PanelRemisiones extends javax.swing.JPanel {
             int fila = tablaRemisiones.getSelectedRow();
             int idremision = (int)tablaRemisiones.getValueAt(fila, 0);
             conexion.conectar();
-            ResultSet rs = conexion.CONSULTAR("SELECT iddespacho, empresa_remision, tipo_remision FROM remision WHERE idremision="+idremision);
+            ResultSet rs = conexion.CONSULTAR("SELECT * FROM remision WHERE idremision="+idremision);
             try {
                 rs.next();
                 if(rs.getInt("iddespacho")==0){
                     
                     REMISIONESCDM remisiones = new REMISIONESCDM();
                     remisiones.setIDREMISION(idremision);
-                    remisiones.AbrirEncabezadoRemision(idremision);
+                    remisiones.AbrirEncabezadoRemision(rs);
                     remisiones.setACTUALIZANDO(true);
                     
                     if(rs.getString("tipo_remision").equals("CON RETORNO")){
@@ -364,13 +364,13 @@ public class PanelRemisiones extends javax.swing.JPanel {
                             remisiones.setREPORTE("CONSORCIO_HERRAMIENTAS");
                             remisiones.cargarTablaHerramientas();
                             remisiones.cargarResultadoHerramientas();
-                        }                                                                                
+                        }
                     }else if(rs.getString("tipo_remision").equals("SIN RETORNO")){
                         remisiones.setTIPO("SIN RETORNO");
                         if(rs.getString("empresa_remision").equals("CDM")||rs.getString("empresa_remision").equals("MEDIDORES")){
                             remisiones.setREPORTE("REMISIONCDM");
                             remisiones.setCONSECUTIVO_EMPRESA("cdmsinretorno");
-                        }else if(rs.getString("empresa_remision").equals("CONSORCIO")){
+                        }else{
                             remisiones.setREPORTE("CONSORCIO_HERRAMIENTAS");
                             remisiones.setCONSECUTIVO_EMPRESA("consorciosinretorno");
                         }                        
