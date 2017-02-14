@@ -1031,6 +1031,7 @@ public class PROTOS extends javax.swing.JFrame{
         jPanel2.add(jLabel19);
 
         comboDerivacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(-4)*2.5%", "(+1-3)*2.5%", "(+2-2)*2.5%", "(+3-1)*2.5%", "(+4)*2.5%" }));
+        comboDerivacion.setSelectedIndex(1);
         jPanel2.add(comboDerivacion);
 
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
