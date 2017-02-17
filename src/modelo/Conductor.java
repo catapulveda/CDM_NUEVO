@@ -68,6 +68,8 @@ public class Conductor {
             }            
         } catch (SQLException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);            
+        }finally{
+            conexion.CERRAR();
         }
     }
     
