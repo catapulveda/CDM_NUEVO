@@ -2234,7 +2234,7 @@ public class PROTOS extends javax.swing.JFrame{
 
     private void subMenuEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuEliminarActionPerformed
         if(JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el protocolo "+tablaProtocolos.getValueAt(tablaProtocolos.getSelectedRow(), 1)+"?")==JOptionPane.YES_OPTION){
-            if(conex.GUARDAR("DELETE FROM protocolos WHERE idprotocolo="+IDTRAFO)){
+            if(conex.GUARDAR("DELETE FROM protocolos WHERE idprotocolo="+IDPROTOCOLO)){
                 modeloTabla.removeRow(tablaProtocolos.getSelectedRow());
                 //modelo.Metodos.M("EL PROTOCOLO HA SIDO ELIMINADO", "bien.png");                
             }
