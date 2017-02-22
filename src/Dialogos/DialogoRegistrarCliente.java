@@ -130,7 +130,7 @@ public final class DialogoRegistrarCliente extends javax.swing.JDialog {
         if(!cjNombre.getText().isEmpty()){
             String nombre = cjNombre.getText().trim().toUpperCase();
             String nit = cjCedula.getText().trim().toUpperCase();
-            String GuardarNombre = "INSERT INTO cliente (nombrecliente,nit) VALUES ('"+nombre+"' , '"+nit+"' ) ";
+            String GuardarNombre = "INSERT INTO cliente (nombrecliente,nitcliente) VALUES ('"+nombre+"' , '"+nit+"' ) ";
             if(JOptionPane.showConfirmDialog(this, "Seguro desea guardar el nuevo cliente ?") == JOptionPane.YES_OPTION){
                 if(conexion.GUARDAR(GuardarNombre)){
                         Limpiar();

@@ -54,32 +54,33 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelfirma = new CompuChiqui.JPanelImage();
-        btnActualizarFirma = new javax.swing.JButton();
-        btnBorrarFirma = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        panelfirma = new compuchiqui.JPanelCamara();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        panelfirma.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelfirma.setToolTipText("Arrastre la imagen");
-
-        btnActualizarFirma.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnActualizarFirma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/upload.png"))); // NOI18N
-        btnActualizarFirma.setToolTipText("Actualizar firma");
-        btnActualizarFirma.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarFirmaActionPerformed(evt);
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
             }
         });
 
-        btnBorrarFirma.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnBorrarFirma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Borrar.png"))); // NOI18N
-        btnBorrarFirma.setToolTipText("Borrar firma seleccionada");
-        btnBorrarFirma.addActionListener(new java.awt.event.ActionListener() {
+        panelfirma.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Borrar.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarFirmaActionPerformed(evt);
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/actualizar.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -89,26 +90,20 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
             panelfirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelfirmaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelfirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnActualizarFirma, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBorrarFirma, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelfirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelfirmaLayout.setVerticalGroup(
             panelfirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelfirmaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnActualizarFirma)
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBorrarFirma)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addComponent(jButton2)
+                .addContainerGap(64, Short.MAX_VALUE))
         );
-
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,8 +112,8 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, 0, 380, Short.MAX_VALUE)
-                    .addComponent(panelfirma, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jComboBox1, 0, 380, Short.MAX_VALUE)
+                    .addComponent(panelfirma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -126,8 +121,8 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelfirma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelfirma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -140,17 +135,25 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
             if(evt.getStateChange() == ItemEvent.SELECTED){
                 Personal p = (Personal) evt.getItem();
                 if(p.getFirma() != null){
-                    panelfirma.setImagen_BufferedImage(modelo.Metodos.byteToBufferedImage(p.getFirma()));
+                    panelfirma.setImagen(modelo.Metodos.byteToBufferedImage(p.getFirma()));
                 }else{
-                    panelfirma.setImagen_BufferedImage(null);
+                    panelfirma.setImagen(null);
                     modelo.Metodos.M("NO TIENE FIRMA REGISTRADA", "advertencia.png");
                 }
             }            
         }        
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
-    private void btnActualizarFirmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarFirmaActionPerformed
-        try {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(con.GUARDAR("UPDATE personal SET firma=null WHERE idpersonal="+jComboBox1.getItemAt(jComboBox1.getSelectedIndex()).getId()+" ")){
+            cargarFirmas();
+            modelo.Metodos.M("SE HA ELIMINADO LA FIRMA A LA PERSONA SELECCIONADA.", "bien.png");
+            panelfirma.setImagen(null);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+         try {
             Personal p = jComboBox1.getItemAt(jComboBox1.getSelectedIndex());
             int id = p.getId();
             Image imagefirma = (BufferedImage) panelfirma.getImagen();
@@ -169,16 +172,9 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
             }            
 
         } catch (IOException | SQLException e) {
+            
         }
-    }//GEN-LAST:event_btnActualizarFirmaActionPerformed
-
-    private void btnBorrarFirmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarFirmaActionPerformed
-        if(con.GUARDAR("UPDATE personal SET firma=null WHERE idpersonal="+jComboBox1.getItemAt(jComboBox1.getSelectedIndex()).getId()+" ")){
-            cargarFirmas();
-            modelo.Metodos.M("SE HA ELIMINADO LA FIRMA A LA PERSONA SELECCIONADA.", "bien.png");
-            panelfirma.setImagen_BufferedImage(null);
-        }
-    }//GEN-LAST:event_btnBorrarFirmaActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     class Personal{
 
@@ -272,9 +268,9 @@ public class PersonalDeFirmas extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizarFirma;
-    private javax.swing.JButton btnBorrarFirma;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<Personal> jComboBox1;
-    private CompuChiqui.JPanelImage panelfirma;
+    private compuchiqui.JPanelCamara panelfirma;
     // End of variables declaration//GEN-END:variables
 }

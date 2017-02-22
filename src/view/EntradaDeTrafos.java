@@ -502,6 +502,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         ));
         tablaTrafos.setGridColor(new java.awt.Color(227, 227, 227));
         tablaTrafos.setRowHeight(25);
+        tablaTrafos.getTableHeader().setReorderingAllowed(false);
         tablaTrafos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaTrafosMouseClicked(evt);
