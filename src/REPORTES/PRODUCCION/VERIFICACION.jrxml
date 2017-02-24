@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRODUCCION" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5eddb234-9a72-47fc-a18b-8bb1971b6e2f">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="646"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -172,9 +172,9 @@ WHERE identrada=$P{IDENTRADA}]]>
 	<field name="nombrecliente" class="java.lang.String"/>
 	<field name="nitcliente" class="java.lang.String"/>
 	<pageHeader>
-		<band height="80" splitType="Stretch">
+		<band height="90" splitType="Stretch">
 			<image hAlign="Center" vAlign="Bottom">
-				<reportElement x="0" y="0" width="85" height="77" uuid="03bbe4c4-3664-4731-a9c9-88516cc63e00"/>
+				<reportElement x="0" y="7" width="85" height="77" uuid="03bbe4c4-3664-4731-a9c9-88516cc63e00"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -184,7 +184,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<imageExpression><![CDATA["IMAGENES\\LOGO CDM.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="91" y="10" width="225" height="16" uuid="d6dce3a7-70e9-400d-9868-70ab18682c1b"/>
+				<reportElement x="91" y="17" width="225" height="16" uuid="d6dce3a7-70e9-400d-9868-70ab18682c1b"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -198,7 +198,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<text><![CDATA[MANUAL DE PROCESOS DE PRODUCCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="91" y="40" width="225" height="16" uuid="350d6c05-1ae0-4d0b-af59-c51f78bf784d"/>
+				<reportElement x="91" y="47" width="225" height="16" uuid="350d6c05-1ae0-4d0b-af59-c51f78bf784d"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -212,13 +212,13 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<text><![CDATA[VERIFICACION DEL CALCULO]]></text>
 			</staticText>
 			<rectangle radius="5">
-				<reportElement x="327" y="0" width="245" height="77" uuid="8a8f5210-960d-4e93-b35d-6c636fa5d720"/>
+				<reportElement x="327" y="7" width="245" height="77" uuid="8a8f5210-960d-4e93-b35d-6c636fa5d720"/>
 				<graphicElement>
 					<pen lineWidth="0.25"/>
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="329" y="2" width="240" height="15" uuid="f1c7cf3e-f64c-48c8-8f29-9deb5ed1e97c"/>
+				<reportElement x="329" y="9" width="240" height="15" uuid="f1c7cf3e-f64c-48c8-8f29-9deb5ed1e97c"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -231,7 +231,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<textFieldExpression><![CDATA["Cliente: "+$F{nombrecliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="17" width="240" height="15" uuid="433d6d42-701a-49b7-98e5-919e2d67cb27"/>
+				<reportElement x="329" y="24" width="240" height="15" uuid="433d6d42-701a-49b7-98e5-919e2d67cb27"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -244,7 +244,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<textFieldExpression><![CDATA["Lote: "+$F{lote}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="32" width="240" height="15" uuid="52e33323-52f5-437a-8871-37cc2e43a413"/>
+				<reportElement x="329" y="39" width="240" height="15" uuid="52e33323-52f5-437a-8871-37cc2e43a413"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -257,7 +257,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<textFieldExpression><![CDATA["Orden de Produccion: "+$F{op}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="47" width="240" height="15" uuid="2eadf668-d166-4186-b5a2-5f20dc3cbce1"/>
+				<reportElement x="329" y="54" width="240" height="15" uuid="2eadf668-d166-4186-b5a2-5f20dc3cbce1"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -270,7 +270,7 @@ WHERE identrada=$P{IDENTRADA}]]>
 				<textFieldExpression><![CDATA["Contrato: "+$F{contrato}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="329" y="62" width="240" height="15" uuid="f59a7900-c3a0-4d39-9222-caf596f97c84"/>
+				<reportElement x="329" y="69" width="240" height="15" uuid="f59a7900-c3a0-4d39-9222-caf596f97c84"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
