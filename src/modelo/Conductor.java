@@ -67,7 +67,7 @@ public class Conductor {
                 comboConductor.addItem(new Conductor(rs.getInt("idconductor"), rs.getString("cedulaconductor"), rs.getString("nombreconductor")));
             }            
         } catch (SQLException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);            
+            Logger.getLogger(Conductor.class.getName()).log(Level.SEVERE, null, ex);            
         }finally{
             conexion.CERRAR();
         }
