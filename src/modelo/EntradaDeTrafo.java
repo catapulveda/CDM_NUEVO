@@ -4,7 +4,8 @@ public class EntradaDeTrafo{
             
     public static String[] getColumnNames(){
         return new String[]{
-            "N°",
+            "ID",
+            "ITEM°",
             "REMISION",
             "N° EMPRESA",
             "N° SEIRE",
@@ -30,6 +31,7 @@ public class EntradaDeTrafo{
     
     public static Boolean[] getColumnEditables(){
         return new Boolean[]{
+            false,
             true,//"N°",0
             true,//"REMISION",1
             true,//"N° EMPRESA",2
@@ -56,7 +58,8 @@ public class EntradaDeTrafo{
     
     public static Class[] getColumnClass(){
         return new Class[]{
-            Integer.class,//"N°",
+            Integer.class,//ID
+            Integer.class,//"ITEM°",
             String.class,//"REMISION",
             String.class,//"N° EMPRESA",
             String.class,//"N° SEIRE",

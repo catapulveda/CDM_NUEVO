@@ -80,7 +80,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     
     public EntradaDeTrafos(){
         initComponents();                
-
+        
 //        String sql = "SELECT kva, po, pc, io, uz FROM trifasiconuevoserie35";
 //        ResultSet rs = model.Conexion2.CONSULTAR(sql);
 //        try {
@@ -149,95 +149,99 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         tablaTrafos.setRowSorter(rowSorter);
         rowSorter.setRowFilter(RowFilter.regexFilter(cjBuscarSerie.getText().toUpperCase(), 3));
         
+        tablaTrafos.getColumnModel().getColumn(0).setCellRenderer(new JButtonIntoJTable.BotonEnColumna());
+        
         //COLUMNA SERVICIOS
-        tablaTrafos.getColumnModel().getColumn(19).setCellEditor(new DefaultCellEditor(new JComboBox(SERVICIOS)));
-        tablaTrafos.getColumnModel().getColumn(19).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(SERVICIOS));
+        tablaTrafos.getColumnModel().getColumn(20).setCellEditor(new DefaultCellEditor(new JComboBox(SERVICIOS)));
+        tablaTrafos.getColumnModel().getColumn(20).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(SERVICIOS));
         
         //COLUMNA TIPO DE TRANSFORMADOR
-        tablaTrafos.getColumnModel().getColumn(20).setCellEditor(new DefaultCellEditor(new JComboBox(TIPOS)));
-        tablaTrafos.getColumnModel().getColumn(20).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(TIPOS));                
+        tablaTrafos.getColumnModel().getColumn(21).setCellEditor(new DefaultCellEditor(new JComboBox(TIPOS)));
+        tablaTrafos.getColumnModel().getColumn(21).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(TIPOS));                
         
         //COLUMNA MARCAS
-        tablaTrafos.getColumnModel().getColumn(4).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getJTextFieldMarcas()));
+        tablaTrafos.getColumnModel().getColumn(5).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getJTextFieldMarcas()));
 //        entradaDeTrafos.tablaTrafos.getColumnModel().getColumn(4).setCellRenderer(new JTextFieldIntoJTable.JTextField_TableCellRenderer());
         
         //COLUMNA HERRAJE
-        tablaTrafos.getColumnModel().getColumn(14).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getTextFieldHerrajes()));            
+        tablaTrafos.getColumnModel().getColumn(15).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getTextFieldHerrajes()));            
         
         //COLUMNA TENSIONES       
         JTextComponent txt = new JTextField();
         AutoCompleteDecorator.decorate(txt, tensiones, true);
-        tablaTrafos.getColumnModel().getColumn(7).setCellEditor(new DefaultCellEditor((JTextField) txt));                       
+        tablaTrafos.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor((JTextField) txt));                       
         
         modeloTabla.addTableModelListener((TableModelEvent e) ->{
-            if(e.getType() == TableModelEvent.UPDATE){               
-//                if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 3))){
+            if(e.getType() == TableModelEvent.UPDATE){
+//                if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 3))){                    
                     switch(e.getColumn()){
-                        case 2:
-                            if(actualizaTrafo("numeroempresa", e.getFirstRow(), e.getColumn(), false)){}
-                            break;
                         case 3:
-                            if(actualizaTrafo("numeroserie", e.getFirstRow(), e.getColumn(), false)){}
+                            if(actualizaTrafo("numeroempresa", e.getFirstRow(), e.getColumn())){}
                             break;
-                        case 4: 
-                            if(actualizaTrafo("marca", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 5: 
-                            if(actualizaTrafo("kvaentrada", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 6: 
-                            if(actualizaTrafo("fase", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 7: 
-                            String GUARDAR = "";
-                            String t[] = modeloTabla.getValueAt(e.getFirstRow(), 7).toString().split("/");
-                            if(t.length==3){
-                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='"+t[0]+"' , tse='"+t[1]+"' , tte='"+t[2]+"' , tps='"+t[0]+"' , tss='"+t[1]+"' , tts='"+t[2]+"' WHERE item='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' AND numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), 3)+"' ")){}
-                            }else{
-                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='0' , tse='0' , tte='0' , tps='0' , tss='0' , tts='0' WHERE item='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' AND numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), 3)+"' ")){}
-                            }                                                        
-                            break;
-                        case 8:
-                            if(actualizaTrafo("aat", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 9:
-                            if(actualizaTrafo("abt", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 10:
-                            if(actualizaTrafo("hat", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 11:
-                            if(actualizaTrafo("hbt", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 12:
-                            if(actualizaTrafo("ci", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 13:
-                            if(actualizaTrafo("ce", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 14:
-                            if(actualizaTrafo("herraje", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 15:
-                            if(actualizaTrafo("ano", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 16:
-                            if(actualizaTrafo("peso", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 17:
-                            if(actualizaTrafo("aceite", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 18:
-                            if(actualizaTrafo("observacionentrada", e.getFirstRow(), e.getColumn(), true)){}
-                            break;
-                        case 19:
-                            if(actualizaTrafo("servicioentrada", e.getFirstRow(), e.getColumn(), true)){
-                                if(actualizaTrafo("serviciosalida", e.getFirstRow(), e.getColumn(), true)){}
+                        case 4:                            
+                            if(actualizaTrafo("numeroserie", e.getFirstRow(), e.getColumn())){
+                                listaSeries.add(modeloTabla.getValueAt(e.getFirstRow(), 4).toString());
                             }
                             break;
+                        case 5: 
+                            if(actualizaTrafo("marca", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 6: 
+                            if(actualizaTrafo("kvaentrada", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 7: 
+                            if(actualizaTrafo("fase", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 8: 
+                            String GUARDAR = "";
+                            String t[] = modeloTabla.getValueAt(e.getFirstRow(), 8).toString().split("/");
+                            if(t.length==3){
+                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='"+t[0]+"' , tse='"+t[1]+"' , tte='"+t[2]+"' , tps='"+t[0]+"' , tss='"+t[1]+"' , tts='"+t[2]+"' WHERE idtransformador='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' ")){}
+                            }else{
+                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='0' , tse='0' , tte='0' , tps='0' , tss='0' , tts='0' WHERE idtransformador='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' ")){}
+                            }                                                        
+                            break;
+                        case 9:
+                            if(actualizaTrafo("aat", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 10:
+                            if(actualizaTrafo("abt", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 11:
+                            if(actualizaTrafo("hat", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 12:
+                            if(actualizaTrafo("hbt", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 13:
+                            if(actualizaTrafo("ci", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 14:
+                            if(actualizaTrafo("ce", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 15:
+                            if(actualizaTrafo("herraje", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 16:
+                            if(actualizaTrafo("ano", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 17:
+                            if(actualizaTrafo("peso", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 18:
+                            if(actualizaTrafo("aceite", e.getFirstRow(), e.getColumn())){}
+                            break;
+                        case 19:
+                            if(actualizaTrafo("observacionentrada", e.getFirstRow(), e.getColumn())){}
+                            break;
                         case 20:
-                            if(actualizaTrafo("tipotrafoentrada", e.getFirstRow(), e.getColumn(), true)){
-                                if(actualizaTrafo("tipotrafosalida", e.getFirstRow(), e.getColumn(), true)){}
+                            if(actualizaTrafo("servicioentrada", e.getFirstRow(), e.getColumn())){
+                                if(actualizaTrafo("serviciosalida", e.getFirstRow(), e.getColumn())){}
+                            }
+                            break;
+                        case 21:
+                            if(actualizaTrafo("tipotrafoentrada", e.getFirstRow(), e.getColumn())){
+                                if(actualizaTrafo("tipotrafosalida", e.getFirstRow(), e.getColumn())){}
                             }
                             break;
                         default:    break;
@@ -258,8 +262,11 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             conexion.conectar();
             ResultSet rs = conexion.CONSULTAR(sql);
             while(rs.next()){
-                listaSeries.add(rs.getString("numeroserie"));
+                if(!listaSeries.contains(rs.getString("numeroserie"))){
+                    listaSeries.add(rs.getString("numeroserie"));
+                }                
                 modeloTabla.addRow(new Object[]{
+                    rs.getInt("idtransformador"),
                     rs.getInt("item"),//"N°",
                     rs.getString("numero_remision"),//"N° REMISION",
                     rs.getString("numeroempresa"),//"N° EMPRESA",
@@ -292,8 +299,10 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         }
     }
     
-    public boolean actualizaTrafo(String columna, int fila, int col, boolean serie){
-        if(new ConexionBD().GUARDAR(" UPDATE transformador SET "+columna+"='"+modeloTabla.getValueAt(fila, col)+"' WHERE item='"+modeloTabla.getValueAt(fila, 0)+"' AND identrada='"+IDENTRADA+"' "+((serie)?"AND numeroserie='"+modeloTabla.getValueAt(fila, 3)+"' ":"")+" ")){
+    public boolean actualizaTrafo(String columna, int fila, int col){
+        if(new ConexionBD().GUARDAR(" UPDATE transformador SET "+columna+"='"+modeloTabla.getValueAt(fila, col)+"' "
+                + " WHERE idtransformador='"+modeloTabla.getValueAt(fila, 0)+"' AND "
+                + " identrada='"+IDENTRADA+"' ")){
             return true;
         }
         return false;
@@ -402,6 +411,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnImprimrFormatos = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
+        btnImprimrFormatos1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuEditar = new javax.swing.JMenu();
@@ -742,6 +752,20 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         jToolBar1.add(btnImprimrFormatos);
         jToolBar1.add(jSeparator4);
 
+        btnImprimrFormatos1.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        btnImprimrFormatos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/imprimir.png"))); // NOI18N
+        btnImprimrFormatos1.setText("Imprimir");
+        btnImprimrFormatos1.setToolTipText("Generar entrada de almacen");
+        btnImprimrFormatos1.setFocusable(false);
+        btnImprimrFormatos1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnImprimrFormatos1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnImprimrFormatos1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimrFormatos1ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnImprimrFormatos1);
+
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
 
@@ -816,6 +840,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
 
     private void btnAgregarFilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFilaActionPerformed
         modeloTabla.addRow(new Object[]{
+                "",
                 0,//"N°",
                 "",//"REMISION",
                 "",//"N° EMPRESA",
@@ -838,7 +863,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 "REPARACION",//"SERVICIO",
                 "CONVENCIONAL",//"TIPO", 
             });
-            tablaTrafos.setValueAt(tablaTrafos.getRowCount(), tablaTrafos.getRowCount() - 1, 0);
+            tablaTrafos.setValueAt("", tablaTrafos.getRowCount() - 1, 0);
             ajustarColumna.adjustColumns();
     }//GEN-LAST:event_btnAgregarFilaActionPerformed
 
@@ -931,18 +956,18 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                             JOptionPane.showMessageDialog(this, "EL ITEM "+modeloTabla.getValueAt(i, 3)+" NO TIENE NUMERO DE SERIE, POR LO TANTO NO SE GUARDARA EN LA BASE DE DATOS.\nSI NO TIENE NUMERO DE SERIE ASIGENELO EL VALOR '0' Y HAGA CLICK NUEVAMENTE EN EL BOTON GUARDAR.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));                                
                         }else{
                             if(!listaSeries.contains(modeloTabla.getValueAt(i, 3))){
-
+                                System.out.println(modeloTabla.getValueAt(i, 3)+" NO ESTA EN ");
                                 listaSeries.add(modeloTabla.getValueAt(i, 3).toString());
                                 cantidadGuardar++;
-                                GUARDAR += "( '"+modeloTabla.getValueAt(i, 0)+"' , ";//ITEM
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 2)+"' , ";//EMPRESA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 3)+"' , ";//SERIE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 4)+"' , ";//MARCA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 5)+"' , ";//KVA ENTRADA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 5)+"' , ";//KVA SALIDA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//FASE
+                                GUARDAR += "( '"+modeloTabla.getValueAt(i, 1)+"' , ";//ITEM
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 3)+"' , ";//EMPRESA
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 4)+"' , ";//SERIE
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 5)+"' , ";//MARCA
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//KVA ENTRADA
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//KVA SALIDA
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 7)+"' , ";//FASE
 
-                                String tension[] = modeloTabla.getValueAt(i, 7).toString().split("/");
+                                String tension[] = modeloTabla.getValueAt(i, 8).toString().split("/");
                                 if(tension.length==3){
                                     GUARDAR += " '"+tension[0]+"' , ";//TENSION PRIMARIA ENTRADA
                                     GUARDAR += " '"+tension[1]+"' , ";//TENSION SECUNDARIA ENTRADA
@@ -961,21 +986,21 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                                     GUARDAR += " '0' , ";//TENSION TERCIARIA SALIDA
                                 }
 
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 8)+"' , ";//AAT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 9)+"' , ";//ABT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 10)+"' , ";//HAT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 11)+"' , ";//HBT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 12)+"' , ";//CI
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 13)+"' , ";//CE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 14)+"' , ";//HERRAJE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 15)+"' , ";//ANO
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 16)+"' , ";//PESO
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 17)+"' , ";//ACEITE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 18)+"' , ";//OBSERV. ENTRA.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 19)+"' , ";//SERV. ENTRA.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 19)+"' , ";//SERV. SALI.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//TIPO. TRAFO. ENTRA.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//TIPO. TRAFO. SALI.
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 9)+"' , ";//AAT
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 10)+"' , ";//ABT
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 11)+"' , ";//HAT
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 12)+"' , ";//HBT
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 13)+"' , ";//CI
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 14)+"' , ";//CE
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 15)+"' , ";//HERRAJE
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 16)+"' , ";//ANO
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 17)+"' , ";//PESO
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 18)+"' , ";//ACEITE
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 19)+"' , ";//OBSERV. ENTRA.
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//SERV. ENTRA.
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//SERV. SALI.
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 21)+"' , ";//TIPO. TRAFO. ENTRA.
+                                GUARDAR += " '"+modeloTabla.getValueAt(i, 21)+"' , ";//TIPO. TRAFO. SALI.
                                 GUARDAR += " 'EN PLANTA' , ";//ESTADO
                                 GUARDAR += " '"+IDENTRADA+"' ),\n";//ID ENTRADA
 //                                GUARDAR += " '0' , ";//ID DESPACHO
@@ -1039,8 +1064,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     private void subMenuItemEliminarTrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuItemEliminarTrafoActionPerformed
         int filas[] = tablaTrafos.getSelectedRows();
         for(int i=filas.length-1; i>=0; i--){
-            if(new ConexionBD().GUARDAR("DELETE FROM transformador WHERE numeroserie='"+tablaTrafos.getValueAt(filas[i], 3)+"' AND identrada='"+IDENTRADA+"' ")){
-                listaSeries.remove(tablaTrafos.getValueAt(filas[i], 3));
+            if(new ConexionBD().GUARDAR("DELETE FROM transformador WHERE idtransformador='"+tablaTrafos.getValueAt(filas[i], 0)+"' AND identrada='"+IDENTRADA+"' ")){
+                listaSeries.remove(tablaTrafos.getValueAt(filas[i], 4).toString());
                 modeloTabla.removeRow(filas[i]);
             }
         }
@@ -1233,9 +1258,13 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_subMenuImprimirTodosLosFormatosActionPerformed
 
+    private void btnImprimrFormatos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimrFormatos1ActionPerformed
+        listaSeries.forEach((a)->System.out.println(a));
+    }//GEN-LAST:event_btnImprimrFormatos1ActionPerformed
+
     private void unirPaginas(JasperPrint source, JasperPrint dst){
         List<JRPrintPage> pages = source.getPages();
-        pages.stream().forEach((page) -> {
+        pages.stream().forEach((page) ->{
             dst.addPage(page);
         });        
     }
@@ -1282,6 +1311,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     public javax.swing.JButton btnBorrarFila;
     public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnImprimrFormatos;
+    public javax.swing.JButton btnImprimrFormatos1;
     public javax.swing.JCheckBox checkOrdenar;
     public CompuChiqui.JTextFieldPopup cjBuscarSerie;
     public CompuChiqui.JTextFieldPopup cjCentroDeCostos;
