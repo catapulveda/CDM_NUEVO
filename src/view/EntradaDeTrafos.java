@@ -78,6 +78,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     
     modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
     
+    private int COL_PLACA = 4;
+    
     public EntradaDeTrafos(){
         initComponents();                
         
@@ -173,7 +175,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         
         modeloTabla.addTableModelListener((TableModelEvent e) ->{
             if(e.getType() == TableModelEvent.UPDATE){
-//                if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 3))){                    
+                if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 4))){
                     switch(e.getColumn()){
                         case 3:
                             if(actualizaTrafo("numeroempresa", e.getFirstRow(), e.getColumn())){}
@@ -246,8 +248,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                             break;
                         default:    break;
                     }
-//                }                
-                
+                }
             }
         });            
             
@@ -863,7 +864,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 "REPARACION",//"SERVICIO",
                 "CONVENCIONAL",//"TIPO", 
             });
-            tablaTrafos.setValueAt("", tablaTrafos.getRowCount() - 1, 0);
+            modeloTabla.setValueAt(tablaTrafos.getRowCount(), tablaTrafos.getRowCount() - 1, 1);
             ajustarColumna.adjustColumns();
     }//GEN-LAST:event_btnAgregarFilaActionPerformed
 
@@ -951,61 +952,61 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
 //                        barraProgresoEntrada.setMaximum(modelo.getRowCount());
                     for (int i = 0; i < modeloTabla.getRowCount(); i++){
                         tablaTrafos.setRowSelectionInterval(i, i);
-                        tablaTrafos.setColumnSelectionInterval(3, 3);
-                        if(modeloTabla.getValueAt(i, 3).equals("")){
-                            JOptionPane.showMessageDialog(this, "EL ITEM "+modeloTabla.getValueAt(i, 3)+" NO TIENE NUMERO DE SERIE, POR LO TANTO NO SE GUARDARA EN LA BASE DE DATOS.\nSI NO TIENE NUMERO DE SERIE ASIGENELO EL VALOR '0' Y HAGA CLICK NUEVAMENTE EN EL BOTON GUARDAR.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));                                
-                        }else{
-                            if(!listaSeries.contains(modeloTabla.getValueAt(i, 3))){
-                                System.out.println(modeloTabla.getValueAt(i, 3)+" NO ESTA EN ");
-                                listaSeries.add(modeloTabla.getValueAt(i, 3).toString());
-                                cantidadGuardar++;
-                                GUARDAR += "( '"+modeloTabla.getValueAt(i, 1)+"' , ";//ITEM
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 3)+"' , ";//EMPRESA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 4)+"' , ";//SERIE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 5)+"' , ";//MARCA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//KVA ENTRADA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//KVA SALIDA
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 7)+"' , ";//FASE
+                        tablaTrafos.setColumnSelectionInterval(COL_PLACA, COL_PLACA);
+                        if(modeloTabla.getValueAt(i, COL_PLACA).equals("")){
+                            modeloTabla.setValueAt("SIN PLACA "+(i+1), i, NORMAL);
+                            //JOptionPane.showMessageDialog(this, "EL ITEM "+modeloTabla.getValueAt(i, 3)+" NO TIENE NUMERO DE SERIE, POR LO TANTO NO SE GUARDARA EN LA BASE DE DATOS.\nSI NO TIENE NUMERO DE SERIE ASIGENELO EL VALOR '0' Y HAGA CLICK NUEVAMENTE EN EL BOTON GUARDAR.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
+                        }
+                        if(!listaSeries.contains(modeloTabla.getValueAt(i, COL_PLACA))){
+                            //System.out.println(modeloTabla.getValueAt(i, COL_PLACA)+" NO ESTA EN ");
+                            listaSeries.add(modeloTabla.getValueAt(i, COL_PLACA).toString());
+                            cantidadGuardar++;
+                            GUARDAR += "( '"+modeloTabla.getValueAt(i, 1)+"' , ";//ITEM
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 3)+"' , ";//EMPRESA
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 4)+"' , ";//SERIE
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 5)+"' , ";//MARCA
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//KVA ENTRADA
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 6)+"' , ";//KVA SALIDA
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 7)+"' , ";//FASE
 
-                                String tension[] = modeloTabla.getValueAt(i, 8).toString().split("/");
-                                if(tension.length==3){
-                                    GUARDAR += " '"+tension[0]+"' , ";//TENSION PRIMARIA ENTRADA
-                                    GUARDAR += " '"+tension[1]+"' , ";//TENSION SECUNDARIA ENTRADA
-                                    GUARDAR += " '"+tension[2]+"' , ";//TENSION TERCIARIA ENTRADA
-                                    //**********************
-                                    GUARDAR += " '"+tension[0]+"' , ";//TENSION PRIMARIA SALIDA
-                                    GUARDAR += " '"+tension[1]+"' , ";//TENSION SECUNDARIA SALIDA
-                                    GUARDAR += " '"+tension[2]+"' , ";//TENSION TERCIARIA SALIDA
-                                }else{
-                                    GUARDAR += " '0' , ";//TENSION PRIMARIA ENTRADA
-                                    GUARDAR += " '0' , ";//TENSION SECUNDARIA ENTRADA
-                                    GUARDAR += " '0' , ";//TENSION TERCIARIA ENTRADA
-                                    //**********************
-                                    GUARDAR += " '0' , ";//TENSION PRIMARIA SALIDA
-                                    GUARDAR += " '0' , ";//TENSION SECUNDARIA SALIDA
-                                    GUARDAR += " '0' , ";//TENSION TERCIARIA SALIDA
-                                }
+                            String tension[] = modeloTabla.getValueAt(i, 8).toString().split("/");
+                            if(tension.length==3){
+                                GUARDAR += " '"+tension[0]+"' , ";//TENSION PRIMARIA ENTRADA
+                                GUARDAR += " '"+tension[1]+"' , ";//TENSION SECUNDARIA ENTRADA
+                                GUARDAR += " '"+tension[2]+"' , ";//TENSION TERCIARIA ENTRADA
+                                //**********************
+                                GUARDAR += " '"+tension[0]+"' , ";//TENSION PRIMARIA SALIDA
+                                GUARDAR += " '"+tension[1]+"' , ";//TENSION SECUNDARIA SALIDA
+                                GUARDAR += " '"+tension[2]+"' , ";//TENSION TERCIARIA SALIDA
+                            }else{
+                                GUARDAR += " '0' , ";//TENSION PRIMARIA ENTRADA
+                                GUARDAR += " '0' , ";//TENSION SECUNDARIA ENTRADA
+                                GUARDAR += " '0' , ";//TENSION TERCIARIA ENTRADA
+                                //**********************
+                                GUARDAR += " '0' , ";//TENSION PRIMARIA SALIDA
+                                GUARDAR += " '0' , ";//TENSION SECUNDARIA SALIDA
+                                GUARDAR += " '0' , ";//TENSION TERCIARIA SALIDA
+                            }
 
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 9)+"' , ";//AAT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 10)+"' , ";//ABT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 11)+"' , ";//HAT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 12)+"' , ";//HBT
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 13)+"' , ";//CI
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 14)+"' , ";//CE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 15)+"' , ";//HERRAJE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 16)+"' , ";//ANO
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 17)+"' , ";//PESO
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 18)+"' , ";//ACEITE
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 19)+"' , ";//OBSERV. ENTRA.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//SERV. ENTRA.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//SERV. SALI.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 21)+"' , ";//TIPO. TRAFO. ENTRA.
-                                GUARDAR += " '"+modeloTabla.getValueAt(i, 21)+"' , ";//TIPO. TRAFO. SALI.
-                                GUARDAR += " 'EN PLANTA' , ";//ESTADO
-                                GUARDAR += " '"+IDENTRADA+"' ),\n";//ID ENTRADA
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 9)+"' , ";//AAT
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 10)+"' , ";//ABT
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 11)+"' , ";//HAT
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 12)+"' , ";//HBT
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 13)+"' , ";//CI
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 14)+"' , ";//CE
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 15)+"' , ";//HERRAJE
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 16)+"' , ";//ANO
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 17)+"' , ";//PESO
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 18)+"' , ";//ACEITE
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 19)+"' , ";//OBSERV. ENTRA.
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//SERV. ENTRA.
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 20)+"' , ";//SERV. SALI.
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 21)+"' , ";//TIPO. TRAFO. ENTRA.
+                            GUARDAR += " '"+modeloTabla.getValueAt(i, 21)+"' , ";//TIPO. TRAFO. SALI.
+                            GUARDAR += " 'EN PLANTA' , ";//ESTADO
+                            GUARDAR += " '"+IDENTRADA+"' ),\n";//ID ENTRADA
 //                                GUARDAR += " '0' , ";//ID DESPACHO
 //                                GUARDAR += " '0' ) ,\n";//ID SALIDA
-                            }
                         }
                     }
                     GUARDAR = GUARDAR.substring(0, GUARDAR.length()-2);
@@ -1077,9 +1078,10 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
 
     private void tablaTrafosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTrafosMouseClicked
         if(SwingUtilities.isRightMouseButton(evt)){
-            tablaTrafos.setRowSelectionInterval(tablaTrafos.rowAtPoint( evt.getPoint() ), tablaTrafos.rowAtPoint( evt.getPoint() ));
-            tablaTrafos.setColumnSelectionInterval(0, tablaTrafos.getColumnCount()-1);           
-
+            if(tablaTrafos.getSelectedRowCount()==1){
+                tablaTrafos.setRowSelectionInterval(tablaTrafos.rowAtPoint( evt.getPoint() ), tablaTrafos.rowAtPoint( evt.getPoint() ));
+                tablaTrafos.setColumnSelectionInterval(0, tablaTrafos.getColumnCount()-1);
+            }            
             subMenuEntradaDeTrafos.show(tablaTrafos, evt.getPoint().x, evt.getPoint().y); 
         }
     }//GEN-LAST:event_tablaTrafosMouseClicked
