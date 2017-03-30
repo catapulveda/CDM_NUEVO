@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PROTOCOLO" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="eb75b2e1-959a-4fb9-b1e1-471136a585b3">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="136"/>
+	<property name="ireport.y" value="896"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF">
 		<box>
@@ -1694,13 +1694,13 @@ WHERE idprotocolo=$P{IDPROTOCOLO}]]>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</rectangle>
-			<staticText>
-				<reportElement x="431" y="758" width="127" height="12" isPrintWhenDetailOverflows="true" uuid="569878bb-cde3-475d-9c99-988e9c4ff978"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+			<textField>
+				<reportElement x="0" y="758" width="575" height="12" isPrintWhenDetailOverflows="true" uuid="833e9137-fdfc-40ef-b5a9-961b1ff28966"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="8" isBold="true" isUnderline="false"/>
 				</textElement>
-				<text><![CDATA[RMPA-02-21-03 | V. 3 | 05/12/2015]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["Fecha y hora de impresion: "+new SimpleDateFormat("EEE, d MMM yyyy hh:mm a").format(new java.util.Date())+"    RMPA-02-21-03 | V. 3 | 05/12/2015"]]></textFieldExpression>
+			</textField>
 			<staticText>
 				<reportElement x="465" y="748" width="93" height="12" isPrintWhenDetailOverflows="true" uuid="acb82737-0937-4506-b8b8-9e7cd8a21de2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -1709,19 +1709,12 @@ WHERE idprotocolo=$P{IDPROTOCOLO}]]>
 				<text><![CDATA[Pagina 1 de 1]]></text>
 			</staticText>
 			<textField pattern="dd-MMM-yy" isBlankWhenNull="true">
-				<reportElement x="481" y="692" width="77" height="12" isPrintWhenDetailOverflows="true" uuid="a523e9c8-6d41-4be5-9f90-4c426a01fcb4"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="380" y="692" width="178" height="12" isPrintWhenDetailOverflows="true" uuid="a523e9c8-6d41-4be5-9f90-4c426a01fcb4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaderegistro}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Fecha de Registro: "+new SimpleDateFormat("EEE dd 'de' MMM yyyy ").format($F{fechaderegistro})]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="445" y="692" width="35" height="12" isPrintWhenDetailOverflows="true" uuid="4c0bc51c-3fce-48a2-9ae0-9eabfb52a74e"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true" isUnderline="false"/>
-				</textElement>
-				<text><![CDATA[FECHA:]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="220" y="737" width="72" height="10" isPrintWhenDetailOverflows="true" uuid="652a2e19-60f8-41b8-a23a-713542cb8702"/>
 				<textElement verticalAlignment="Middle">

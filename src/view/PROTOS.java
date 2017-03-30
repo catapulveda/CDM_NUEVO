@@ -414,7 +414,7 @@ public class PROTOS extends javax.swing.JFrame{
             "            i2ra85='"+cji2ra85.getText()+"', impedancia='"+cjimpedancia.getText()+"', impedancia85='"+cjimpedancia85.getText()+"', impedanciagarantizada='"+cjimpedanciagarantizado.getText()+"', reg='"+cjreg.getText()+"', \n" +
             "            ef='"+cjef.getText()+"', largotanque='"+cjlargo.getText()+"', anchotanque='"+cjancho.getText()+"', altotanque='"+cjalto.getText()+"', color='"+cjcolor.getText()+"', espesor='"+cjespesor.getText()+"', radiadores='"+cjelementos.getText()+"', \n" +
             "            largoradiador='"+cjlargoelemento.getText()+"', altoradiador='"+cjaltoelemento.getText()+"', observaciones='"+cjobservaciones.getText()+"', fechalaboratorio='"+cjfechasalida.getDate()+"', \n" +
-            "            fechaderegistro='"+new java.util.Date()+"', estadoservicio='"+ESTADO_TRAFO+"' , garantia='"+checkGarantia.isSelected()+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
+            "            estadoservicio='"+ESTADO_TRAFO+"' , garantia='"+checkGarantia.isSelected()+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
                 }
                 if(conex.GUARDAR(GUARDAR)){
                     modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");
