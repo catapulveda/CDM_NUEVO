@@ -1,5 +1,6 @@
 package modelo;
 
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -26,12 +27,15 @@ public class CustomTableModel extends DefaultTableModel {
         this.columnClass = columnClass;
         this.columnEditable = columnEditable;
         
-        
+        tabla.setFont(new Font("Ebrima", Font.PLAIN, 12));
+        tabla.setGridColor(new java.awt.Color(227, 227, 227));
+        tabla.setRowHeight(25);
         tabla.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tabla.setCellSelectionEnabled(true);
         tabla.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "selectNextColumnCell");
         tabla.setSurrendersFocusOnKeystroke(true);
-        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);        
+        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);       
+        tabla.setDragEnabled(true);
         tabla.setModel(this);
         
         tabla.setDefaultRenderer(Object.class, colorRow);

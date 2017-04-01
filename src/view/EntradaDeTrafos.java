@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -31,6 +32,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
 import modelo.Ciudad;
@@ -78,7 +80,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     
     modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
     
-    private int COL_PLACA = 4;
+    private int COL_PLACA = 0;
     
     public EntradaDeTrafos(){
         initComponents();                
@@ -173,84 +175,91 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         AutoCompleteDecorator.decorate(txt, tensiones, true);
         tablaTrafos.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor((JTextField) txt));                       
         
-        modeloTabla.addTableModelListener((TableModelEvent e) ->{
-            if(e.getType() == TableModelEvent.UPDATE){
-                if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 4))){
-                    switch(e.getColumn()){
-                        case 3:
-                            if(actualizaTrafo("numeroempresa", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 4:                            
-                            if(actualizaTrafo("numeroserie", e.getFirstRow(), e.getColumn())){
-                                listaSeries.add(modeloTabla.getValueAt(e.getFirstRow(), 4).toString());
+        modeloTabla.addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    if(e.getType() == TableModelEvent.UPDATE){
+                        System.out.println(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 0)));
+                         listaSeries.forEach((a)->System.out.println(a));
+                        if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 0).toString())){
+                            switch(e.getColumn()){
+                                case 1:
+                                    if(conexion.GUARDAR("UPDATE transformador SET item='"+modeloTabla.getValueAt(e.getFirstRow(), e.getColumn())+"' WHERE idtransformador="+modeloTabla.getValueAt(e.getFirstRow(), 0)+" AND identrada="+IDENTRADA+" ")){
+                                        
+                                    }
+                                    break;
+                                case 3:
+                                    if(actualizaTrafo("numeroempresa", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 4:
+                                    if(conexion.GUARDAR("UPDATE transformador SET numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), e.getColumn())+"' WHERE idtransformador="+modeloTabla.getValueAt(e.getFirstRow(), 0)+" AND identrada="+IDENTRADA+" ")){}
+                                    break;
+                                case 5:
+                                    if(actualizaTrafo("marca", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 6:
+                                    if(actualizaTrafo("kvaentrada", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 7:
+                                    if(actualizaTrafo("fase", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 8:
+                                    String GUARDAR = "";
+                                    String t[] = modeloTabla.getValueAt(e.getFirstRow(), 8).toString().split("/");
+                                    if(t.length==3){
+                                        if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='"+t[0]+"' , tse='"+t[1]+"' , tte='"+t[2]+"' , tps='"+t[0]+"' , tss='"+t[1]+"' , tts='"+t[2]+"' WHERE idtransformador='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' ")){}
+                                    }else{
+                                        if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='0' , tse='0' , tte='0' , tps='0' , tss='0' , tts='0' WHERE idtransformador='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' ")){}
+                                    }
+                                    break;
+                                case 9:
+                                    if(actualizaTrafo("aat", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 10:
+                                    if(actualizaTrafo("abt", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 11:
+                                    if(actualizaTrafo("hat", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 12:
+                                    if(actualizaTrafo("hbt", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 13:
+                                    if(actualizaTrafo("ci", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 14:
+                                    if(actualizaTrafo("ce", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 15:
+                                    if(actualizaTrafo("herraje", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 16:
+                                    if(actualizaTrafo("ano", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 17:
+                                    if(actualizaTrafo("peso", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 18:
+                                    if(actualizaTrafo("aceite", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 19:
+                                    if(actualizaTrafo("observacionentrada", e.getFirstRow(), e.getColumn())){}
+                                    break;
+                                case 20:
+                                    if(actualizaTrafo("servicioentrada", e.getFirstRow(), e.getColumn())){
+                                        if(actualizaTrafo("serviciosalida", e.getFirstRow(), e.getColumn())){}
+                                    }
+                                    break;
+                                case 21:
+                                    if(actualizaTrafo("tipotrafoentrada", e.getFirstRow(), e.getColumn())){
+                                        if(actualizaTrafo("tipotrafosalida", e.getFirstRow(), e.getColumn())){}
+                                    }
+                                    break;
+                                default:    break;
                             }
-                            break;
-                        case 5: 
-                            if(actualizaTrafo("marca", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 6: 
-                            if(actualizaTrafo("kvaentrada", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 7: 
-                            if(actualizaTrafo("fase", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 8: 
-                            String GUARDAR = "";
-                            String t[] = modeloTabla.getValueAt(e.getFirstRow(), 8).toString().split("/");
-                            if(t.length==3){
-                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='"+t[0]+"' , tse='"+t[1]+"' , tte='"+t[2]+"' , tps='"+t[0]+"' , tss='"+t[1]+"' , tts='"+t[2]+"' WHERE idtransformador='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' ")){}
-                            }else{
-                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tpe='0' , tse='0' , tte='0' , tps='0' , tss='0' , tts='0' WHERE idtransformador='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+IDENTRADA+"' ")){}
-                            }                                                        
-                            break;
-                        case 9:
-                            if(actualizaTrafo("aat", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 10:
-                            if(actualizaTrafo("abt", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 11:
-                            if(actualizaTrafo("hat", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 12:
-                            if(actualizaTrafo("hbt", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 13:
-                            if(actualizaTrafo("ci", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 14:
-                            if(actualizaTrafo("ce", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 15:
-                            if(actualizaTrafo("herraje", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 16:
-                            if(actualizaTrafo("ano", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 17:
-                            if(actualizaTrafo("peso", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 18:
-                            if(actualizaTrafo("aceite", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 19:
-                            if(actualizaTrafo("observacionentrada", e.getFirstRow(), e.getColumn())){}
-                            break;
-                        case 20:
-                            if(actualizaTrafo("servicioentrada", e.getFirstRow(), e.getColumn())){
-                                if(actualizaTrafo("serviciosalida", e.getFirstRow(), e.getColumn())){}
-                            }
-                            break;
-                        case 21:
-                            if(actualizaTrafo("tipotrafoentrada", e.getFirstRow(), e.getColumn())){
-                                if(actualizaTrafo("tipotrafosalida", e.getFirstRow(), e.getColumn())){}
-                            }
-                            break;
-                        default:    break;
-                    }
-                }
-            }
-        });            
+                        }
+                    }   }
+            });            
             
             String sql = " SELECT e.*, t.*, r.numero_remision FROM entrada e ";
             sql += " INNER JOIN transformador t ON t.identrada=e.identrada  ";
@@ -263,8 +272,9 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             conexion.conectar();
             ResultSet rs = conexion.CONSULTAR(sql);
             while(rs.next()){
-                if(!listaSeries.contains(rs.getString("numeroserie"))){
-                    listaSeries.add(rs.getString("numeroserie"));
+                if(!listaSeries.contains(rs.getString("idtransformador"))){
+                    System.out.println(rs.getString("idtransformador")+" AGREGADO");
+                    listaSeries.add(rs.getString("idtransformador"));
                 }                
                 modeloTabla.addRow(new Object[]{
                     rs.getInt("idtransformador"),
@@ -957,9 +967,9 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                             modeloTabla.setValueAt("SIN PLACA "+(i+1), i, NORMAL);
                             //JOptionPane.showMessageDialog(this, "EL ITEM "+modeloTabla.getValueAt(i, 3)+" NO TIENE NUMERO DE SERIE, POR LO TANTO NO SE GUARDARA EN LA BASE DE DATOS.\nSI NO TIENE NUMERO DE SERIE ASIGENELO EL VALOR '0' Y HAGA CLICK NUEVAMENTE EN EL BOTON GUARDAR.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
                         }
-                        if(!listaSeries.contains(modeloTabla.getValueAt(i, COL_PLACA))){
+                        if(modeloTabla.getValueAt(i, 0)==null){
                             //System.out.println(modeloTabla.getValueAt(i, COL_PLACA)+" NO ESTA EN ");
-                            listaSeries.add(modeloTabla.getValueAt(i, COL_PLACA).toString());
+//                            listaSeries.add(modeloTabla.getValueAt(i, COL_PLACA).toString());
                             cantidadGuardar++;
                             GUARDAR += "( '"+modeloTabla.getValueAt(i, 1)+"' , ";//ITEM
                             GUARDAR += " '"+modeloTabla.getValueAt(i, 3)+"' , ";//EMPRESA

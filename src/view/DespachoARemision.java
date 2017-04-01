@@ -350,6 +350,7 @@ public class DespachoARemision extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabla.setDragEnabled(true);
         tabla.setRowHeight(25);
         jScrollPane1.setViewportView(tabla);
 

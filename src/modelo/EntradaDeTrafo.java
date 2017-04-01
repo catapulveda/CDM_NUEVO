@@ -31,7 +31,7 @@ public class EntradaDeTrafo{
     
     public static Boolean[] getColumnEditables(){
         return new Boolean[]{
-            false,
+            true,
             true,//"N°",0
             true,//"REMISION",1
             true,//"N° EMPRESA",2
