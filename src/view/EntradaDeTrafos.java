@@ -72,7 +72,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     ArrayList<String> tensiones = new ArrayList<>();
     ArrayList<String> listaSeries = new ArrayList<>();
     
-    TableRowSorter rowSorter;    
+    TableRowSorter rowSorter; 
+    private int IDBUSQUEDA = 4;
     
     boolean YACARGO = false;
     
@@ -370,6 +371,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         subMenuEntradaDeTrafos = new javax.swing.JPopupMenu();
         subMenuItemEliminarTrafo = new javax.swing.JMenuItem();
         subMenuExportarExcel = new javax.swing.JMenuItem();
+        subMenuFiltrar = new javax.swing.JMenuItem();
         subMenuImprimirFormatos = new javax.swing.JPopupMenu();
         subMenuImprimirEntradaDeAlmacen = new javax.swing.JMenuItem();
         subMenuImprimirEntradaDeTrafos = new javax.swing.JMenuItem();
@@ -448,6 +450,15 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             }
         });
         subMenuEntradaDeTrafos.add(subMenuExportarExcel);
+
+        subMenuFiltrar.setFont(new java.awt.Font("Ebrima", 1, 12)); // NOI18N
+        subMenuFiltrar.setText("jMenuItem1");
+        subMenuFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuFiltrarActionPerformed(evt);
+            }
+        });
+        subMenuEntradaDeTrafos.add(subMenuFiltrar);
 
         subMenuImprimirEntradaDeAlmacen.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 12)); // NOI18N
         subMenuImprimirEntradaDeAlmacen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/reporte2.png"))); // NOI18N
@@ -1088,11 +1099,15 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
 
     private void tablaTrafosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTrafosMouseClicked
         if(SwingUtilities.isRightMouseButton(evt)){
+            int col = tablaTrafos.columnAtPoint(evt.getPoint());
+            int row = tablaTrafos.rowAtPoint(evt.getPoint());            
+            subMenuFiltrar.setText("Buscar por: "+tablaTrafos.getColumnName(col));
+            subMenuEntradaDeTrafos.show(tablaTrafos, evt.getX(), evt.getY());
+            
             if(tablaTrafos.getSelectedRowCount()==1){
-                tablaTrafos.setRowSelectionInterval(tablaTrafos.rowAtPoint( evt.getPoint() ), tablaTrafos.rowAtPoint( evt.getPoint() ));
+                tablaTrafos.setRowSelectionInterval(row, row);
                 tablaTrafos.setColumnSelectionInterval(0, tablaTrafos.getColumnCount()-1);
-            }            
-            subMenuEntradaDeTrafos.show(tablaTrafos, evt.getPoint().x, evt.getPoint().y); 
+            }
         }
     }//GEN-LAST:event_tablaTrafosMouseClicked
 
@@ -1274,6 +1289,11 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         listaSeries.forEach((a)->System.out.println(a));
     }//GEN-LAST:event_btnImprimrFormatos1ActionPerformed
 
+    private void subMenuFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuFiltrarActionPerformed
+        IDBUSQUEDA = tablaTrafos.getSelectedColumn();
+        cjBuscarSerie.grabFocus();
+    }//GEN-LAST:event_subMenuFiltrarActionPerformed
+
     private void unirPaginas(JasperPrint source, JasperPrint dst){
         List<JRPrintPage> pages = source.getPages();
         pages.stream().forEach((page) ->{
@@ -1371,6 +1391,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     private javax.swing.JPanel panelTabla;
     public javax.swing.JPopupMenu subMenuEntradaDeTrafos;
     public javax.swing.JMenuItem subMenuExportarExcel;
+    private javax.swing.JMenuItem subMenuFiltrar;
     public javax.swing.JMenuItem subMenuImprimirEntradaDeAlmacen;
     public javax.swing.JMenuItem subMenuImprimirEntradaDeTrafos;
     public javax.swing.JPopupMenu subMenuImprimirFormatos;
