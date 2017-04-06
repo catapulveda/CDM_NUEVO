@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -43,7 +42,6 @@ import modelo.CustomTableModel;
 import modelo.Metodos;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JRPrintElement;
 import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -51,7 +49,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -80,8 +77,9 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     ConexionBD conexion = new ConexionBD();
     
     modelo.Sesion sesion = modelo.Sesion.getConfigurador(null, -1);
+    ExcelAdapter copypaste;
     
-    private int COL_PLACA = 0;
+    private int COL_PLACA = 4;
     
     public EntradaDeTrafos(){
         initComponents();                
@@ -111,7 +109,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         
         //CARGAMOS EL MODELO DE LA TABLA ENTRADA DE TRANSFORMADORES
         cargarTablaDeTransformadores(checkOrdenar.isSelected());
-        ExcelAdapter excelAdapter = new CopyPasteJTable.ExcelAdapter(tablaTrafos);
+        //ExcelAdapter excelAdapter = new CopyPasteJTable.ExcelAdapter(tablaTrafos);
+        copypaste = new ExcelAdapter(tablaTrafos);
         
         tablaTrafos.getSelectionModel().addListSelectionListener((ListSelectionEvent e)->{
             if (e.getValueIsAdjusting()){
@@ -180,7 +179,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 @Override
                 public void tableChanged(TableModelEvent e) {
                     if(e.getType() == TableModelEvent.UPDATE){
-                        System.out.println(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 0)));
+                        System.out.println("NO ESTA ENL ARRAY "+listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 0)));
                          listaSeries.forEach((a)->System.out.println(a));
                         if(listaSeries.contains(modeloTabla.getValueAt(e.getFirstRow(), 0).toString())){
                             switch(e.getColumn()){
@@ -975,10 +974,12 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                         tablaTrafos.setRowSelectionInterval(i, i);
                         tablaTrafos.setColumnSelectionInterval(COL_PLACA, COL_PLACA);
                         if(modeloTabla.getValueAt(i, COL_PLACA).equals("")){
-                            modeloTabla.setValueAt("SIN PLACA "+(i+1), i, NORMAL);
+                            modeloTabla.setValueAt("SIN PLACA "+(i+1), i, COL_PLACA);
                             //JOptionPane.showMessageDialog(this, "EL ITEM "+modeloTabla.getValueAt(i, 3)+" NO TIENE NUMERO DE SERIE, POR LO TANTO NO SE GUARDARA EN LA BASE DE DATOS.\nSI NO TIENE NUMERO DE SERIE ASIGENELO EL VALOR '0' Y HAGA CLICK NUEVAMENTE EN EL BOTON GUARDAR.", "ITEM SIN NUMERO DE SERIE", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
                         }
-                        if(modeloTabla.getValueAt(i, 0)==null){
+                        System.out.println("ID ES *"+modeloTabla.getValueAt(i, 0)==null+"*");
+                        if(modeloTabla.getValueAt(i, 0).toString().isEmpty()){
+                            System.out.println(" EL ID ES NULO "+modeloTabla.getValueAt(i, 0));
                             //System.out.println(modeloTabla.getValueAt(i, COL_PLACA)+" NO ESTA EN ");
 //                            listaSeries.add(modeloTabla.getValueAt(i, COL_PLACA).toString());
                             cantidadGuardar++;
@@ -1032,6 +1033,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     }
                     GUARDAR = GUARDAR.substring(0, GUARDAR.length()-2);
                     if(cantidadGuardar>0 && new ConexionBD().GUARDAR(GUARDAR)){
+                        cargarTablaDeTransformadores(checkOrdenar.isSelected());
                         LOTE_ABIERTO = true;
                     }
                 }
@@ -1039,7 +1041,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 JOptionPane.showMessageDialog(this, "SOLO EL PERSONAL DE ALMACEN PUEDE REALIZAR CAMBIOS", "Debe completar todos los campos", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
             }
 
-        } catch (UnknownHostException | HeadlessException ex) {
+        }catch (UnknownHostException | HeadlessException ex){
             Metodos.ERROR(ex, "ERROR AL VERIFICAR EL NOMBRE DE EQUIPO(PC) QUE REALIZARA LOS CAMBIOS.");
             Logger.getLogger(EntradaDeTrafos.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){

@@ -388,13 +388,17 @@ public class PROTOS extends javax.swing.JFrame{
             "            '"+comboDerivacion.getSelectedItem()+"', '"+cji1.getText()+"', '"+cji2.getText()+"', '"+cjtemperatura.getText()+"', '"+conmutador.getSelectedItem()+"', \n" +
             "            '"+comboAceite.getSelectedItem()+"', '"+comboReferenciaAceite.getSelectedItem()+"', '"+cjRuptura.getText()+"', '"+cjmetodo.getText()+"', \n" +
             "            '"+cjtiemporalt.getText()+"', '"+comboTensionPrueba.getSelectedItem()+"', '"+cjATcontraBT.getText()+"', \n" +
-            "            '"+cjATcontraTierra.getText()+"', '"+cjBTcontraTierra.getText()+"', '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', "+getT(0,2)+", \n" +
-            "            "+getT(0,3)+", "+getT(0,4)+", "+getT(1,2)+", "+getT(1,3)+", "+getT(1,4)+", "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+", "+getT(3,2)+", \n" +
-            "            "+getT(3,3)+", "+getT(3,4)+", "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+", '"+cjuv.getDouble()+"', '"+cjvw.getDouble()+"', \n" +
-            "            '"+cjwu.getDouble()+"', '"+cjproresalta.getText()+"', '"+comboMaterialAlta.getSelectedItem()+"', '"+cjxy.getDouble()+"', '"+cjyz.getDouble()+"', '"+cjzx.getDouble()+"', \n" +
-            "            '"+cjproresbaja.getText()+"', '"+comboMaterialBaja.getSelectedItem()+"', '"+cjiu.getDouble()+"', '"+cjiv.getDouble()+"', '"+cjiw.getDouble()+"', '"+cjpromedioi.getText()+"', '"+cjiogarantizado.getText()+"', \n" +
-            "            '"+cjpomedido.getText()+"', '"+cjpogarantizado.getText()+"', '"+cjvcc.getText()+"', '"+cjpcumedido.getText()+"', '"+cjpcua85.getText()+"', '"+cjpcugarantizado.getText()+"', '"+cji2r.getText()+"', \n" +
-            "            '"+cji2ra85.getText()+"', '"+cjimpedancia.getText()+"', '"+cjimpedancia85.getText()+"', '"+cjimpedanciagarantizado.getText()+"', '"+cjreg.getText()+"', \n" +
+            "            '"+cjATcontraTierra.getText()+"', '"+cjBTcontraTierra.getText()+"', '"+comboGrupoConexion.getSelectedItem()+"', '"+comboPolaridad.getSelectedItem()+"', \n" +
+            "            "+getT(0,2)+", "+getT(0,3)+", "+getT(0,4)+",  \n" +
+            "            "+getT(1,2)+", "+getT(1,3)+", "+getT(1,4)+",  \n" +
+            "            "+getT(2,2)+", "+getT(2,3)+", "+getT(2,4)+",  \n" +
+            "            "+getT(3,2)+", "+getT(3,3)+", "+getT(3,4)+",  \n" +
+            "            "+getT(4,2)+", "+getT(4,3)+", "+getT(4,4)+",  \n" +
+            "            '"+cjuv.getDouble()+"', '"+cjvw.getDouble()+"','"+cjwu.getDouble()+"', '"+cjproresalta.getText()+"',  \n" +
+            "            '"+comboMaterialAlta.getSelectedItem()+"', '"+cjxy.getDouble()+"', '"+cjyz.getDouble()+"', '"+cjzx.getDouble()+"','"+cjproresbaja.getText()+"', '"+comboMaterialBaja.getSelectedItem()+"', "
+                     + " '"+cjiu.getDouble()+"', '"+cjiv.getDouble()+"', '"+cjiw.getDouble()+"', '"+cjpromedioi.getText()+"', '"+cjiogarantizado.getText()+"','"+cjpomedido.getText()+"', '"+cjpogarantizado.getText()+"', "
+                     + " '"+cjvcc.getText()+"', '"+cjpcumedido.getText()+"', '"+cjpcua85.getText()+"', '"+cjpcugarantizado.getText()+"', '"+cji2r.getText()+"','"+cji2ra85.getText()+"', '"+cjimpedancia.getText()+"', "
+                     + " '"+cjimpedancia85.getText()+"', '"+cjimpedanciagarantizado.getText()+"', '"+cjreg.getText()+"', \n" +
             "            '"+cjef.getText()+"', '"+cjlargo.getText()+"', '"+cjancho.getText()+"', '"+cjalto.getText()+"', '"+cjcolor.getText()+"', '"+cjespesor.getText()+"', '"+cjelementos.getText()+"', \n" +
             "            '"+cjlargoelemento.getText()+"', '"+cjaltoelemento.getText()+"', '"+cjobservaciones.getText()+"', '"+cjfechasalida.getDate()+"', \n" +
             "            '"+new java.util.Date()+"', '"+ESTADO_TRAFO+"' , '"+checkGarantia.isSelected()+"' , "+sesion.getIdUsuario()+")";

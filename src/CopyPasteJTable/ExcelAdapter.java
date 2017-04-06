@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.awt.datatransfer.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExcelAdapter extends JFrame implements ActionListener{
     private String rowstring,value;
@@ -38,56 +40,80 @@ public class ExcelAdapter extends JFrame implements ActionListener{
     }
     
     public void Copy(final boolean cut){
-        (new Thread(){
+        Thread t = new Thread(){
             public void run(){
-                
-                StringBuffer sbf =new StringBuffer();
-                int numcols = jTable1.getSelectedColumnCount();
-                int numrows = jTable1.getSelectedRowCount();
-                int[] rowsselected = jTable1.getSelectedRows();
-                int[] colsselected = jTable1.getSelectedColumns();
-                
-//                if (!((numrows-1==rowsselected[rowsselected.length-1]-rowsselected[0] && 
-//                        numrows==rowsselected.length) &&
-//                        (numcols-1==colsselected[colsselected.length-1]-colsselected[0] &&
-//                        numcols==colsselected.length))){
-//                    JOptionPane.showMessageDialog(null, "Copia de seleccion invalida","Invalid Copy Selection",JOptionPane.ERROR_MESSAGE);
-//                    return;
-//                }
-
-                int filas[] = jTable1.getSelectedRows();
-                int cols[] = jTable1.getSelectedColumns();
-                
-                if(filas.length > 0 && cols.length>0){
-                    for(int i=filas[0]; i<=filas[filas.length-1]; i++){
-                        for(int j=cols[0]; j<=cols[cols.length-1]; j++){
-                            sbf.append(jTable1.getValueAt(i,j));
-                            if(j!=cols[cols.length-1])
-                                sbf.append("\t");                            
-                            if(cut){jTable1.setValueAt("", i, j);
-                            repaint();validate();}
+                StringBuffer sbf=new StringBuffer();
+                try{
+                    if(jTable1.getSelectedRow() >= 0){
+                        int filas_seleccionadas[] = jTable1.getSelectedRows();
+                        int columnas_seleccionadas[] = jTable1.getSelectedColumns();
+                        StringBuffer contenido = new StringBuffer();
+                        for(int i=0; i<filas_seleccionadas.length; i++){
+                            for(int j=0; j<columnas_seleccionadas.length; j++){
+                                contenido.append(jTable1.getValueAt(filas_seleccionadas[i], columnas_seleccionadas[j])).append("\t");
+                                if(cut){jTable1.setValueAt("", filas_seleccionadas[i], columnas_seleccionadas[j]);repaint();validate();}
+                            }
+                            contenido.append("\n");                
                         }
-                        sbf.append("\n");
+                        stsel  = new StringSelection(contenido.toString());
+                        system = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        system.setContents(stsel,stsel);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "NO HAZ SELECCIONADA NADA PARA COPIAR");
                     }
-                }
-
-//                for (int i=0;i<numrows;i++){
-//                    for (int j=0;j<numcols;j++){
-//                        sbf.append(jTable1.getValueAt(rowsselected[i],colsselected[j]));
-//                        if(cut){jTable1.setValueAt("", rowsselected[i], colsselected[j]);repaint();validate();}
-//                        if(j==1)
-//                            sbf.append("");
-//                        else if(j<numcols-1)
-//                            sbf.append("\t");
-//                    }
-//                    sbf.append("\n");
-//                }
-
-                stsel  = new StringSelection(sbf.toString());
-                system = Toolkit.getDefaultToolkit().getSystemClipboard();
-                system.setContents(stsel,stsel);
+                }catch(Exception e){JOptionPane.showMessageDialog(null, "OCURRIO UN ERROR AL COPIAR LOS ARCHIVOS\n"+e);Logger.getLogger(ExcelAdapter.class.getName()).log(Level.SEVERE, null, e);}
             }
-        }).start();
+        };t.start();
+//        (new Thread(){
+//            public void run(){
+//                
+//                StringBuffer sbf =new StringBuffer();
+//                int numcols = jTable1.getSelectedColumnCount();
+//                int numrows = jTable1.getSelectedRowCount();
+//                int[] rowsselected = jTable1.getSelectedRows();
+//                int[] colsselected = jTable1.getSelectedColumns();
+//                
+////                if (!((numrows-1==rowsselected[rowsselected.length-1]-rowsselected[0] && 
+////                        numrows==rowsselected.length) &&
+////                        (numcols-1==colsselected[colsselected.length-1]-colsselected[0] &&
+////                        numcols==colsselected.length))){
+////                    JOptionPane.showMessageDialog(null, "Copia de seleccion invalida","Invalid Copy Selection",JOptionPane.ERROR_MESSAGE);
+////                    return;
+////                }
+//
+//                int filas[] = jTable1.getSelectedRows();
+//                int cols[] = jTable1.getSelectedColumns();
+//                
+//                if(filas.length > 0 && cols.length>0){
+//                    for(int i=filas[0]; i<=filas[filas.length-1]; i++){
+//                        for(int j=cols[0]; j<=cols[cols.length-1]; j++){
+//                            sbf.append(jTable1.getValueAt(i,j));
+//                            if(j!=cols[cols.length-1])
+//                                sbf.append("\t");                            
+//                            if(cut){jTable1.setValueAt("", i, j);
+//                            repaint();validate();}
+//                        }
+//                        sbf.append("\n");
+//                    }
+//                }
+//
+////                for (int i=0;i<numrows;i++){
+////                    for (int j=0;j<numcols;j++){
+////                        sbf.append(jTable1.getValueAt(rowsselected[i],colsselected[j]));
+////                        if(cut){jTable1.setValueAt("", rowsselected[i], colsselected[j]);repaint();validate();}
+////                        if(j==1)
+////                            sbf.append("");
+////                        else if(j<numcols-1)
+////                            sbf.append("\t");
+////                    }
+////                    sbf.append("\n");
+////                }
+//
+//                stsel  = new StringSelection(sbf.toString());
+//                system = Toolkit.getDefaultToolkit().getSystemClipboard();
+//                system.setContents(stsel,stsel);
+//            }
+//        }).start();
     }
     
     @Override
