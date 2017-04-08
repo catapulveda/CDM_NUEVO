@@ -1,13 +1,16 @@
 package view;
 
+import paneles.PanelControl;
+import paneles.PanelRemisiones;
+import paneles.PanelDespachos;
 import javax.swing.ImageIcon;
 
 public class MENU_NUEVO extends javax.swing.JFrame{
     
-    view.PanelLotes lotes = new view.PanelLotes();
-    view.PanelDespachos despachos = new PanelDespachos();
-    view.PanelRemisiones remisiones = new PanelRemisiones();
-    view.PanelControl control = new PanelControl();        
+    paneles.PanelLotes lotes = new paneles.PanelLotes();
+    paneles.PanelDespachos despachos = new PanelDespachos();
+    paneles.PanelRemisiones remisiones = new PanelRemisiones();
+    paneles.PanelControl control = new PanelControl();        
 
     public MENU_NUEVO(){
         initComponents();

@@ -118,7 +118,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
             }
         });
         
-        //CARGAR Y LLENAR EL COMBOBOX DE LOS CLIENTES
+        //CARGAR Y LLENAR EL COMBOBOX DE LOS CLIENTES        
         modelo.Cliente.cargarComboNombreClientes(comboCliente);
 //        model.Ciudad.cargarComboNombreCiudades(this.entradaDeTrafos.comboCiudad);
 
@@ -1164,7 +1164,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     }//GEN-LAST:event_subMenuImprimirEntradaDeTrafosActionPerformed
 
     private void subMenuExportarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuExportarExcelActionPerformed
-        modelo.Metodos.generarExcel(tablaTrafos, barra, btnImprimrFormatos);
+        modelo.Metodos.JTableToExcel(tablaTrafos, btnImprimrFormatos);
     }//GEN-LAST:event_subMenuExportarExcelActionPerformed
 
     private void subMenuImprimirMuestrasDeAceiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuImprimirMuestrasDeAceiteActionPerformed

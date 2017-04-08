@@ -390,7 +390,7 @@ public class DespachoARemision extends javax.swing.JFrame {
     }//GEN-LAST:event_cjBuscarKeyReleased
 
     private void btnRefrescar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescar3ActionPerformed
-        modelo.Metodos.generarExcel(tabla, jProgressBar1, btnRefrescar3);
+        modelo.Metodos.JTableToExcel(tabla, btnRefrescar3);
     }//GEN-LAST:event_btnRefrescar3ActionPerformed
 
     private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverActionPerformed

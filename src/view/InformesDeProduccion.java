@@ -536,7 +536,7 @@ public class InformesDeProduccion extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
-        modelo.Metodos.generarExcel(tablaDatos, barraProgreso, btnExcel);
+        modelo.Metodos.JTableToExcel(tablaDatos, btnExcel);
     }//GEN-LAST:event_btnExcelActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed

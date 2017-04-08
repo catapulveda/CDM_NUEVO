@@ -4,12 +4,19 @@ import Dialogos.DialogoTrafosRepetidos;
 import JTableAutoResizeColumn.TableColumnAdjuster;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.HeadlessException;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +32,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.ProgressMonitor;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
@@ -32,6 +40,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import modelo.Cliente;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -40,6 +49,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class PROTOS extends javax.swing.JFrame{
 
@@ -69,7 +83,11 @@ public class PROTOS extends javax.swing.JFrame{
         habilitarCampos((comboFase.getSelectedIndex()==0));
         
         ajustarColumna = new TableColumnAdjuster(tablaProtocolos);
-        cargarProtocolos();        
+        cargarProtocolos(); 
+        
+        comboCliente.addItem(new Cliente(-1, "Seleccione...", null));
+        modelo.Cliente.cargarComboNombreClientes(comboCliente);
+        comboCliente.addPopupMenuListener(new JComboBoxFullText.BoundsPopupMenuListener(true, false));
     }
     
     void HallarTensionSerie(){
@@ -598,7 +616,7 @@ public class PROTOS extends javax.swing.JFrame{
     
     void buscarProtocolo(){
         RowFilter<TableModel, Object> serie = RowFilter.regexFilter(cjbuscarPorSerie.getText().toUpperCase(), 3);
-        RowFilter<TableModel, Object> cliente = RowFilter.regexFilter(cjBuscarPorCliente.getText().toUpperCase(), 2);
+        RowFilter<TableModel, Object> cliente = RowFilter.regexFilter((comboCliente.getSelectedIndex()>0)?comboCliente.getSelectedItem().toString():"", 2);
         RowFilter<TableModel, Object> lote = RowFilter.regexFilter(cjBuscarPorLote.getText(), 9);
         RowFilter<TableModel, Object> marca = RowFilter.regexFilter(cjBuscarPorMarca.getText().toUpperCase(), 5);        
         List<RowFilter<TableModel, Object>> filters = new ArrayList<>();
@@ -811,7 +829,7 @@ public class PROTOS extends javax.swing.JFrame{
         cjbuscarPorSerie = new CompuChiqui.JTextFieldPopup();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jLabel82 = new javax.swing.JLabel();
-        cjBuscarPorCliente = new CompuChiqui.JTextFieldPopup();
+        comboCliente = new javax.swing.JComboBox<>();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         jLabel83 = new javax.swing.JLabel();
         cjBuscarPorLote = new CompuChiqui.JTextFieldPopup();
@@ -828,6 +846,8 @@ public class PROTOS extends javax.swing.JFrame{
         jMenu2 = new javax.swing.JMenu();
         subMenuItemRecalcular = new javax.swing.JMenuItem();
         mostrarProtocolo = new javax.swing.JCheckBoxMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         subMenuAbrirProtocolo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/ver.png"))); // NOI18N
         subMenuAbrirProtocolo.setText("Abrir");
@@ -849,7 +869,7 @@ public class PROTOS extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPane1.setFont(new java.awt.Font("Enter Sansman", 0, 11)); // NOI18N
+        jTabbedPane1.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informacion General", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Enter Sansman", 0, 10))); // NOI18N
         jPanel2.setLayout(new java.awt.GridLayout(22, 2, 0, 2));
@@ -1914,12 +1934,13 @@ public class PROTOS extends javax.swing.JFrame{
         jLabel82.setText("Cliente:");
         jToolBar1.add(jLabel82);
 
-        cjBuscarPorCliente.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                cjBuscarPorClienteKeyReleased(evt);
+        comboCliente.setMaximumRowCount(20);
+        comboCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboClienteItemStateChanged(evt);
             }
         });
-        jToolBar1.add(cjBuscarPorCliente);
+        jToolBar1.add(comboCliente);
         jToolBar1.add(jSeparator3);
 
         jLabel83.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
@@ -2002,7 +2023,7 @@ public class PROTOS extends javax.swing.JFrame{
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -2011,11 +2032,14 @@ public class PROTOS extends javax.swing.JFrame{
         jTabbedPane1.addTab("Protocolos", jPanel14);
 
         jMenu1.setText("Archivo");
+        jMenu1.setFont(new java.awt.Font("Ebrima", 1, 12)); // NOI18N
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Editar");
+        jMenu2.setFont(new java.awt.Font("Ebrima", 1, 12)); // NOI18N
 
         subMenuItemRecalcular.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
+        subMenuItemRecalcular.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
         subMenuItemRecalcular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/calculadora.png"))); // NOI18N
         subMenuItemRecalcular.setText("Recalcular");
         subMenuItemRecalcular.addActionListener(new java.awt.event.ActionListener() {
@@ -2026,11 +2050,27 @@ public class PROTOS extends javax.swing.JFrame{
         jMenu2.add(subMenuItemRecalcular);
 
         mostrarProtocolo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        mostrarProtocolo.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
         mostrarProtocolo.setSelected(true);
         mostrarProtocolo.setText("Mostrar protocolo al imprimir");
         jMenu2.add(mostrarProtocolo);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Exportar");
+        jMenu3.setFont(new java.awt.Font("Ebrima", 1, 12)); // NOI18N
+
+        jMenuItem1.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/excel.png"))); // NOI18N
+        jMenuItem1.setText("Detalles de transformador");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -2199,7 +2239,7 @@ public class PROTOS extends javax.swing.JFrame{
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnGenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarExcelActionPerformed
-        modelo.Metodos.generarExcel(tablaProtocolos, jProgressBar1, btnGenerarExcel);
+        modelo.Metodos.JTableToExcel(tablaProtocolos, btnGenerarExcel);
     }//GEN-LAST:event_btnGenerarExcelActionPerformed
 
     private void cjbuscarPorSerieKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjbuscarPorSerieKeyReleased
@@ -2219,10 +2259,6 @@ public class PROTOS extends javax.swing.JFrame{
             abrirProtocolo();
         }
     }//GEN-LAST:event_tablaProtocolosMouseClicked
-
-    private void cjBuscarPorClienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBuscarPorClienteKeyReleased
-        buscarProtocolo();
-    }//GEN-LAST:event_cjBuscarPorClienteKeyReleased
         
     private void cjBuscarPorMarcaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBuscarPorMarcaKeyReleased
         buscarProtocolo();
@@ -2287,6 +2323,77 @@ public class PROTOS extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_cjpomedidoKeyTyped
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        ProgressMonitor pm = new ProgressMonitor(this, "Generando excel", "", 0, 0);
+        int idcliente = comboCliente.getItemAt(comboCliente.getSelectedIndex()).getIdCliente();
+        String sql = " SELECT count(*)\n" +
+        "FROM entrada e \n" +
+        "INNER JOIN transformador t ON e.identrada=t.identrada\n" +
+        "LEFT JOIN despacho d ON d.iddespacho=t.iddespacho\n" +
+        "LEFT JOIN remision r ON r.idremision=t.idremision\n" +
+        "LEFT JOIN protocolos p ON p.idtransformador=t.idtransformador\n" +
+        "WHERE e.idcliente="+idcliente+" ";
+        conex.conectar();
+        ResultSet rs1 = conex.CONSULTAR(sql);
+        
+        try {
+            rs1.next();
+            pm.setMaximum(rs1.getInt("count"));
+        } catch (SQLException ex) {
+            Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        conex.conectar();
+        (new Thread(){
+            @Override
+            public void run(){
+                try {
+                    String sql1 = " SELECT p.codigo, t.numeroserie, t.marca, t.kvasalida, t.fase, t.ano, t.tps, t.tss, p.i1, p.i2, p.proresuno, p.proresdos, p.pomedido, p.iu, p.iv, p.iw, \n" +
+                    "p.promedioi, p.iogarantizado, p.pcu, p.vcc, p.temperaturadeensayo, p.i2r, p.i2ra85, p.pcua85, p.impedancia85, p.impedanciagarantizada, p.reg, p.atcontrabt, \n" +
+                    "p.atcontratierra, p.btcontratierra, p.grupodeconexion, punou, pdosu, ptresu, pcuatrou, pcincou, punov, pdosv, ptresv, pcuatrov, pcincov, punow, pdosw, ptresw, pcuatrow, pcincow,\n" +
+                    "p.anchotanque, p.largotanque, altotanque, t.serviciosalida, to_char(p.fechaderegistro, 'DD Mon YYYY'), ('') as vencegarantia, p.liquidoaislante, t.aceite, p.color, t.peso, \n" +
+                    "e.lote, e.op, t.numeroempresa\n" +
+                    "FROM entrada e \n" +
+                    "INNER JOIN transformador t ON e.identrada=t.identrada\n" +
+                    "LEFT JOIN despacho d ON d.iddespacho=t.iddespacho\n" +
+                    "LEFT JOIN remision r ON r.idremision=t.idremision\n" +
+                    "LEFT JOIN protocolos p ON p.idtransformador=t.idtransformador\n" +
+                    "WHERE e.idcliente="+idcliente+"\n" +
+                    "ORDER BY e.identrada, fase, kvaentrada, marca ";
+                    ResultSet rs = conex.CONSULTAR(sql1);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+                    XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(new File("CARACTERISTICAS DE PROTOCOLOS.xlsx")));
+                    XSSFSheet hoja = wb.getSheetAt(0);
+                    XSSFRow fila;
+                    int filas = 4;
+                    while(rs.next()){
+                        pm.setProgress(rs.getRow());
+                        fila = hoja.createRow(filas);
+                        for (int i = 0; i < rsmd.getColumnCount(); i++) {
+                            fila.createCell(i, XSSFCell.CELL_TYPE_BLANK).setCellValue(rs.getString( (i+1) ));
+                        }
+                        filas++;
+                    }
+                    for(int j = 0; j < rsmd.getColumnCount(); j++) {
+                        wb.getSheetAt(0).autoSizeColumn(j);
+                    }
+                    OutputStream out = new FileOutputStream(new File("CARACTERISTICAS DE PROTOCOLOS.xlsx"));
+                    wb.write(out);
+                    out.close();
+                    Desktop.getDesktop().open(new File("CARACTERISTICAS.xlsx"));
+                } catch (IOException | SQLException ex) {
+                    Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }).start();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void comboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboClienteItemStateChanged
+        if(evt.getStateChange() == ItemEvent.DESELECTED){
+            buscarProtocolo();
+        }        
+    }//GEN-LAST:event_comboClienteItemStateChanged
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -2324,7 +2431,6 @@ public class PROTOS extends javax.swing.JFrame{
     private CompuChiqui.JTextFieldPopup cjATcontraTierra;
     private CompuChiqui.JTextFieldPopup cjBTcontraATyTierra;
     private CompuChiqui.JTextFieldPopup cjBTcontraTierra;
-    private CompuChiqui.JTextFieldPopup cjBuscarPorCliente;
     private CompuChiqui.JTextFieldPopup cjBuscarPorLote;
     private javax.swing.JTextField cjBuscarPorMarca;
     private CompuChiqui.JTextFieldPopup cjFrecuenciaInducida;
@@ -2393,6 +2499,7 @@ public class PROTOS extends javax.swing.JFrame{
     private CompuChiqui.JTextFieldPopup cjzx;
     private javax.swing.JComboBox<String> comboAceite;
     private javax.swing.JComboBox<String> comboClaseAislamiento;
+    public javax.swing.JComboBox<Cliente> comboCliente;
     private javax.swing.JComboBox<String> comboDerivacion;
     private javax.swing.JComboBox<String> comboFase;
     private javax.swing.JComboBox<String> comboFrecuencia;
@@ -2492,7 +2599,9 @@ public class PROTOS extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;

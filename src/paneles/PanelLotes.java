@@ -1,4 +1,4 @@
-package view;
+package paneles;
 
 import CopyPasteJTable.ExcelAdapter;
 import JTableAutoResizeColumn.TableColumnAdjuster;
@@ -22,6 +22,8 @@ import modelo.Cliente;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
 import modelo.Metodos;
+import view.EntradaDeTrafos;
+import view.PrepararDespacho;
 
 public class PanelLotes extends javax.swing.JPanel {
 
@@ -456,7 +458,7 @@ public class PanelLotes extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaLotesMouseClicked
 
     private void btnGenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarExcelActionPerformed
-        modelo.Metodos.generarExcel(tablaLotes, barraProgreso, btnGenerarExcel);
+        modelo.Metodos.JTableToExcel(tablaLotes, btnGenerarExcel);
     }//GEN-LAST:event_btnGenerarExcelActionPerformed
 
 

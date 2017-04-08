@@ -5285,7 +5285,7 @@ public final class PROTOCOLO extends javax.swing.JFrame {
     }
 
     private void SubMenuExcelControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubMenuExcelControlActionPerformed
-        modelo.Metodos.generarExcel(datos, barra, jButton1);
+        modelo.Metodos.JTableToExcel(datos, jButton1);
 //        try {
 //            Runnable miRunnable = new Runnable() {
 //                @Override

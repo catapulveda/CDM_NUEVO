@@ -523,7 +523,7 @@ public class PrepararDespacho extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void btnRefrescar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescar3ActionPerformed
-        modelo.Metodos.generarExcel(tablaTrafos, jProgressBar1, btnRefrescar3);
+        modelo.Metodos.JTableToExcel(tablaTrafos, btnRefrescar3);
     }//GEN-LAST:event_btnRefrescar3ActionPerformed
 
     /**

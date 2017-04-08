@@ -1,4 +1,4 @@
-package view;
+package paneles;
 
 import CopyPasteJTable.ExcelAdapter;
 import Dialogos.DialogoConfigurarConsecutivosRemision;
@@ -21,6 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
+import view.DespachoARemision;
+import view.REMISIONESCDM;
 
 public class PanelRemisiones extends javax.swing.JPanel {
 
@@ -134,6 +136,7 @@ public class PanelRemisiones extends javax.swing.JPanel {
             }
         ));
         tablaRemisiones.setRowHeight(25);
+        tablaRemisiones.getTableHeader().setReorderingAllowed(false);
         tablaRemisiones.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaRemisionesMouseClicked(evt);
@@ -399,7 +402,7 @@ public class PanelRemisiones extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCargarRemisionesActionPerformed
 
     private void generarExcelDespachosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarExcelDespachosActionPerformed
-        modelo.Metodos.generarExcel(tablaRemisiones, jProgressBar1, generarExcelDespachos);
+        modelo.Metodos.JTableToExcel(tablaRemisiones, generarExcelDespachos);
     }//GEN-LAST:event_generarExcelDespachosActionPerformed
 
 

@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
+import javax.swing.ProgressMonitor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -59,27 +60,25 @@ public class Metodos {
         escribirFichero(e);
     }
     
-    public static void generarExcel(JTable table, JProgressBar barra, JButton btn){
+    public static void JTableToExcel(JTable table, JButton btn){
+        ProgressMonitor pm = new ProgressMonitor(table.getParent(), "Exportando a excel...", "", 0, table.getRowCount());        
         (new Thread(){
             @Override
-            public void run(){                
-                try {
+            public void run(){
+                FileOutputStream fileOut = null; 
+                try{
                     btn.setEnabled(false);
                     btn.setIcon(new ImageIcon(getClass().getResource("/recursos/images/gif.gif")));
                     XSSFWorkbook wb = new XSSFWorkbook();
-                    FileOutputStream fileOut = null;            
                     fileOut = new FileOutputStream(table.getName()+".xlsx");
                     XSSFSheet hoja = wb.createSheet(table.getName()+".xlsx");
                     XSSFRow fila;
-                    barra.setMaximum(table.getRowCount());
                     for(int i=0; i<=table.getRowCount(); i++){
-                        
-                        if(i<table.getRowCount()){
-                            table.setRowSelectionInterval(i, i);
-                            table.scrollRectToVisible(table.getCellRect(i, 0, true));
+                        if(pm.isCanceled()){
+                            break;
                         }
-                        
-                        barra.setValue(i);
+                        pm.setNote("Exportando "+i);
+                        pm.setProgress(i);
                         fila = hoja.createRow(i);
                         
                         for(int j = 0; j < table.getColumnCount(); j++){
@@ -89,23 +88,31 @@ public class Metodos {
                                 fila.createCell(j).setCellValue((table.getValueAt(i-1, j)==null)?"0":table.getValueAt(i-1, j).toString());
                             }                            
                         }
+                    }                    
+                    if(!pm.isCanceled()){
+                        for(int j = 0; j < table.getColumnCount(); j++) {
+                            wb.getSheetAt(0).autoSizeColumn(j);
+                        }
+                        wb.write(fileOut);
+                        fileOut.close();
+                        Desktop.getDesktop().open(new File(table.getName()+".xlsx"));
+                    }else{
+                        System.err.println("CANCELADO");
                     }
-                    for(int j = 0; j < table.getColumnCount(); j++) {
-                        wb.getSheetAt(0).autoSizeColumn(j);
-                    }
-                    wb.write(fileOut);
-                    fileOut.close();
-                    Desktop.getDesktop().open(new File(table.getName()+".xlsx"));
                 } catch (Exception ex) {
                     ERROR(ex, "ERROR AL EXPORTAR EL ARCHIVO EXCEL.");
                     Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
                 }finally{
+                    try {
+                        fileOut.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     btn.setEnabled(true);
                     btn.setIcon(new ImageIcon(getClass().getResource("/recursos/images/excel.png")));
-                    barra.setValue(0);
                 }
             }
-        }).start();        
+        }).start(); 
     }
     
     public static void M(String m, String i) {

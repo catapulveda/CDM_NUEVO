@@ -1,4 +1,4 @@
-package view;
+package paneles;
 
 import Animacion.Fade;
 import CopyPasteJTable.ExcelAdapter;
@@ -23,6 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
+import view.DespachoARemision;
 
 public final class PanelDespachos extends javax.swing.JPanel {
 
@@ -320,7 +321,7 @@ public final class PanelDespachos extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaMouseClicked
 
     private void generarExcelDespachosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarExcelDespachosActionPerformed
-        modelo.Metodos.generarExcel(tabla, jProgressBar1, generarExcelDespachos);
+        modelo.Metodos.JTableToExcel(tabla, generarExcelDespachos);
     }//GEN-LAST:event_generarExcelDespachosActionPerformed
 
 
