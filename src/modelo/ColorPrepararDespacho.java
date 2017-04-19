@@ -7,6 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class ColorPrepararDespacho extends DefaultTableCellRenderer{
@@ -23,12 +24,16 @@ public class ColorPrepararDespacho extends DefaultTableCellRenderer{
        
     JLabel c = null;
     try{                
-        
+        setForeground(vencido);
         c = new JLabel( (value==null)?"":value.toString() );
         c.setToolTipText((value==null)?"":value.toString());
-        c.setFont(new Font("SansSerif", 1, 12));
+        c.setFont(new Font("Ebrima", 1, 12));
         
-        if ( (row%2)!=0 ){c.setBackground(new Color(231,243,253,255));}else{c.setBackground(Color.white);}
+        if ( (row%2)!=0 ){            
+            c.setBackground(new Color(231,243,253,255));            
+        }else{
+            c.setBackground(Color.white);
+        }
         
         if(column==0){
             c.setOpaque(true);
@@ -75,9 +80,13 @@ public class ColorPrepararDespacho extends DefaultTableCellRenderer{
             }                
         }
 
+        
             if(isSelected){//SE APLICARAN CAMBIOS CUANDO SELECCIONE LA FILA
                 c.setOpaque(true);
 
+                c.setBackground(new Color(198,198,198));
+                ((JLabel)c).setBorder(new LineBorder(new Color(33,115,70), 2, false));
+                
                 c.setForeground(isSelected ?UIManager.getColor("Table.selectionForeground") :UIManager.getColor("Table.foreground"));
                 c.setBackground(isSelected ?UIManager.getColor("Table.selectionBackground") :UIManager.getColor("Table.background"));
                 c.setBorder(hasFocus ?BorderFactory.createLineBorder(UIManager.getColor("Table.selectionForeground"), 1) :BorderFactory.createEmptyBorder(2, 2, 2, 2));

@@ -23,12 +23,14 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
+import modelo.CustomTableModel;
 import modelo.Metodos;
 
 public class DespachoARemision extends javax.swing.JFrame {
 
     TableColumnAdjuster ajustarColumna;
     
+//    CustomTableModel modeloTabla;
     DefaultTableModel modeloTabla;
     
     TableRowSorter rowSorter;
@@ -41,6 +43,7 @@ public class DespachoARemision extends javax.swing.JFrame {
     
     String SERVICIOS[] = {"REPARACION", "FABRICACION", "RECONSTRUCCION", "MANTENIMIENTO", "DADO DE BAJA", "GARANTIA", "DEVOLUCION", "REVISION","RECONSTRUIDO"};
     String TIPOS[] = {"CONVENCIONAL", "CONV. - REPOT.", "AUTOPROTEGIDO", "SECO", "PAD MOUNTED", "POTENCIA"};   
+    String DANOS[] = {"SOBRECARGA","SOBRETENSION DE ORIGEN ARTMOSFERICO O MANIOBRA","CORTOCIRCUITO EN DEVANADO PRIMARIO","CORTOCIRCUITO EN DEVANADO SECUNDARIO","FALLA DE AISLAMIENTO","HUMEDAD","DISEÑO DEFECTUOSO","FALLA POR MANIPULACION","PUNTO CALIENTE EN FASE"};
     
     public DespachoARemision(){
         initComponents();
@@ -65,13 +68,36 @@ public class DespachoARemision extends javax.swing.JFrame {
     }
     
     public void cargarTabla(){
-        String[] cols = {"ITEM","LOTE","REMISION","O.P","No EMPRESA","No SERIE","MARCA","FASE","KVA ENT.","KVA. SAL.","TENS. ENT.","TENS. SAL.","SERV. ENT.","SERV. SALIDA","TIPO TRAF. ENT.","TIPO TRAF. SAL.","OBSERV. ENT.","OBSERV. SAL.","AÑO","PESO","ACEITE","CIUDAD","FECHA DE RECEPCION"};
+//        modeloTabla = new CustomTableModel(
+//            new Object[][]{},
+//            new String[]{
+//                "ITEM","LOTE","REMISION","O.P","No EMPRESA","No SERIE","MARCA",
+//                "FASE","KVA ENT.","KVA. SAL.","TENS. ENT.","TENS. SAL.","SERV. ENT.",
+//                "SERV. SALIDA","TIPO TRAF. ENT.","TIPO TRAF. SAL.","OBSERV. ENT.","OBSERV. SAL.",
+//                "AÑO","PESO","ACEITE","CIUDAD","FECHA DE RECEPCION","CAUSA DE FALLA"
+//            }, 
+//            tabla, 
+//            new Class[]{
+//                Integer.class,Object.class,Object.class,Object.class,Object.class,Object.class,Object.class,
+//                Integer.class,Double.class,Double.class,Object.class,Object.class,Object.class,
+//                Object.class,Object.class,Object.class,Object.class,Object.class,
+//                Integer.class,Integer.class,Integer.class,Object.class,Object.class,Object.class
+//            },
+//            new Boolean[]{
+//                false,false,false,false,true,false,false,
+//                false,false,true,false,true,false,
+//                true,false,true,false,true,
+//                false,false,false,false,false,false
+//            }
+//        );
+        String[] cols = {"ITEM","LOTE","REMISION","O.P","No EMPRESA","No SERIE","MARCA",
+            "FASE","KVA ENT.","KVA. SAL.","TENS. ENT.","TENS. SAL.","SERV. ENT.",
+            "SERV. SALIDA","TIPO TRAF. ENT.","TIPO TRAF. SAL.","OBSERV. ENT.","OBSERV. SAL.",
+            "AÑO","PESO","ACEITE","CIUDAD","FECHA DE RECEPCION","CAUSA DE FALLA"};
         modeloTabla = new DefaultTableModel(new Object[][]{}, cols){
             @Override
             public boolean isCellEditable(int row, int column){
-                if(column==4||column==9||column==11||column==13||column==15||column==17)
-                    return true;
-                return false;
+                return column==4||column==9||column==11||column==13||column==15||column==17||column==23;
             }
         };
         
@@ -101,6 +127,11 @@ public class DespachoARemision extends javax.swing.JFrame {
         tabla.getColumnModel().getColumn(15).setCellEditor(new DefaultCellEditor(combo));
 //        tablaTrafos.getColumnModel().getColumn(15).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(TIPOS));                
         
+        combo = new JComboBox(DANOS);
+        combo.setUI(JComboBoxColor.JComboBoxColor.createUI(combo));
+        combo.addPopupMenuListener(new JComboBoxFullText.BoundsPopupMenuListener(true, false));
+        tabla.getColumnModel().getColumn(23).setCellEditor(new DefaultCellEditor(combo));
+
         String SQL = "SELECT e.lote, e.op, e.fecharecepcion, c.nombreciudad, r.numero_remision, t.* FROM entrada e\n";
         SQL += "INNER JOIN transformador t USING(identrada)\n";
         SQL += "LEFT JOIN remision r USING(idremision)\n";
@@ -186,6 +217,10 @@ public class DespachoARemision extends javax.swing.JFrame {
                         
                         if(e.getColumn() == 17){
                             actualizarSalidas("observacionsalida", val, item, serie);
+                        }
+                        
+                        if(e.getColumn() == 23){
+                            actualizarSalidas("causadefalla", val, item, serie);
                         }
                         
                     }

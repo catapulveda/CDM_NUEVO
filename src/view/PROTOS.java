@@ -2370,19 +2370,26 @@ public class PROTOS extends javax.swing.JFrame{
                         pm.setProgress(rs.getRow());
                         fila = hoja.createRow(filas);
                         for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                            fila.createCell(i, XSSFCell.CELL_TYPE_BLANK).setCellValue(rs.getString( (i+1) ));
+                            if(rs.getObject((i+1)) instanceof Double){
+                                fila.createCell(i, XSSFCell.CELL_TYPE_STRING).setCellValue(QD(rs.getDouble((i+1)), 3));
+                            }else if(rs.getObject((i+1)) instanceof Integer){
+                                fila.createCell(i, XSSFCell.CELL_TYPE_NUMERIC).setCellValue(rs.getInt( (i+1) ));
+                            }else{
+                                fila.createCell(i, XSSFCell.CELL_TYPE_STRING).setCellValue(rs.getString( (i+1) ));
+                            }
                         }
                         filas++;
                     }
                     for(int j = 0; j < rsmd.getColumnCount(); j++) {
                         wb.getSheetAt(0).autoSizeColumn(j);
                     }
-                    OutputStream out = new FileOutputStream(new File("CARACTERISTICAS DE PROTOCOLOS.xlsx"));
+                    OutputStream out = new FileOutputStream(new File("PROTOCOLOS.xlsx"));
                     wb.write(out);
                     out.close();
-                    Desktop.getDesktop().open(new File("CARACTERISTICAS.xlsx"));
-                } catch (IOException | SQLException ex) {
+                    Desktop.getDesktop().open(new File("PROTOCOLOS.xlsx"));
+                } catch (Exception ex){
                     Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
+                    modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL REPORTE");
                 }
             }
         }).start();
