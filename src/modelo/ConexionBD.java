@@ -19,7 +19,7 @@ public class ConexionBD {
 //    private String IP = "127.0.0.1", PUERTO = "5432", BD = "CDM2", USER = "postgres", PASS = "cdm";   
     private String IP = "PRODUCCION", PUERTO = "5432", BD = "CDM2", USER = "postgres", PASS = "cdm";   
 
-    public ConexionBD() {
+    public ConexionBD(){
         
     }
     

@@ -43,7 +43,11 @@ public class DespachoARemision extends javax.swing.JFrame {
     
     String SERVICIOS[] = {"REPARACION", "FABRICACION", "RECONSTRUCCION", "MANTENIMIENTO", "DADO DE BAJA", "GARANTIA", "DEVOLUCION", "REVISION","RECONSTRUIDO"};
     String TIPOS[] = {"CONVENCIONAL", "CONV. - REPOT.", "AUTOPROTEGIDO", "SECO", "PAD MOUNTED", "POTENCIA"};   
-    String DANOS[] = {"SOBRECARGA","SOBRETENSION DE ORIGEN ARTMOSFERICO O MANIOBRA","CORTOCIRCUITO EN DEVANADO PRIMARIO","CORTOCIRCUITO EN DEVANADO SECUNDARIO","FALLA DE AISLAMIENTO","HUMEDAD","DISEÑO DEFECTUOSO","FALLA POR MANIPULACION","PUNTO CALIENTE EN FASE"};
+    String DANOS[] = {"","CORTOCIRCUITO EN DEVANADO PRIMARIO",
+        "CORTOCIRCUITO EN DEVANADO SECUNDARIO","DISEÑO DEFECTUOSO",
+        "FALLA DE AISLAMIENTO","FALLA POR MANIPULACION",
+        "HUMEDAD","PUNTO CALIENTE EN FASE",
+        "SOBRECARGA","SOBRETENSION DE ORIGEN ARTMOSFERICO O MANIOBRA"};
     
     public DespachoARemision(){
         initComponents();
@@ -115,6 +119,7 @@ public class DespachoARemision extends javax.swing.JFrame {
         
         //COLUMNA SERVICIOS
         JComboBox combo = new JComboBox(SERVICIOS);
+        combo.setMaximumRowCount(10);
         combo.setUI(JComboBoxColor.JComboBoxColor.createUI(combo));
         combo.addPopupMenuListener(new JComboBoxFullText.BoundsPopupMenuListener(true, false));
         tabla.getColumnModel().getColumn(13).setCellEditor(new DefaultCellEditor(combo));
@@ -122,12 +127,14 @@ public class DespachoARemision extends javax.swing.JFrame {
         
         //COLUMNA TIPO TRAFOS
         combo = new JComboBox(TIPOS);
+        combo.setMaximumRowCount(10);
         combo.setUI(JComboBoxColor.JComboBoxColor.createUI(combo));
         combo.addPopupMenuListener(new JComboBoxFullText.BoundsPopupMenuListener(true, false));
         tabla.getColumnModel().getColumn(15).setCellEditor(new DefaultCellEditor(combo));
 //        tablaTrafos.getColumnModel().getColumn(15).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(TIPOS));                
         
         combo = new JComboBox(DANOS);
+        combo.setMaximumRowCount(10);
         combo.setUI(JComboBoxColor.JComboBoxColor.createUI(combo));
         combo.addPopupMenuListener(new JComboBoxFullText.BoundsPopupMenuListener(true, false));
         tabla.getColumnModel().getColumn(23).setCellEditor(new DefaultCellEditor(combo));
@@ -167,7 +174,8 @@ public class DespachoARemision extends javax.swing.JFrame {
                     rs.getInt("peso"),
                     rs.getInt("aceite"),
                     rs.getString("nombreciudad"),
-                    new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fecharecepcion"))
+                    new SimpleDateFormat("EEE, d MMM yyyy").format(rs.getDate("fecharecepcion")),
+                    rs.getString("causadefalla")
                 });
             }
             
@@ -181,48 +189,49 @@ public class DespachoARemision extends javax.swing.JFrame {
                 @Override
                 public void tableChanged(TableModelEvent e) {
                     if(e.getType() == TableModelEvent.UPDATE){
-                        
-                        String val = modeloTabla.getValueAt(e.getFirstRow(), e.getColumn()).toString();
-                        String item = modeloTabla.getValueAt(e.getFirstRow(), 0).toString();
-                        String serie = modeloTabla.getValueAt(e.getFirstRow(), 5).toString();
-                        
-                        if(e.getColumn() == 4){
-                            actualizarSalidas("numeroempresa", val, item, serie);
-                        }
-                        
-                        if(e.getColumn() == 9){
-                            actualizarSalidas("kvasalida", val, item, serie);
-                        }
-                        
-                        if(e.getColumn() == 11){
-                            String GUARDAR = "";
-                            String t[] = modeloTabla.getValueAt(e.getFirstRow(), 11).toString().split("/");
-                            if(t.length==3){
-                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tps='"+t[0]+"' , tss='"+t[1]+"' , tts='"+t[2]+"' WHERE item='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND iddespacho='"+getIDDESPACHO()+"' AND numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), 5)+"' ")){}
-                            }else{
-                                if(new ConexionBD().GUARDAR("UPDATE transformador SET tps='0' , tss='0' , tts='0' WHERE item='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+getIDDESPACHO()+"' AND numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), 5)+"' ")){
-                                    JOptionPane.showMessageDialog(null, "EL FORMATO DE LA TENSION DEBE COMPONERSE DE 3 TENSIONES SEPARADAS POR EL SIMBOLO /, RELLENAR CON 0(cero), EN CASO DE TENER LAS TRES.", "TENSION NO VÁLIDA", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
-                                    modeloTabla.setValueAt("0/0/0", e.getFirstRow(), 11);
-                                }                                
-                            }    
-                        }
-                        
-                        if(e.getColumn() == 13){
-                            actualizarSalidas("serviciosalida", val, item, serie);
-                        }
-                        
-                        if(e.getColumn() == 15){
-                            actualizarSalidas("tipotrafosalida", val, item, serie);
-                        }
-                        
-                        if(e.getColumn() == 17){
-                            actualizarSalidas("observacionsalida", val, item, serie);
-                        }
-                        
-                        if(e.getColumn() == 23){
-                            actualizarSalidas("causadefalla", val, item, serie);
-                        }
-                        
+                        try {
+                            String val = modeloTabla.getValueAt(e.getFirstRow(), e.getColumn()).toString();
+                            String item = modeloTabla.getValueAt(e.getFirstRow(), 0).toString();
+                            String serie = modeloTabla.getValueAt(e.getFirstRow(), 5).toString();
+
+                            if(e.getColumn() == 4){
+                                actualizarSalidas("numeroempresa", val, item, serie);
+                            }
+
+                            if(e.getColumn() == 9){
+                                actualizarSalidas("kvasalida", val, item, serie);
+                            }
+
+                            if(e.getColumn() == 11){
+                                String GUARDAR = "";
+                                String t[] = modeloTabla.getValueAt(e.getFirstRow(), 11).toString().split("/");
+                                if(t.length==3){
+                                    if(new ConexionBD().GUARDAR("UPDATE transformador SET tps='"+t[0]+"' , tss='"+t[1]+"' , tts='"+t[2]+"' WHERE item='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND iddespacho='"+getIDDESPACHO()+"' AND numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), 5)+"' ")){}
+                                }else{
+                                    if(new ConexionBD().GUARDAR("UPDATE transformador SET tps='0' , tss='0' , tts='0' WHERE item='"+modeloTabla.getValueAt(e.getFirstRow(), 0)+"' AND identrada='"+getIDDESPACHO()+"' AND numeroserie='"+modeloTabla.getValueAt(e.getFirstRow(), 5)+"' ")){
+                                        JOptionPane.showMessageDialog(null, "EL FORMATO DE LA TENSION DEBE COMPONERSE DE 3 TENSIONES SEPARADAS POR EL SIMBOLO /, RELLENAR CON 0(cero), EN CASO DE TENER LAS TRES.", "TENSION NO VÁLIDA", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/recursos/images/advertencia.png")));
+                                        modeloTabla.setValueAt("0/0/0", e.getFirstRow(), 11);
+                                    }                                
+                                }    
+                            }
+
+                            if(e.getColumn() == 13){
+                                actualizarSalidas("serviciosalida", val, item, serie);
+                            }
+
+                            if(e.getColumn() == 15){
+                                actualizarSalidas("tipotrafosalida", val, item, serie);
+                            }
+
+                            if(e.getColumn() == 17){
+                                actualizarSalidas("observacionsalida", val, item, serie);
+                            }
+
+                            if(e.getColumn() == 23){
+                                actualizarSalidas("causadefalla", val, item, serie);
+                            }
+                        } catch (NullPointerException ex) {
+                        }                                                
                     }
                 }
             });
