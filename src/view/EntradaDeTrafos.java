@@ -146,7 +146,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 modelo.EntradaDeTrafo.getColumnClass(),
                 modelo.EntradaDeTrafo.getColumnEditables()
             );
-        
+        modeloTabla.setMenu(subMenuEntradaDeTrafos);
+        modeloTabla.setMenuItem(subMenuFiltrar);
         tablaTrafos.setSurrendersFocusOnKeystroke(true);
             
         rowSorter = new TableRowSorter(modeloTabla);
@@ -1100,21 +1101,21 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     }//GEN-LAST:event_checkOrdenarActionPerformed
 
     private void tablaTrafosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTrafosMouseClicked
-        if(SwingUtilities.isRightMouseButton(evt)){
-            int col = tablaTrafos.columnAtPoint(evt.getPoint());
-            int row = tablaTrafos.rowAtPoint(evt.getPoint());            
-            subMenuFiltrar.setText("Buscar por: "+tablaTrafos.getColumnName(col));
-            subMenuEntradaDeTrafos.show(tablaTrafos, evt.getX(), evt.getY());
-            
-            if(tablaTrafos.getSelectedRowCount()==1){
-                tablaTrafos.setRowSelectionInterval(row, row);
-                tablaTrafos.setColumnSelectionInterval(0, tablaTrafos.getColumnCount()-1);
-            }
-        }
+//        if(SwingUtilities.isRightMouseButton(evt)){
+//            int col = tablaTrafos.columnAtPoint(evt.getPoint());
+//            int row = tablaTrafos.rowAtPoint(evt.getPoint());            
+//            subMenuFiltrar.setText("Buscar por: "+tablaTrafos.getColumnName(col));
+//            subMenuEntradaDeTrafos.show(tablaTrafos, evt.getX(), evt.getY());
+//            
+//            if(tablaTrafos.getSelectedRowCount()==1){
+//                tablaTrafos.setRowSelectionInterval(row, row);
+//                tablaTrafos.setColumnSelectionInterval(0, tablaTrafos.getColumnCount()-1);
+//            }
+//        }
     }//GEN-LAST:event_tablaTrafosMouseClicked
 
     private void cjBuscarSerieKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cjBuscarSerieKeyReleased
-        rowSorter.setRowFilter(RowFilter.regexFilter(cjBuscarSerie.getText().toUpperCase(), 3));
+        rowSorter.setRowFilter(RowFilter.regexFilter(cjBuscarSerie.getText().toUpperCase(), IDBUSQUEDA));
     }//GEN-LAST:event_cjBuscarSerieKeyReleased
 
     private void comboClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboClienteItemStateChanged
