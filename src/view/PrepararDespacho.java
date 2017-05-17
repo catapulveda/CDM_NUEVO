@@ -203,7 +203,6 @@ public class PrepararDespacho extends javax.swing.JFrame {
     }
     
     public void actualizarSalidas(String col, String val, String item, String serie){
-        conexion.conectar();
         if(conexion.GUARDAR(" UPDATE transformador SET "+col+"='"+val+"' WHERE identrada="+getIDENTRADA()+" AND item="+item+" AND numeroserie='"+serie+"' ")){
             
         }

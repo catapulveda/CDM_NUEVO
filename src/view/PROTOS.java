@@ -214,16 +214,20 @@ public class PROTOS extends javax.swing.JFrame{
                 tablaUno.setValueAt((ACTUALIZANDO)?tablaUno.getValueAt(i, 3):0, i, 3);
                 tablaUno.setValueAt((ACTUALIZANDO)?tablaUno.getValueAt(i, 4):0, i, 4);
             }
-//            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 1.025):Math.round(cjvp.getInt() * 1.05), 0, 1);
-//            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 1.00):Math.round(cjvp.getInt() * 1.025), 1, 1);
-//            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 0.975):Math.round(cjvp.getInt() * 1.0), 2, 1);
-//            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 0.95):Math.round(cjvp.getInt() * 0.975), 3, 1);
-//            tablaUno.setValueAt((conmutador.getSelectedIndex()==1)?Math.round(cjvp.getInt() * 0.925):Math.round(cjvp.getInt() * 0.95), 4, 1);
-            tablaUno.setValueAt(Math.round(cjvp.getInt() * ((conmutador.getSelectedIndex()==1)?1.025:1.05) ), 0, 1);
-            tablaUno.setValueAt(Math.round(cjvp.getInt() * ((conmutador.getSelectedIndex()==1)?1.00:1.025) ), 1, 1);
-            tablaUno.setValueAt(Math.round(cjvp.getInt() * ((conmutador.getSelectedIndex()==1)?0.975:1.0) ), 2, 1);
-            tablaUno.setValueAt(Math.round(cjvp.getInt() * ((conmutador.getSelectedIndex()==1)?0.95:0.975) ), 3, 1);
-            tablaUno.setValueAt(Math.round(cjvp.getInt() * ((conmutador.getSelectedIndex()==1)?0.925:0.95) ), 4, 1);  
+            
+            double factor = 1.0;
+            tablaUno.setValueAt(Math.round(cjvp.getInt() * factor), conmutador.getSelectedIndex(), 1);
+            for (int i = conmutador.getSelectedIndex()+1; i < conmutador.getItemCount(); i++) {//ME PARO UNA FILA DESPUES DE DONDE VA LA POSICION DEL CONMUTADOR
+                factor = factor-(factor*0.025);
+                System.out.println("HACIA ABAJO FACTOR ES: "+factor);
+                tablaUno.setValueAt(Math.round( cjvp.getInt() * factor ), i, 1);
+            }
+            factor = 1.0;
+            for (int i = conmutador.getSelectedIndex()-1; i >= 0; i--) {//ME PARO UNA FILA ANTES DE DONDE VA LA POSICION DEL CONMUTADOR
+                factor = factor+(factor*0.025);
+                System.out.println("HACIA ARRIBA FACTOR ES: "+factor);
+                tablaUno.setValueAt(Math.round( cjvp.getInt() * factor ), i, 1);
+            }            
             
             tablaUno.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             tablaUno.setCellSelectionEnabled(true);
@@ -448,6 +452,11 @@ public class PROTOS extends javax.swing.JFrame{
                         p.put("IDPROTOCOLO", (ACTUALIZANDO)?IDPROTOCOLO:modelo.Metodos.getUltimoID("protocolos", "idprotocolo"));
                         p.put("BTcontraAT", cjBTcontraATyTierra.getText());
                         p.put("ATcontraBT", cjATcontraBTyTierra.getText());
+                        p.put("tension1", Integer.parseInt(tablaUno.getValueAt(0, 1).toString()));
+                        p.put("tension2", Integer.parseInt(tablaUno.getValueAt(1, 1).toString()));
+                        p.put("tension3", Integer.parseInt(tablaUno.getValueAt(2, 1).toString()));
+                        p.put("tension4", Integer.parseInt(tablaUno.getValueAt(3, 1).toString()));
+                        p.put("tension5", Integer.parseInt(tablaUno.getValueAt(4, 1).toString()));
                         JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());
                         if(mostrarProtocolo.isSelected()){
                             JasperViewer.viewReport(jasperprint, false);

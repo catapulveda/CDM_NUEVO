@@ -340,6 +340,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                 cjOp.setText(rs.getString("op"));
                 cjCentroDeCostos.setText(rs.getString("centrodecostos"));
                 cjFechaRecepcion.setDate(rs.getDate("fecharecepcion"));
+                cjPlacaVehiculo.setText(rs.getString("placavehiculo"));
                 cjObservaciones.setText(rs.getString("observacion"));                
             }
             conexion.CERRAR();
@@ -424,7 +425,6 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         jSeparator3 = new javax.swing.JToolBar.Separator();
         btnImprimrFormatos = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
-        btnImprimrFormatos1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuEditar = new javax.swing.JMenu();
@@ -773,20 +773,6 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         });
         jToolBar1.add(btnImprimrFormatos);
         jToolBar1.add(jSeparator4);
-
-        btnImprimrFormatos1.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
-        btnImprimrFormatos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/imprimir.png"))); // NOI18N
-        btnImprimrFormatos1.setText("Imprimir");
-        btnImprimrFormatos1.setToolTipText("Generar entrada de almacen");
-        btnImprimrFormatos1.setFocusable(false);
-        btnImprimrFormatos1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnImprimrFormatos1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnImprimrFormatos1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImprimrFormatos1ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnImprimrFormatos1);
 
         jMenu1.setText("Archivo");
         jMenuBar1.add(jMenu1);
@@ -1288,10 +1274,6 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_subMenuImprimirTodosLosFormatosActionPerformed
 
-    private void btnImprimrFormatos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimrFormatos1ActionPerformed
-        listaSeries.forEach((a)->System.out.println(a));
-    }//GEN-LAST:event_btnImprimrFormatos1ActionPerformed
-
     private void subMenuFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuFiltrarActionPerformed
         IDBUSQUEDA = tablaTrafos.getSelectedColumn();
         cjBuscarSerie.grabFocus();
@@ -1346,7 +1328,6 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     public javax.swing.JButton btnBorrarFila;
     public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnImprimrFormatos;
-    public javax.swing.JButton btnImprimrFormatos1;
     public javax.swing.JCheckBox checkOrdenar;
     public CompuChiqui.JTextFieldPopup cjBuscarSerie;
     public CompuChiqui.JTextFieldPopup cjCentroDeCostos;
