@@ -40,7 +40,7 @@ public class ConexionBD {
         ResultSet rs = null;
         try {     
             rs = statement.executeQuery(sql);
-            System.out.println("CONSULTA EXITOSA: "+sql);
+            System.out.println("CONSULTA EXITOSA: "+sql+"\n");
         }catch (SQLException ex) {
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("QUERY ERRONE0: "+sql+"\n");

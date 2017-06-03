@@ -17,6 +17,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -249,19 +251,27 @@ public class Metodos {
     public static void generarGrafica(DefaultCategoryDataset dataSet, String arriba, String abajo, String valores, JPanel panel){
         JFreeChart chart = ChartFactory.createBarChart3D(arriba, abajo, valores, dataSet, PlotOrientation.VERTICAL,true,true,true);
         ChartPanel chartPanelPlanesUsuario = new ChartPanel(chart);
-
+        chartPanelPlanesUsuario.setFont(new Font("Ebrima", Font.BOLD, 12));
+        
         CategoryItemRenderer renderer = chart.getCategoryPlot().getRenderer();
         renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12,TextAnchor.BOTTOM_CENTER  ));
         renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
         renderer.setBaseItemLabelsVisible(true);
-        renderer.setBaseItemLabelFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-
+        renderer.setBaseItemLabelFont(new Font("Ebrima", Font.BOLD, 12));
+        
         CategoryPlot plot = chart.getCategoryPlot();
-//        plot.setBackgroundImage(getLogo());
-        plot.setBackgroundImageAlignment(JLabel.CENTER);
+//        plot.setBackgroundImage(new ImageIcon(Metodos.class.getClass().getResource("/recursos/images/logo.png")).getImage());
+//        plot.setBackgroundImageAlignment(JLabel.CENTER);
 
         panel.removeAll();
         panel.add(chartPanelPlanesUsuario, BorderLayout.CENTER);
     }
     
+    public static String convertirAMoneda(Object texto){
+        DecimalFormatSymbols separadores=new DecimalFormatSymbols();
+        separadores.setDecimalSeparator('.');
+        separadores.setGroupingSeparator(',');
+        DecimalFormat formateadorPagos = new DecimalFormat("###,###,###,###.##",separadores);
+        return formateadorPagos.format(Float.parseFloat(texto.toString()));
+    }
 }

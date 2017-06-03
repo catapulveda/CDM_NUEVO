@@ -1,15 +1,11 @@
 package Dialogos;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import modelo.ConexionBD;
 
 public class Login extends javax.swing.JDialog {
