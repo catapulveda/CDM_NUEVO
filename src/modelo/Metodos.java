@@ -1,5 +1,6 @@
 package modelo;
  
+import ds.desktop.notify.DesktopNotify;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Font;
@@ -273,5 +274,37 @@ public class Metodos {
         separadores.setGroupingSeparator(',');
         DecimalFormat formateadorPagos = new DecimalFormat("###,###,###,###.##",separadores);
         return formateadorPagos.format(Float.parseFloat(texto.toString()));
+    }
+    
+    public static void borrarFilasDeTabla(JTable tabla, String tablaBD, String col, String and){
+        int[] filas = tabla.getSelectedRows();
+        if(JOptionPane.showConfirmDialog(null, "Desea eliminar "+filas.length+" las filas seleccionadas?")==JOptionPane.YES_OPTION){
+            java.sql.Connection cc = new ConexionBD().conectar();
+            try {
+                java.sql.Statement st = cc.createStatement();
+                for (int i = filas.length-1; i >= 0; i--) {
+                    String query = "DELETE FROM "+tablaBD+" WHERE "+col+"="+tabla.getValueAt(filas[i], 0)+" "+and;
+                    if(st.executeUpdate(query)>0){
+                        ((CustomTableModel)tabla.getModel()).removeRow(filas[i]);
+                        System.out.println("BIEN -> "+query);
+                    }
+                }
+                DesktopNotify.showDesktopMessage(
+                        "Registros eliminados!", 
+                        "Se han eliminado "+filas.length+" registros.", DesktopNotify.SUCCESS, 5000);
+            }catch(org.postgresql.util.PSQLException ex){
+                M("PSQLException: "+ex.getMessage(), "error.png");
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            }catch (SQLException ex) {                
+                M("SQLException: "+ex.getMessage(), "error.png");
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    cc.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 }

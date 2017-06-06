@@ -1,5 +1,6 @@
 package modelo;
 
+import CopyPasteJTable.ExcelAdapter;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -50,7 +51,7 @@ public class CustomTableModel extends DefaultTableModel implements MouseListener
         tabla.setDefaultRenderer(Integer.class, colorRow);
         tabla.setDefaultRenderer(java.util.Date.class, colorRow);
         tabla.setDefaultRenderer(Double.class, colorRow);
-        
+        ExcelAdapter copypaste = new ExcelAdapter(tabla);
         tabla.addMouseListener(this);
     }
 

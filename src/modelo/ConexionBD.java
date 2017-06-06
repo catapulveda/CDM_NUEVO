@@ -28,7 +28,7 @@ public class ConexionBD {
             Class.forName("org.postgresql.Driver");
             conexion = DriverManager.getConnection("jdbc:postgresql://"+IP+":"+PUERTO+"/"+BD, USER, PASS);
             statement = conexion.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);            
-        } catch (Exception ex){
+        } catch (ClassNotFoundException | SQLException ex){
             Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
             Metodos.ERROR(ex, "ERROR AL CONECTARSE A LA BASE DE DATOS");
             System.exit(0);

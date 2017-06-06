@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REMISIONCDM" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6569b73d-ad90-4959-abb8-76b9832009dd">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="183"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table_TH" mode="Opaque" backcolor="#BFE1FF" radius="0">
 		<box>
@@ -77,7 +77,7 @@
 			</textField>
 			<image vAlign="Middle">
 				<reportElement x="0" y="0" width="85" height="77" uuid="53c4dfab-bdc2-4362-88cb-1b37a0609574"/>
-				<imageExpression><![CDATA["IMAGENES\\LOGO CDM.png"]]></imageExpression>
+				<imageExpression><![CDATA[getClass().getResource("/recursos/images/logo.png")]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="4" y="94" width="310" height="13" uuid="cee24e91-eee8-4ab8-bf99-710ead0809b5"/>

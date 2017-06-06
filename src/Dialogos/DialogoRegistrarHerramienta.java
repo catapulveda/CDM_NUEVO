@@ -13,10 +13,13 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import modelo.ConexionBD;
+import modelo.CustomTableModel;
 
 /**
  *
@@ -24,7 +27,9 @@ import modelo.ConexionBD;
  */
 public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
 
-    DefaultTableModel model;
+    CustomTableModel model;
+    TableRowSorter rowSorter;
+    int IDCOLUMN = 5;
     
     modelo.ConexionBD conex = new ConexionBD();
     
@@ -42,12 +47,16 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
+                    if(cjherramienta.getText().isEmpty()){
+                        modelo.Metodos.M("INGRESE EL NOMBRE DE LA HERRAMIENTA", "advertencia.png");
+                        return;
+                    }
                     String herramienta  = cjherramienta.getText().toUpperCase().trim();
                     String tipo = cjtipo.getText().toUpperCase().trim();
                     String codigo = cjcodigo.getText().trim();
                     conex.conectar();
                     if(conex.GUARDAR("INSERT INTO herramienta_consorcio "
-                            + "(nombre_herramienta,tipo_herramienta,codigo_herramienta) "
+                            + "(nombreherramienta,tipoherramienta,codigoherramienta) "
                             + "VALUES ( '"+herramienta+"' , '"+tipo+"' , '"+codigo+"' )")){
                         Cargar();
                         cjherramienta.setText(null);cjtipo.setText(null);
@@ -64,7 +73,7 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
         cjbuscar.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent evt){
-                Cargar();
+                rowSorter.setRowFilter(RowFilter.regexFilter(cjbuscar.getText().toUpperCase(), IDCOLUMN));
             }
         });
         
@@ -76,7 +85,7 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
                    if(fila>=0){
                        int id = Integer.parseInt(tablaherramientas.getValueAt(fila, 1).toString());
                        conex.conectar();
-                       if(conex.GUARDAR("DELETE FROM herramienta_consorcio WHERE idherramienta='"+id+"' ")){
+                       if(conex.GUARDAR("DELETE FROM herramientaconsorcio WHERE idherramienta='"+id+"' ")){
                            Cargar();
                        }
                    }
@@ -92,60 +101,85 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
     }
     
     void Cargar(){
-        try {
+        try {            
             String data[][]={};
-            String col[]={"ITEM","ID","HERRAMIENTA","TIPO","CODIGO"};
-            model = new DefaultTableModel(data, col){
+            String col[]={"ITEM","SELEC.","CANT.","TIPO","CODIGO","HERRAMIENTA"};
+            model = new CustomTableModel(
+                data, col, tablaherramientas,
+                new Class[]{Integer.class,Boolean.class,Integer.class,String.class,String.class,String.class},
+                new Boolean[]{false,true,true,true,true,true}
+            ){
                 @Override
-                public boolean isCellEditable(int row, int col){                
-                    if(col==2||col==3||col==4)
-                        return true;
-                    return false;
+                public boolean isCellEditable(int row, int col){
+                    if(col==1)
+                        if(Integer.parseInt(model.getValueAt(row, 2).toString())>0)
+                            return true;
+                    return col==2||col==3|col==4||col==5;                    
                 }
             };
-            tablaherramientas.setModel(model);
-            tablaherramientas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            int row = 0;
+
             conex.conectar();
-            ResultSet rs = conex.CONSULTAR("SELECT * FROM herramienta_consorcio WHERE nombre_herramienta ILIKE '%"+cjbuscar.getText()+"%' ORDER BY nombre_herramienta ");
+            ResultSet rs = conex.CONSULTAR("SELECT * FROM herramientaconsorcio WHERE nombreherramienta<>'' AND nombreherramienta ILIKE '%"+cjbuscar.getText()+"%' ORDER BY nombreherramienta ");
             while(rs.next()){
-                model.insertRow(row, new Object[]{});
-                model.setValueAt(rs.getRow(), row, 0);
-                model.setValueAt(rs.getInt("idherramienta"), row, 1);
-                model.setValueAt(rs.getString("nombre_herramienta"), row, 2);
-                model.setValueAt(rs.getString("tipo_herramienta"), row, 3);
-                model.setValueAt(rs.getString("codigo_herramienta"), row, 4);
-                row++;
+                model.addRow(new Object[]{
+                    rs.getInt("idherramienta"),
+                    false,
+                    0,
+                    rs.getString("tipoherramienta"),
+                    rs.getString("codigoherramienta"),
+                    rs.getString("nombreherramienta")
+                });                               
             }
+            rowSorter = new TableRowSorter(model);
+            tablaherramientas.setRowSorter(rowSorter);
             ajustarColumna.adjustColumns();
             
             model.addTableModelListener(new TableModelListener() {
                 @Override
-                public void tableChanged(TableModelEvent e) {
+                public void tableChanged(TableModelEvent e){
                     if(e.getType() == TableModelEvent.UPDATE){
-                        int id = Integer.parseInt(tablaherramientas.getValueAt(e.getFirstRow(), 1).toString());
-                        String nombre = tablaherramientas.getValueAt(e.getFirstRow(), 2).toString();
-                        String tipo = tablaherramientas.getValueAt(e.getFirstRow(), 3).toString();
-                        String codigo = tablaherramientas.getValueAt(e.getFirstRow(), 4).toString();
+                        int id = Integer.parseInt(model.getValueAt(e.getFirstRow(), 0).toString());
+                        String nombre = model.getValueAt(e.getFirstRow(), 4).toString();
+                        String tipo = model.getValueAt(e.getFirstRow(), 2).toString();
+                        String codigo = model.getValueAt(e.getFirstRow(), 3).toString();
                         conex.conectar();
                         switch(e.getColumn()){
-                            case 2:
-                                if(conex.GUARDAR("UPDATE herramienta_consorcio SET nombre_herramienta='"+nombre+"' WHERE idherramienta='"+id+"' ")){
-                                    
+                            case 1:
+                                try {
+                                    if(Integer.parseInt(model.getValueAt(e.getFirstRow(), 2).toString())>0){
+                                        ( (view.REMISIONESCDM)getOwner()).agregarFila(new Object[]{
+                                            "",
+                                            model.getValueAt(e.getFirstRow(), 0),//id
+                                            model.getValueAt(e.getFirstRow(), 4),
+                                            model.getValueAt(e.getFirstRow(), 2),
+                                            model.getValueAt(e.getFirstRow(), 3)
+                                        });
+                                    }else{
+                                        modelo.Metodos.M("DIGITE UNA CANTIDAD MAYOR A 0(CERO)", "advertencia.png");                                        
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    modelo.Metodos.M("ERROR EN LA ESCRITURA DEL NUMERO\n"+ex, "error.png");
+                                }catch(Exception ex){
+                                        modelo.Metodos.M("ERORR DESCONOCIDO\n"+ex, "error.png");
                                 }
                                 break;
                             case 3:
-                                if(conex.GUARDAR("UPDATE herramienta_consorcio SET tipo_herramienta='"+tipo+"' WHERE idherramienta='"+id+"' ")){
-                                    
+                                if(conex.GUARDAR("UPDATE herramientaconsorcio SET nombreherramienta='"+nombre+"' WHERE idherramienta='"+id+"' ")){
+
                                 }
                                 break;
                             case 4:
-                                if(conex.GUARDAR("UPDATE herramienta_consorcio SET codigo_herramienta='"+codigo+"' WHERE idherramienta='"+id+"' ")){                                    
+                                if(conex.GUARDAR("UPDATE herramientaconsorcio SET tipoherramienta='"+tipo+"' WHERE idherramienta='"+id+"' ")){
+
+                                }
+                                break;
+                            case 5:
+                                if(conex.GUARDAR("UPDATE herramientaconsorcio SET codigoherramienta='"+codigo+"' WHERE idherramienta='"+id+"' ")){
+                                    
                                 }
                                 break;
                             default: break;
                         }
-                        conex.CERRAR();
                     }
                 }
             });
@@ -155,11 +189,6 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -189,7 +218,7 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel2.setText("Tipo:");
 
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/RECURSOS/X16/Guardar.png"))); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/Guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
 
         tablaherramientas.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -209,7 +238,7 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel3.setText("Buscar:");
 
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/RECURSOS/X16/Borrar.png"))); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/images/basura.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
 
         jLabel4.setFont(new java.awt.Font("Enter Sansman", 0, 18)); // NOI18N
@@ -223,19 +252,12 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cjbuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addGap(2, 2, 2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
@@ -247,8 +269,15 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
                                 .addComponent(cjcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnGuardar)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(cjtipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(0, 221, Short.MAX_VALUE))
+                            .addComponent(cjtipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cjbuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar)
+                        .addGap(2, 2, 2)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -274,7 +303,7 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
                     .addComponent(cjbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -297,11 +326,6 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -309,20 +333,11 @@ public class DialogoRegistrarHerramienta extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogoRegistrarHerramienta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogoRegistrarHerramienta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogoRegistrarHerramienta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DialogoRegistrarHerramienta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 DialogoRegistrarHerramienta dialog = new DialogoRegistrarHerramienta(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
