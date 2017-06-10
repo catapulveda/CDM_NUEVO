@@ -12,8 +12,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -43,13 +43,13 @@ import javax.swing.table.TableRowSorter;
 import modelo.Cliente;
 import modelo.ConexionBD;
 import modelo.CustomTableModel;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -443,7 +443,7 @@ public class PROTOS extends javax.swing.JFrame{
             "            estadoservicio='"+ESTADO_TRAFO+"' , garantia='"+checkGarantia.isSelected()+"' , idusuario="+sesion.getIdUsuario()+" WHERE idprotocolo="+IDPROTOCOLO+" ";
                 }
                 if(conex.GUARDAR(GUARDAR)){
-                    modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");
+                    modelo.Metodos.M("PROTOCOLO "+((ACTUALIZANDO)?"ACTUALIZADO":"REGISTRADO"), "bien.png");                    
                     try{                        
                         btnGuardar.setEnabled(false);
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/gif.gif")));
@@ -460,18 +460,27 @@ public class PROTOS extends javax.swing.JFrame{
                         JasperPrint jasperprint = JasperFillManager.fillReport(reporte, p, conex.conectar());
                         if(mostrarProtocolo.isSelected()){
                             JasperViewer.viewReport(jasperprint, false);
-                        }                        
-                        JasperExportManager.exportReportToPdfFile( jasperprint, System.getProperties().getProperty("user.dir")+"\\PROTOCOLOS PDF\\"+cjprotocolo.getText()+"_"+cjcliente.getText()+".pdf");                        
-                        limpiar();                        
-                        if(!ACTUALIZANDO){
-                            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
-                        }else{
-                            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", false)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
                         }
-                    }catch(Exception ex){
-                        Logger.getLogger(EntradaDeTrafos.class.getName()).log(Level.SEVERE, null, ex);
+                                                
+                        String protocolo = cjprotocolo.getText();
+                        String cliente = cjcliente.getText().replace("/", "");
+                        limpiar();
+                        cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", false)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
+                        JasperExportManager.exportReportToPdfFile(
+                                jasperprint, 
+                                System.getProperties().getProperty("user.dir")+"\\PROTOCOLOS PDF\\"+protocolo+"_"+cliente+".pdf");
+                                               
+//                        if(!ACTUALIZANDO){
+//                            cjprotocolo.setText("A-"+modelo.Metodos.getConsecutivoRemision("protocolo", true)+"-"+new SimpleDateFormat("yy").format(new java.util.Date()));
+//                        }else{
+                            
+//                        }
+                    }catch(MalformedURLException | JRException | NumberFormatException ex){
+                        Logger.getLogger(PROTOS.class.getName()).log(Level.SEVERE, null, ex);
                         modelo.Metodos.escribirFichero(ex);
-                        modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL PROTOCOLO");                        
+                        modelo.Metodos.ERROR(ex, "ERROR AL GENERAR EL PROTOCOLO");
+                    }catch(Exception ex){
+                        modelo.Metodos.ERROR(ex, "ERROR AL EXPORTAR Y GUARDAR EL ARCHIVO PDF EN LA CARPTEA 'PROTOCOLOS PDF'\nVERIFIQUE QUE EL NOMBRE DEL CLIENTE NO CONTENGA PUNTOS NI CARACTERES ESPECIALES.");
                     }finally{
                         btnGuardar.setIcon(new ImageIcon(getClass().getResource("/recursos/images/guardar.png")));
                         btnGuardar.setEnabled(true);
