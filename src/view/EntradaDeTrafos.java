@@ -162,7 +162,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
         
         //COLUMNA TIPO DE TRANSFORMADOR
         tablaTrafos.getColumnModel().getColumn(21).setCellEditor(new DefaultCellEditor(new JComboBox(TIPOS)));
-        tablaTrafos.getColumnModel().getColumn(21).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(TIPOS));                
+//        tablaTrafos.getColumnModel().getColumn(21).setCellRenderer(new JComboBoxIntoJTable.JComboBoxEnColumnaJTable(TIPOS));                
         
         //COLUMNA MARCAS
         tablaTrafos.getColumnModel().getColumn(5).setCellEditor(new JTextFieldIntoJTable.JTextField_DefaultCellEditor(modelo.Marca.getJTextFieldMarcas()));
@@ -1157,7 +1157,7 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     private void subMenuImprimirMuestrasDeAceiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuImprimirMuestrasDeAceiteActionPerformed
         try{            
             DialogoImprimirAceite dia = new DialogoImprimirAceite(this, rootPaneCheckingEnabled);
-            dia.setIdentrada(getIDENTRADA());
+            dia.setIdentrada(getIDENTRADA());            
             this.setExtendedState(ICONIFIED);
             dia.setVisible(true);
         } catch (Exception e) {

@@ -1048,14 +1048,20 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
                     String GUARDA_DATOS = " INSERT INTO datosremision_consorcio VALUES \n";
                     boolean GUARDADATOS = false;
                     for (int i = 0; i < tablaHerramientas.getRowCount(); i++) {
+                        System.out.println("RECORRIENDO TABLA");
                         tablaHerramientas.scrollRectToVisible(tablaHerramientas.getCellRect(i, 0, true));
                         tablaHerramientas.setRowSelectionInterval(i, i);
                         Object datos[] = {getT(i, 1), getT(i, 2), getT(i, 3)};
-
-                        if(!lista.isEmpty() && !lista.contains(Integer.parseInt(datos[0].toString()))){
-                            GUARDADATOS = true;
-                            GUARDA_DATOS += "  ('" + (i + 1) + "' , '" + getIDREMISION() + "'  , '" + datos[0] + "' , '" + datos[2] + "') ,\n";
-                            lista.add(Integer.parseInt(datos[0].toString()));
+                        try{
+                            if(!lista.contains(Integer.parseInt(datos[0].toString()))){
+                                System.out.println(" !lista.isEmpty() && !lista.contains(Integer.parseInt(datos[0].toString()) ");
+                                GUARDADATOS = true;
+                                GUARDA_DATOS += "  ('" + (i + 1) + "' , '" + getIDREMISION() + "'  , '" + datos[0] + "' , '" + datos[2] + "') ,\n";
+                                lista.add(Integer.parseInt(datos[0].toString()));
+                            }else{
+                                System.out.println("NADA");
+                            }
+                        }catch(NullPointerException e){
                         }
                     }
                     //GUARDA LOS DATOS DE LAS HERRAMIENTAS ASOCIADAS A LA REMISION
@@ -1158,16 +1164,15 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
             if (!checkremisionnueva.isSelected()) {
                 int filas[] = tablaHerramientas.getSelectedRows();
                 for (int i = filas.length - 1; i >= 0; i--) {
-
                     if (getIDREMISION() > 0) {
                         if (conexion.GUARDAR("DELETE FROM datosremision_consorcio WHERE idremision=" + getIDREMISION() + " "
                             + "AND idherramienta=" + tablaHerramientas.getValueAt(filas[i], 1) + " ")) {
                         modeloHerramientas.removeRow(filas[i]);
+                        }else{
+                            modeloHerramientas.removeRow(filas[i]);
+                        }
                     }
-                } else {
-                    modeloHerramientas.removeRow(filas[i]);
                 }
-            }
         } else {
             modelo.Metodos.M("NO SE PUEDEN ELIMINAR HERRAMIENTA DE LA TABLA HASTA DESACTIVAR LA CASILLA DE 'REMISION NUEVA'.", "advertencia.png");
         }
