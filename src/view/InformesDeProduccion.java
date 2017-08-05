@@ -264,7 +264,7 @@ public class InformesDeProduccion extends javax.swing.JFrame{
                     while(rs.next()){
                         dataSetServiciosTotales.addValue(rs.getInt("count"), rs.getString("serviciosalida"), rs.getString("serviciosalida"));
                     }
-                    modelo.Metodos.generarGrafica(dataSetServiciosTotales, "FASES", "MES", "FASE", jpanelServiciosTotales);
+                    modelo.Metodos.generarGrafica(dataSetServiciosTotales, "SERVICIOS", "MES", "FASE", jpanelServiciosTotales);
                     validate();
                     
                 } catch (Exception e) {
