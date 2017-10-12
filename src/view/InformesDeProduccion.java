@@ -137,18 +137,18 @@ public class InformesDeProduccion extends javax.swing.JFrame{
                 sql += (index>0)?"AND c.idcliente="+comboCliente.getItemAt(index).getIdCliente():"";
                 rs = conexion.CONSULTAR(sql);
                 try {
-                rs.next();
-                totalintervenidos = rs.getInt("count");
-                sql = " SELECT count(*), extract(year from fechalaboratorio) AS ano, extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth') AS mes \n ";
-                sql += " FROM protocolos ";
-                sql += " INNER JOIN transformador t USING(idtransformador)\n" +
-                       " INNER JOIN entrada e USING(identrada)\n" +
-                       " INNER JOIN cliente c USING(idcliente) ";
-                sql += " WHERE fechalaboratorio BETWEEN '"+fechainicio+"' AND '"+fechafin+"' ";
-                sql += (index>0)?"AND c.idcliente="+comboCliente.getItemAt(index).getIdCliente():"";
-                sql += " GROUP BY extract(year from fechalaboratorio), extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth')\n ";
-                sql += " ORDER BY extract(month from fechalaboratorio) ASC ";
-                rs = conexion.CONSULTAR(sql);                
+                    rs.next();
+                    totalintervenidos = rs.getInt("count");
+                    sql = " SELECT count(*), extract(year from fechalaboratorio) AS ano, extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth') AS mes \n ";
+                    sql += " FROM protocolos ";
+                    sql += " INNER JOIN transformador t USING(idtransformador)\n" +
+                           " INNER JOIN entrada e USING(identrada)\n" +
+                           " INNER JOIN cliente c USING(idcliente) ";
+                    sql += " WHERE fechalaboratorio BETWEEN '"+fechainicio+"' AND '"+fechafin+"' ";
+                    sql += (index>0)?"AND c.idcliente="+comboCliente.getItemAt(index).getIdCliente():"";
+                    sql += " GROUP BY extract(year from fechalaboratorio), extract(month from fechalaboratorio), to_char(fechalaboratorio, 'TMMonth')\n ";
+                    sql += " ORDER BY extract(month from fechalaboratorio) ASC ";
+                    rs = conexion.CONSULTAR(sql);                
                     dataSetUnidades.clear();
                     while(rs.next()){
                         dataSetUnidades.addValue(rs.getInt("count"), "AÑO: "+rs.getString("ano"), rs.getString("mes"));
@@ -336,6 +336,7 @@ public class InformesDeProduccion extends javax.swing.JFrame{
             }
         ));
         tablaDatos.setGridColor(new java.awt.Color(227, 227, 227));
+        tablaDatos.setName("Informe de Produccion"); // NOI18N
         tablaDatos.setRowHeight(25);
         tablaDatos.getTableHeader().setReorderingAllowed(false);
         tablaDatos.addMouseListener(new java.awt.event.MouseAdapter() {
