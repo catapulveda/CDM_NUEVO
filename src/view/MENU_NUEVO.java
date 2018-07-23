@@ -183,6 +183,7 @@ public class MENU_NUEVO extends javax.swing.JFrame{
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         (new Thread(){
+            @Override
             public void run(){
                 lotes.btnCargarLotes.doClick();
                 despachos.btnCargarDespachos.doClick();

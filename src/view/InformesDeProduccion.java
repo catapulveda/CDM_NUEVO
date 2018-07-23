@@ -205,7 +205,7 @@ public class InformesDeProduccion extends javax.swing.JFrame{
                     while(rs.next()){
                         dataSetServicios.addValue(rs.getInt("count"), rs.getString("serviciosalida")+" - "+rs.getInt("date_part"), rs.getString("mes"));
                     }
-                    modelo.Metodos.generarGrafica(dataSetServicios, "SERVICIOS REALIZADOS", "MES", "TOTAL SERVICIOS", panelServicios);
+                    modelo.Metodos.generarGrafica(dataSetServicios, "SERVICIOS REALIZADOS", "MES", "CANTIDAD", panelServicios);
                     validate();
                 } catch (Exception ex) {
                     modelo.Metodos.ERROR(ex, "ERROR AL CARGAR LA GRAFICA DE SERVICIOS.");
@@ -264,7 +264,7 @@ public class InformesDeProduccion extends javax.swing.JFrame{
                     while(rs.next()){
                         dataSetServiciosTotales.addValue(rs.getInt("count"), rs.getString("serviciosalida"), rs.getString("serviciosalida"));
                     }
-                    modelo.Metodos.generarGrafica(dataSetServiciosTotales, "SERVICIOS", "MES", "FASE", jpanelServiciosTotales);
+                        modelo.Metodos.generarGrafica(dataSetServiciosTotales, "SERVICIOS", "SERVICIO", "CANTIDAD", jpanelServiciosTotales);
                     validate();
                     
                 } catch (Exception e) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ENTRADA" pageWidth="612" pageHeight="792" columnWidth="582" leftMargin="15" rightMargin="15" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="48678126-ee83-41a0-afad-52db457c7565">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="101"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="221"/>
+	<property name="ireport.y" value="341"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -641,74 +641,59 @@ WHERE e.identrada=$P{IDLOTE}]]>
 	<pageFooter>
 		<band height="105">
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="3" y="17" width="110" height="45" uuid="978b173c-47ad-4485-8266-fd02986f02e9"/>
+				<reportElement mode="Opaque" x="1" y="17" width="110" height="45" uuid="978b173c-47ad-4485-8266-fd02986f02e9"/>
 				<box bottomPadding="0"/>
 				<imageExpression><![CDATA[$P{FIRMA_GERENTE}]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="120" y="22" width="110" height="45" uuid="c512d213-51cb-4f1c-81eb-98d5924d49b1"/>
+				<reportElement mode="Opaque" x="151" y="22" width="137" height="45" uuid="c512d213-51cb-4f1c-81eb-98d5924d49b1"/>
 				<box bottomPadding="0"/>
 				<imageExpression><![CDATA[$P{FIRMA_PRODUCCION}]]></imageExpression>
 			</image>
 			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="238" y="31" width="110" height="45" uuid="49720a53-b808-4b37-9b70-b4f6c02a1fe4"/>
+				<reportElement mode="Opaque" x="298" y="31" width="136" height="45" uuid="49720a53-b808-4b37-9b70-b4f6c02a1fe4"/>
 				<box bottomPadding="0"/>
 				<imageExpression><![CDATA[$P{FIRMA_ADMINISTRATIVA}]]></imageExpression>
 			</image>
-			<image hAlign="Center" vAlign="Middle">
-				<reportElement mode="Opaque" x="471" y="19" width="110" height="45" uuid="8238dde0-722a-4200-ac26-4b7b1daf56b6"/>
-				<box bottomPadding="0"/>
-				<imageExpression><![CDATA[$P{FIRMA_SIG}]]></imageExpression>
-			</image>
 			<textField>
-				<reportElement x="3" y="60" width="110" height="22" uuid="b4cf5e1f-6c92-409d-8875-d920969685c9"/>
+				<reportElement x="1" y="60" width="137" height="22" uuid="b4cf5e1f-6c92-409d-8875-d920969685c9"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{NOMBRE_GERENTE}+" Gerente Tecnico"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{NOMBRE_GERENTE}+"\nGerente Técnico"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="60" width="110" height="22" uuid="e294ba05-b3f3-4440-8a3c-3eb1a7992185"/>
+				<reportElement x="151" y="60" width="137" height="22" uuid="e294ba05-b3f3-4440-8a3c-3eb1a7992185"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{NOMBRE_PRODUCCION}+"\nDirector de Produccion"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{NOMBRE_PRODUCCION}+"\nDirector de Producción"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="237" y="60" width="110" height="22" uuid="fb0e9aff-35c6-4945-9bf1-1d4e392f4a98"/>
+				<reportElement x="297" y="60" width="137" height="22" uuid="fb0e9aff-35c6-4945-9bf1-1d4e392f4a98"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{NOMBRE_ADMINISTRATIVA}+"\nCoordinador Admin."]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{NOMBRE_ADMINISTRATIVA}+"\nCoordinador Administrativo"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="354" y="60" width="110" height="22" uuid="7591f2f2-4c59-4722-9728-61a63440cc83"/>
+				<reportElement x="445" y="60" width="137" height="22" uuid="7591f2f2-4c59-4722-9728-61a63440cc83"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{NOMBRE_ALMACEN}+"\nALMACEN GENERAL"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="471" y="60" width="110" height="22" uuid="9fbf23c2-68ab-4933-8d2b-48aa30037a84"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{NOMBRE_SIG}+"\nCoordinador SIG"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{NOMBRE_ALMACEN}+"\nAlmacén"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="3" y="92" width="356" height="10" uuid="3d9083d5-bcb7-4e07-a25c-8ea37e412d85"/>
@@ -722,7 +707,7 @@ WHERE e.identrada=$P{IDLOTE}]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
 					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[RMPO-01-01-02 | V. 03 | 03/02/2017]]></text>
+				<text><![CDATA[RMPO-01-01-02 | V. 04 | 11/07/2018]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="265" y="92" width="309" height="10" uuid="b3258cff-0efe-44fa-9f78-f5cad682b67e"/>

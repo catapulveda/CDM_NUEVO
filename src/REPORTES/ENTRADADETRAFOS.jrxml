@@ -245,7 +245,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="21" height="15" uuid="feb080e3-378a-45e3-980f-dc635ead2cf1"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -265,7 +265,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="35" height="15" uuid="843e3bc2-869d-4f29-a5f5-413b678dd22b"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri" size="8"/>
@@ -285,7 +285,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="41" height="15" uuid="77a816c4-c2df-48c8-a0c5-60c7c5c109d9"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -305,7 +305,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="83" height="15" uuid="ece48ce5-8f13-48f8-a2f5-2758ffea6884"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -328,7 +328,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="75" height="15" uuid="fc392faf-726d-43f2-a61a-a93a4e59469b"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -348,7 +348,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="30" height="15" uuid="4c3a8bc3-023e-4e21-8598-5b5c5c8f1b11"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -368,7 +368,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="25" height="15" uuid="278b8fc9-1263-47e3-875b-b9ca95a7070e"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -388,7 +388,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell style="table_CH" height="15" rowSpan="1">
-								<textField>
+								<textField isStretchWithOverflow="true">
 									<reportElement x="0" y="0" width="86" height="15" uuid="2f45a34d-8ccb-4e1a-b80c-32e4b9aafb74"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="Calibri"/>
@@ -582,7 +582,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_CH" height="15" rowSpan="1">
-							<textField>
+							<textField isStretchWithOverflow="true">
 								<reportElement x="0" y="0" width="29" height="15" uuid="44598df6-032d-4563-85aa-e20a0ca1a09d"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri"/>
@@ -602,7 +602,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_CH" height="15" rowSpan="1">
-							<textField>
+							<textField isStretchWithOverflow="true">
 								<reportElement x="0" y="0" width="29" height="15" uuid="6e395986-a6e9-494d-b668-db9ed0b25e81"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri"/>
@@ -622,7 +622,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_CH" height="15" rowSpan="1">
-							<textField>
+							<textField isStretchWithOverflow="true">
 								<reportElement x="0" y="0" width="30" height="15" uuid="1a9c1450-fa7b-4500-a44d-5fa30dbd35bf"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri"/>
@@ -642,7 +642,7 @@ WHERE e.identrada=$P{IDENTRADA}]]>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="table_CH" height="15" rowSpan="1">
-							<textField>
+							<textField isStretchWithOverflow="true">
 								<reportElement x="0" y="0" width="61" height="15" uuid="f14e2c35-169b-4cd4-8fac-4bff03e5fa82"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Calibri"/>

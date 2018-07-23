@@ -359,7 +359,7 @@ public class PanelRemisiones extends javax.swing.JPanel {
                     
                     if(rs.getString("tipo_remision").equals("CON RETORNO")){
                         remisiones.setTIPO("CON RETORNO");
-                        if(rs.getString("empresa_remision").equals("CDM")){
+                        if(rs.getString("empresa_remision").equals("CDM") || rs.getString("empresa_remision").equals("MEDIDORES")){
                             remisiones.setCONSECUTIVO_EMPRESA("cdmretorno");
                             remisiones.setREPORTE("REMISIONCDM");
                         }else if(rs.getString("empresa_remision").equals("CONSORCIO")){

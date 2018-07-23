@@ -312,8 +312,8 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
     }
     
     public boolean actualizaTrafo(String columna, int fila, int col){
-        if(new ConexionBD().GUARDAR(" UPDATE transformador SET "+columna+"='"+modeloTabla.getValueAt(fila, col)+"' "
-                + " WHERE idtransformador='"+modeloTabla.getValueAt(fila, 0)+"' AND "
+        if(new ConexionBD().GUARDAR(" UPDATE transformador SET "+columna+"='"+modeloTabla.getValueAt(fila, col).toString().trim()+"' "
+                + " WHERE idtransformador='"+modeloTabla.getValueAt(fila, 0).toString().trim()+"' AND "
                 + " identrada='"+IDENTRADA+"' ")){
             return true;
         }
@@ -1137,14 +1137,14 @@ public class EntradaDeTrafos extends javax.swing.JFrame{
                     Map<String, Object> p = new HashMap<String, Object>();
                     JasperPrint jasperprint = null;
                     p.put("IDENTRADA", IDENTRADA);
-                    p.put("ORDEN", checkOrdenar.isSelected());
-                    jasperprint = JasperFillManager.fillReport(reporte, p, conexion.conectar());                
+                    p.put("ORDEN", checkOrdenar.isSelected());                   
+                    jasperprint = JasperFillManager.fillReport(reporte, p, conexion.conectar());                    
                     JasperViewer.viewReport(jasperprint, false);
-                }                
+                }
             }else{
                 modelo.Metodos.M("NO HAY NINGUN LOTE ABIERTO PARA GENERAR LOS FORMATOS\n", "advertencia.png");
             }                        
-        }catch(SQLException | MalformedURLException | JRException ex){
+        }catch(Exception ex){
             Logger.getLogger(EntradaDeTrafos.class.getName()).log(Level.SEVERE, null, ex);
             Metodos.ERROR(ex, "ERROR");
         }

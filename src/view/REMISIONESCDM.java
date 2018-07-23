@@ -958,7 +958,7 @@ public final class REMISIONESCDM extends javax.swing.JFrame {
             btn_generar.setEnabled(false);
             Map<String, Object> p = new HashMap<>();
             JasperPrint reporte_view;
-            JasperReport reporte;
+            JasperReport reporte;          
             reporte = (JasperReport) JRLoader.loadObject(new URL(this.getClass().getResource("/REPORTES/" + getREPORTE() + ".jasper").toString()));
             p.put("IDREMISION", IDREMISION);
             reporte_view = JasperFillManager.fillReport(reporte, p, conexion.conectar());

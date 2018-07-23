@@ -546,7 +546,8 @@ public class DespachoARemision extends javax.swing.JFrame {
                     }
 //                    SERVICIOS += (SERVICIO.equals("REPARACION") || SERVICIO.equals("MANTENIMIENTO"))?(SERVICIOS++):1;
 //                    SERVICIO = (SERVICIO.equals("REPARACION") || SERVICIO.equals("MANTENIMIENTO"))?"REPARACION":SERVICIO;                                                                                
-                    SERVICIO = (comboServicio.getSelectedIndex()>0)?comboServicio.getSelectedItem().toString():SERVICIO;//SI SE HA SELECCIONADO UN SERVICIO LA VARIABLE TOMARA ESE VALOR DEL SERVICIONADO
+                    SERVICIO = (comboServicio.getSelectedIndex()>0)?comboServicio.getSelectedItem().toString():SERVICIO;
+                    //SI SE HA SELECCIONADO UN SERVICIO LA VARIABLE TOMARA ESE VALOR DEL SERVICIO SELECCIONADO
                                         
                     
                     dirt.setSERVICIO(SERVICIO);
