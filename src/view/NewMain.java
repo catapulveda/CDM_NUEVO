@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,16 +29,23 @@ public class NewMain {
      */
     public static void main(String[] args) throws UnknownHostException, ClassNotFoundException, SQLException {
         
-        NewMain newMain = new NewMain();
+       DayOfWeek lunes = DayOfWeek.of(7);
+       Locale l = Locale.getDefault();
+       System.out.println("TextStyle.FULL:" + lunes.getDisplayName(TextStyle.FULL, l)); 
+       System.out.println("TextStyle.NARROW:" + lunes.getDisplayName(TextStyle.NARROW, l)); 
+       System.out.println("TextStyle.SHORT:" + lunes.getDisplayName(TextStyle.SHORT, l)); 
+       
+       String[] items = {"REP","MAN","GAR"};
+        for (String item : items) {
+            if(item.equals("REP")||item.equals("MAN")){
+                continue;
+            }
+            System.out.println(item);
+        }
     }
 
-    public NewMain() throws SQLException, ClassNotFoundException {
+    public NewMain() {
         
-        Class.forName("org.postgresql.Driver");
-        PreparedStatement pst;
-        try (Connection conexion = DriverManager.getConnection("jdbc:postgresql://gymsoft.zapto.org:5432/REGISTROS", "postgres", "hacker2780")) {            
-            System.out.println(conexion);
-        }
         
     }
     
